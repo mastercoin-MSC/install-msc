@@ -43,9 +43,6 @@ else
 fi
 
 
-
-
-
 while [ -z "$PREFIG" ]; do 
 	echo "Do you have an obelisk server and wish to enter its details now? [y/n]"
 	read PREFIG
@@ -112,11 +109,14 @@ cd $SRC/sx
 sudo bash install-sx.sh
 
 cd
-git clone https://github.com/grazcoin/mastercoin-tools
+#git clone https://github.com/grazcoin/mastercoin-tools
+git clone https://github.com/mastercoin-MSC/omniwallet.git
 
 #update ~/.sx.cfg with an obelisk server details
 # ~/.sx.cfg Sample file.
 #service = "tcp://162.243.29.201:9091"
+
+#add chown for the mastercoin-tools directory. 
 
 cd mastercoin-tools
 mkdir -p tx addr general
