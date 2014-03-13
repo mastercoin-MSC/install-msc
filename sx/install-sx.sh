@@ -59,7 +59,7 @@ mkdir -p $SRC_DIR
 mkdir -p $PKG_CONFIG_PATH
 #Set the obelsik version to install
 #From March 13 2014LIBW_VER=21447cc
-LIBW_VER=cd9b8bb
+LIBW_VER=9be05b6
 #From March 13 2014 LIBB_VER=335489f
 LIBB_VER=ebadde8
 #From March 6 2014 OBE_VER=58f326d
