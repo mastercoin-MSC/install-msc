@@ -1,6 +1,11 @@
 #Outside Requirements: Existing Obelisk Server 
 #Instructions are for Ubuntu 13.04 and newer
 
+#get the current directory
+SRC=`pwd`
+
+echo $SRC
+
 while [ -z "$PREFIG" ]; do 
 	echo "Do you have an obelisk server and wish to enter its details now? [y/n]"
 	read PREFIG
@@ -54,71 +59,7 @@ sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pk
 sudo pip install ecdsa
 sudo pip install pycoin
 
-#install libsodium then clean up the install files
-cd
-git clone https://github.com/jedisct1/libsodium.git
-cd libsodium
-./autogen.sh
-./configure && make check
-sudo make install
-sudo ldconfig
-cd ..
-#sudo rm -rf libsodium
-
-#install czmq
-cd
-git clone https://github.com/zeromq/czmq.git
-cd czmq
-./autogen.sh
-./configure && make check
-sudo make install
-sudo ldconfig
-cd ..
-#sudo rm -rf czmq
-
-#install libzmq, required for czmqpp, then we can uninstall it as it conflicts with obelisk
-cd
-git clone https://github.com/zeromq/libzmq.git
-cd libzmq
-sh autogen.sh
-./configure
-make
-make check
-sudo make install
-sudo ldconfig
-cd
-#sudo rm -rf libzmq
-
-
-#install czmqpp
-cd
-git clone https://github.com/darkwallet/czmqpp.git
-cd czmqpp/
-autoreconf -i
-./configure LIBS=-I/lib/i386-linux-gnu/
-make
-sudo make install
-sudo ldconfig
-cd 
-#sudo rm -rf czmqpp/
-
-cd
-cd libzmq
-sudo make uninstall
-
-#tricky stuff since obelisk looks for libczmq++ and it's listed as libczmqpp
-sudo cp /usr/local/lib/pkgconfig/libczmqpp.pc /usr/local/lib/pkgconfig/libczmq++.pc
-
-export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-
-#install sx:
-cd 
-git clone https://github.com/spesmilo/sx.git
-cd sx
-#git checkout abec160
-git checkout a97f7be
-#wget http://sx.dyne.org/install-sx.sh
+cd $SRC/sx
 sudo bash install-sx.sh
 
 cd
@@ -131,10 +72,10 @@ git clone https://github.com/grazcoin/mastercoin-tools
 cd mastercoin-tools
 mkdir -p tx addr general
 # to update with latest transactions:
-python msc_parse.py
+##python msc_parse.py
 # validate and update addresses balance:
-python msc_validate.py
+##python msc_validate.py
 # copy the results to www directory
-cp --no-clobber tx/* www/tx/
-cp --no-clobber addr/* www/addr/
-cp --no-clobber general/* www/general/
+##cp --no-clobber tx/* www/tx/
+##cp --no-clobber addr/* www/addr/
+##cp --no-clobber general/* www/general/
