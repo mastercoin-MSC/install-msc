@@ -1,3 +1,4 @@
+#!/bin/bash
 #Outside Requirements: Existing Obelisk Server
 #Instructions are for Ubuntu 13.04 and newer
 
@@ -106,8 +107,7 @@ sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pk
 sudo pip install -r pip.packages
 
 #check for sx and install it if it doesn't exist
-which sx
-SX_INSTALLED=$?
+SX_INSTALLED=`which sx || echo $?`
 
 if [[ $SX_INSTALLED -eq 1 ]]; then
         cd $SRC/res
