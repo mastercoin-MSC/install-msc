@@ -5,7 +5,7 @@
 
 set -e
 echo
-echo " [+] Welcome to S(pesmilo)X(changer)."
+echo " Mastercoin Tools Installation Script "
 echo
 if [ "$#" = "2" ]; then
     if [[ "$1" = "-os" ]]; then
@@ -17,7 +17,7 @@ if [ "$#" = "2" ]; then
     fi
 fi
 	
-if[ "$1" = "--help" ] || [ $HELP ]; then
+if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " [+] Install script help:"
      echo " --> To execute this script type:"
      echo " <sudo bash install-msc.sh>"
