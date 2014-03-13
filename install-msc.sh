@@ -12,7 +12,7 @@ if [ "$#" = "2" ]; then
         #Absolute path
         SERVER=$2
         PREFIG=CLE
-    else 
+    else
     	HELP=1
     fi
 fi
@@ -112,19 +112,16 @@ cd
 #git clone https://github.com/grazcoin/mastercoin-tools
 git clone https://github.com/mastercoin-MSC/omniwallet.git
 
+cp $SRC/res/app.sh mastercoin-tools
+
 #update ~/.sx.cfg with an obelisk server details
 # ~/.sx.cfg Sample file.
 #service = "tcp://162.243.29.201:9091"
 
 #add chown for the mastercoin-tools directory.
 
+NAME=`logname`
+sudo chown -R $NAME:$NAME mastercoin-tools
+
 cd mastercoin-tools
 mkdir -p tx addr general
-# to update with latest transactions:
-##python msc_parse.py
-# validate and update addresses balance:
-##python msc_validate.py
-# copy the results to www directory
-##cp --no-clobber tx/* www/tx/
-##cp --no-clobber addr/* www/addr/
-##cp --no-clobber general/* www/general/
