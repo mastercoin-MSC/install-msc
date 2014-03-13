@@ -32,7 +32,7 @@ if [ "$1" = "--help" ] || [ $HELP ]; then
 fi
 
 if [ `id -u` = "0" ]; then
-    SRC=`pwd`
+    SRC=$PWD
 else
     echo
     echo "[+] ERROR: This script must be run as root." 1>&2
@@ -41,9 +41,6 @@ else
     echo
     exit
 fi
-
-
-
 
 
 while [ -z "$PREFIG" ]; do 
@@ -105,18 +102,21 @@ sudo apt-get update
 sudo apt-get -y install git python-simplejson python-git python-pip
 sudo apt-get -y install make
 sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pkg-config libcurl4-openssl-dev libleveldb-dev libzmq-dev libconfig++-dev libncurses5-dev
-sudo pip install ecdsa
-sudo pip install pycoin
+sudo pip install -r pip.packages
+
 
 cd $SRC/sx
 sudo bash install-sx.sh
 
 cd
-git clone https://github.com/grazcoin/mastercoin-tools
+#git clone https://github.com/grazcoin/mastercoin-tools
+git clone https://github.com/mastercoin-MSC/omniwallet.git
 
 #update ~/.sx.cfg with an obelisk server details
 # ~/.sx.cfg Sample file.
 #service = "tcp://162.243.29.201:9091"
+
+#add chown for the mastercoin-tools directory. 
 
 cd mastercoin-tools
 mkdir -p tx addr general
