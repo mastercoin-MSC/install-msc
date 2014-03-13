@@ -58,14 +58,14 @@ PKG_CONFIG_PATH=$INSTALL_PREFIX/lib/pkgconfig
 mkdir -p $SRC_DIR
 mkdir -p $PKG_CONFIG_PATH
 #Set the obelsik version to install
-#From March 13 2014
-LIBW_VER=21447cc
-#From March 13 2014
-LIBB_VER=335489f
-#From March 6 2014
-OBE_VER=58f326d
-#From March 12 2014
-SX_VER=a97f7be
+#From March 13 2014LIBW_VER=21447cc
+LIBW_VER=cd9b8bb
+#From March 13 2014 LIBB_VER=335489f
+LIBB_VER=ebadde8
+#From March 6 2014 OBE_VER=58f326d
+OBE_VER=4962e2c
+#From March 12 2014 SX_VER=a97f7be
+SX_VER=d9b566e
 #
 install_dependencies(){
     flavour_id=`cat /etc/*-release | egrep -i "^ID=" | cut -f 2 -d "="`
