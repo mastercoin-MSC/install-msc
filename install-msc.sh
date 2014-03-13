@@ -1,4 +1,4 @@
-#Outside Requirements: Existing Obelisk Server 
+#Outside Requirements: Existing Obelisk Server
 #Instructions are for Ubuntu 13.04 and newer
 
 #get the current directory
@@ -16,7 +16,7 @@ if [ "$#" = "2" ]; then
     	HELP=1
     fi
 fi
-	
+
 if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " [+] Install script help:"
      echo " --> To execute this script type:"
@@ -43,7 +43,7 @@ else
 fi
 
 
-while [ -z "$PREFIG" ]; do 
+while [ -z "$PREFIG" ]; do
 	echo "Do you have an obelisk server and wish to enter its details now? [y/n]"
 	read PREFIG
 done
@@ -51,14 +51,14 @@ done
 case $PREFIG in
 	y* | Y* )
 		ACTIVE=1
-		CONFIRM=no	
+		CONFIRM=no
 	;;
-	
+
 	CLE)
 		ACTIVE=1
 		CONFIRM=P
 	;;
-	
+
 	*)
 		active=0
 	;;
@@ -73,23 +73,23 @@ while [ $ACTIVE -ne 0 ]; do
 		echo "service = \""$SERVER"\"" > ~/.sx.cfg
 		ACTIVE=0
 	;;
-	
+
 	n* | N* )
 		SERVER=
-		while [ -z "$SERVER" ]; do  
+		while [ -z "$SERVER" ]; do
 			echo "Enter Obelisk server connection details ex: tcp://162.243.29.201:9091"
 			echo "If you don't have one yet enter anything, you can update/change this later"
 			read SERVER
 		done
 		CONFIRM=P
 	;;
-	
+
 	P)
 		echo "You entered: "$SERVER
 		echo "Is this correct? [y/n]"
 		read CONFIRM
 	;;
-	
+
 	*)
 		CONFIRM=no
 	;;
@@ -105,7 +105,7 @@ sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pk
 sudo pip install -r pip.packages
 
 
-cd $SRC/sx
+cd $SRC/res
 sudo bash install-sx.sh
 
 cd
@@ -116,7 +116,7 @@ git clone https://github.com/mastercoin-MSC/omniwallet.git
 # ~/.sx.cfg Sample file.
 #service = "tcp://162.243.29.201:9091"
 
-#add chown for the mastercoin-tools directory. 
+#add chown for the mastercoin-tools directory.
 
 cd mastercoin-tools
 mkdir -p tx addr general
