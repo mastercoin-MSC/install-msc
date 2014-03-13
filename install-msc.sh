@@ -29,7 +29,7 @@ if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " The stardard path for the conf files is /etc."
      echo
      exit
-else
+fi
 
 if [ `id -u` = "0" ]; then
     SRC=`pwd`
