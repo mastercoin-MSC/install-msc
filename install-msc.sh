@@ -109,7 +109,7 @@ sudo pip install -r pip.packages
 which sx
 SX_INSTALLED=$?
 
-if [[ SX_INSTALLED -eq 1 ]]; then
+if [[ $SX_INSTALLED -eq 1 ]]; then
         cd $SRC/res
         sudo bash install-sx.sh
 else
