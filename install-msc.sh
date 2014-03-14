@@ -127,10 +127,12 @@ cd mastercoin-tools
 mkdir -p tx addr general
 
 
-
+echo ""
+echo ""
 echo "Installation complete"
-echo "MSC-Tools should have been downloaded/installed in "$SRC"/mastercoin-tools"
+echo "MSC-Tools should have been downloaded/installed in "$PWD
 echo "A wrapper app has also been included which automates the following tasks"
+echo ""
 echo "------Manual Run Commands---------"
 echo "To update with the latest transactions run: python msc_parse.py"
 echo "To Validate and update address balances run: python msc_validate.py"
