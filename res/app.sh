@@ -23,7 +23,7 @@ fi
 #create directories for downloaded tx's
 mkdir -p tx addr general
 
-SERVER_PID=$!
+SERVER_PID=$$
 
 while true
 do
