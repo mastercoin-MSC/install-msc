@@ -105,9 +105,19 @@ sudo apt-get -y install make
 sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pkg-config libcurl4-openssl-dev libleveldb-dev libzmq-dev libconfig++-dev libncurses5-dev
 sudo pip install -r pip.packages
 
+#check for sx and install it if it doesn't exist
+which sx
+SX_INSTALLED=$?
 
-cd $SRC/res
-sudo bash install-sx.sh
+if [[ SX_INSTALLED -eq 1 ]]; then
+        cd $SRC/res
+        sudo bash install-sx.sh
+else
+        echo "#########################################"
+        echo "sx alredy installed Skipping installation"
+        echo "#########################################"
+
+fi
 
 cd
 #git clone https://github.com/grazcoin/mastercoin-tools.git
