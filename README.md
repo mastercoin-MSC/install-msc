@@ -10,11 +10,18 @@ This script automates the process of downloading and installing msc-tools packag
  The script will prompt you if you have one during installation.  
  If not you can come back later and update your ~/.sx.cfg file with the correct details.  
 
+###Tested Envirnments
+ ubuntu-server-13.10 (32)
+
 ###To install:
- * git clone https://github.com/achamely/install-msc.git  
- * cd install-msc  
- * sudo bash install-msc.sh  
-   (will prompt for obelisk server)  
+```
+git clone https://github.com/achamely/install-msc.git  
+cd install-msc  
+sudo bash install-msc.sh
+```
+(will prompt for obelisk server)  
  
 Optionally you can provide the obelisk server details on the cli  
- * sudo bash install-msc.sh -os tcp://your.obelisk.server.org:9091
+```
+sudo bash install-msc.sh -os tcp://your.obelisk.server.org:9091
+```
