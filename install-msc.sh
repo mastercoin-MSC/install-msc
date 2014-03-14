@@ -110,7 +110,7 @@ sudo bash install-sx.sh
 
 cd
 #git clone https://github.com/grazcoin/mastercoin-tools
-git clone https://github.com/mastercoin-MSC/omniwallet.git
+https://github.com/mastercoin-MSC/mastercoin-tools.git
 
 cp $SRC/res/app.sh mastercoin-tools
 
