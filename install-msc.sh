@@ -125,3 +125,24 @@ sudo chown -R $NAME:$NAME mastercoin-tools
 
 cd mastercoin-tools
 mkdir -p tx addr general
+
+
+
+echo "Installation complete"
+echo "MSC-Tools should have been downloaded/installed in "$SRC"/mastercoin-tools"
+echo "A wrapper app has also been included which automates the following tasks"
+echo "------Manual Run Commands---------"
+echo "To update with the latest transactions run: python msc_parse.py"
+echo "To Validate and update address balances run: python msc_validate.py"
+echo "Once thats done copy the results to the www directory"
+echo "cp --no-clobber tx/* www/tx/"
+echo "cp --no-clobber addr/* www/addr/"
+echo "cp --no-clobber general/* www/general/"
+echo "----------------------------------"
+echo ""
+echo "-----Automated Run Commands-------"
+echo "start a new screen session with: screen -S msc-tools"
+echo "cd "$SRC"/mastercoin-tools"
+echo "launch the wrapper:  ./app.sh"
+echo "you can disconnect from the screen session with <ctrl-a> d"
+echo "----------------------------------"
