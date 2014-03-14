@@ -111,8 +111,8 @@ sudo bash install-sx.sh
 
 cd
 #git clone https://github.com/grazcoin/mastercoin-tools.git
-#git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
-git clone https://github.com/curtislacy/mastercoin-tools.git
+#git clone https://github.com/curtislacy/mastercoin-tools.git
+git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
 
 cp $SRC/res/app.sh mastercoin-tools
 cp $SRC/scripts/* mastercoin-tools
@@ -123,7 +123,7 @@ cp $SRC/scripts/* mastercoin-tools
 
 #create the mastercoin tools data directory
 mkdir -p /var/lib/mastercoin-tools
-tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
+#tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
 
 #add chown for the mastercoin-tools directory.
 
