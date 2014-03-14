@@ -124,7 +124,6 @@ NAME=`logname`
 sudo chown -R $NAME:$NAME mastercoin-tools
 
 cd mastercoin-tools
-mkdir -p tx addr general
 
 
 echo ""
