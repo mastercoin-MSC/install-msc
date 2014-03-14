@@ -6,12 +6,12 @@ msc-install
 This script automates the process of downloading and installing msc-tools package, sx and the required dependancies. 
 
 ###Prerequisites: 
- The msc-tools leverages an existing obelisk server.  
- The script will prompt you if you have one during installation.  
+ The msc-tools leverage an existing obelisk server.  
+ During installation the script will prompt you if you have one.  
  If not you can come back later and update your ~/.sx.cfg file with the correct details.  
 
-###Tested Envirnments
- ubuntu-server-13.10 (32)
+###Tested Environments
+ ubuntu-server-13.10 ( 32 | 64 )
 
 ###To install:
 ```
