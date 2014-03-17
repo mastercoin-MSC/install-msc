@@ -23,6 +23,7 @@ An installation script has been provided that automates the installation process
 It will prompt for obelisk server details and can be run with the following commands
 
 ::
+
     git clone https://github.com/achamely/install-msc.git  
     cd install-msc  
     sudo bash install-msc.sh
@@ -40,6 +41,7 @@ Installing (manual)
 If you want to manually install all of the components you can do so with the following commands. 
 
 ::
+
     #Update the apt-get packages
     sudo apt-get update
 
