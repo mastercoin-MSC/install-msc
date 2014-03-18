@@ -34,43 +34,18 @@ JSON = sys.stdin.readlines()
 
 listOptions = json.loads(str(''.join(JSON)))
 
-#sort out whether using local or remote API
-#conn = bitcoinrpc.connect_to_local()
-#print listOptions['from_private_key']
-
 #check if private key provided produces correct address
 address = pybitcointools.privkey_to_address(listOptions['from_private_key'])
 if not address == listOptions['transaction_from'] and not force:
     print json.dumps({ "status": "NOT OK", "error": "Private key does not produce same address as \'transaction from\'" , "fix": "Set \'force\' flag to proceed without address checks" })
     exit()
 
-#see if account has been added
-#account = conn.getaccount(listOptions['transaction_from'])
-#if account == "" and not force:
-#    _time = str(int(time.time()))
     private = listOptions['from_private_key']
-#    print json.dumps({ "status": "NOT OK", "error": "Couldn\'t find address in wallet, please run \'fix\' on the machine", "fix": "bitcoind importprivkey " + private + " imported_" + _time  })
 
-#calculate minimum unspent balance
-available_balance = Decimal(0.0)
+#calculate minimum unspent balance (everything in satoshi's)
+available_balance = int(0)
 
-#unspent_tx = []
-#unspent_tx = commands.getoutput('sx get-utxo '+listOptions['transaction_from']+' 1')
-#print unspent_tx
-#unspent_cmd = commands.getoutput('sx get-utxo '+listOptions['transaction_from'])
-#for unspent in unspent_cmd
-#    if unspent.address == listOptions['transaction_from']:
-#        unspent_tx.append(unspent)
-#get all unspent for our from_address
-
-#value=amount
-#for unspent in unspent_tx:
-#   print unspent
-#   available_balance = unspent.value + available_balance
-
-#bal = commands.getoutput('sx balance '+listOptions['transaction_from']+' | grep Total | cut -d : -f 2'
 BAL = commands.getoutput('sx balance -j '+listOptions['transaction_from'])
-#print BAL
 balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
@@ -81,18 +56,12 @@ fee_total = broadcast_fee + (output_minimum * 4)
 change = available_balance - fee_total
 
 
-
-#print available_balance
-#convert satoshi's to btc
-#available_balance = available_balance/100000000
-
 #check if minimum BTC balance is met
-#if available_balance < float(0.00006*4+0.0001) and not force:
 if available_balance < fee_total and not force:
     print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Set \'force\' flag to proceed without balance checks" })
     exit()
 
-#generate public key of bitcoin address 
+#generate/get public key of bitcoin address 
 validated = commands.getoutput('sx get-pubkey '+listOptions['transaction_from'])
 if "ddress" not in validated:
     pubkey = validated
@@ -111,10 +80,8 @@ lsi_array=[]
 #since sx doesn't provide a clean output we need to try and clean it up and get the usable outputs
 for x in nws.splitlines():
   lsi_array.append(x.split(':'))
-  #temp[x] = temp[x].split(':',1)
 
 z=0
-#print lsi_array
 for item in lsi_array:
   if lsi_array[z][0] == "output":
 	largest_spendable_input=(lsi_array[z][1],lsi_array[z][2])
@@ -170,18 +137,11 @@ while invalid:
 
 #### Build transaction
 
-#retrieve raw transaction to spend it
+#retrieve raw transaction data to spend it
 prev_tx = json.loads(commands.getoutput('sx fetch-transaction '+largest_spendable_input[0]+' | sx showtx -j'))
 
-#print prev_tx
-
-#validnextinputs = []                      #get valid redeemable inputs
-#for output in prev_tx.outputs:
 for output in prev_tx['outputs']:
    if output['address'] == listOptions['transaction_from']:
-   #if output['address'] != 'null':
-       #if addresses == listOptions['transaction_from']:
-       #add the transaction hash:sequence to the redeamable input
        validnextinputs="-i "+largest_spendable_input[0]+":"+largest_spendable_input[1]
 
 
@@ -192,8 +152,8 @@ validnextoutputs="-o 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P:"+str(output_minimum)+" 
 if change > Decimal(0.00006): 
     validnextoutputs+=" -o "+listOptions['transaction_from']+":"+str(change)
 
-#create a temp file for the unsigned raw tx data
-unsigned_raw_tx_file = 'data/'+listOptions['transaction_from']+listOptions['transaction_to']+commands.getoutput('date +%s')
+#create a temp file for the unsigned raw tx and the signed tx data for sx
+unsigned_raw_tx_file = 'data/'+listOptions['transaction_from']+'.'+listOptions['transaction_to']+'.'+commands.getoutput('date +%s')
 signed_raw_tx_file = unsigned_raw_tx_file+'.signed'
 
 #store the unsigned tx data in the file
@@ -202,13 +162,8 @@ commands.getoutput('sx mktx '+unsigned_raw_tx_file+' '+validnextinputs+' '+valid
 #convert it to json for adding the msc multisig
 json_tx = json.loads(commands.getoutput('cat '+unsigned_raw_tx_file+' | sx showtx -j'))
 
-print json.dumps(json_tx, sort_keys=True, indent=4, separators=(',', ': '))
-
 #add multisig output to json object
 json_tx['outputs'].append({ "value": output_minimum*2, "script": "1 [ " + pubkey + " ] [ " + data_pubkey.lower() + " ] 2 checkmultisig", "addresses": "null"})
-
-print json.dumps(json_tx, sort_keys=True, indent=4, separators=(',', ': '))
-
 
 #construct byte arrays for transaction 
 #assert to verify byte lengths are OK
@@ -260,7 +215,6 @@ for output in json_tx['outputs']:
     scriptpubkey_hex = commands.getoutput('sx rawscript '+output['script'])
     scriptpubkey_bytes = [scriptpubkey_hex[start:start + 2].upper() for start in range(0, len(scriptpubkey_hex), 2)]
     len_scriptpubkey = ['%02x' % len(''.join(scriptpubkey_bytes).decode('hex').lower())]
-    #assert len(scriptpubkey_bytes) == 25 or len(scriptpubkey_bytes) == 71
 
     output_hex.append([value_bytes, len_scriptpubkey, scriptpubkey_bytes] )
 
@@ -281,8 +235,6 @@ hex_transaction = hex_transaction + blocklocktime
 phash = ''.join(hex_transaction).lower()
 commands.getoutput('echo '+phash+' > '+unsigned_raw_tx_file)
 pht = commands.getoutput('echo '+phash+' | sx showtx -j')
-print pht
-
 #assert type(pht) == type({})
 
 
