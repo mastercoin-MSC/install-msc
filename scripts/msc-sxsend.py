@@ -7,7 +7,6 @@ import hashlib
 import operator
 import commands
 import pybitcointools
-#from decimal import *
 from pycoin import encoding
 from ecdsa import curves, ecdsa
 
@@ -21,7 +20,7 @@ def is_pubkey_valid(pubkey):
 
 
 if len(sys.argv) > 1 and "--force" not in sys.argv: 
-    print "Takes a list of bitcoind options, addresses and a send amount and outputs a transaction in JSON \nUsage: cat generateTx.json | python generateTx.py\nRequires a fully-synced *local* bitcoind node"
+    print "Takes a list of bitcoind options, addresses and a send amount and outputs a transaction in JSON \nUsage: cat send.json | python msc-sxsend.py\nRequires sx and a configured obelisk server"
     exit()
 
 if "--force" in sys.argv:
@@ -52,6 +51,7 @@ available_balance = int(balOptions[0]['paid'])
 broadcast_fee = int(10000)
 output_minimum = int(5555) #dust threshold
 
+
 fee_total = broadcast_fee + (output_minimum * 4)
 
 
@@ -67,7 +67,7 @@ if "ddress" not in validated:
 elif is_pubkey_valid(listOptions['transaction_from_pubkey_comp']):
     pubkey = listOptions['transaction_from_pubkey_comp']
 elif not force:
-    print json.dumps({ "status": "NOT OK", "error": "from address is invalid or hasn't been used on the network" , "fix": "Set \'force\' flag to proceed without balance checks" })
+    print json.dumps({ "status": "NOT OK", "error": "from address is invalid or hasn't been used on the network" , "fix": "Check from address or provide from address public key. Alternatively Set \'force\' flag to proceed without balance checks" })
     exit()
 
 #find largest spendable input from UTXO
@@ -80,13 +80,15 @@ lsi_array=[]
 for x in nws.splitlines():
   lsi_array.append(x.split(':'))
 
-#print lsi_array
+print json.dumps(lsi_array, sort_keys=True, indent=4, separators=(',', ': '))
+
 z=0
+tx_unspent_bal=0
 for item in lsi_array:
   if lsi_array[z][0] == "output":
 	largest_spendable_input=(lsi_array[z][1],lsi_array[z][2])
   if lsi_array[z][0] == "value":
-	tx_unspent_bal=lsi_array[z][1]
+	tx_unspent_bal += int(lsi_array[z][1])
   z += 1
 
 #real stuff happens here:
@@ -97,7 +99,7 @@ for item in lsi_array:
 change = int(tx_unspent_bal) - fee_total
 
 if change < 0 or fee_total > available_balance and not force:
-    print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Set \'force\' flag to proceed without balance checks" })
+    print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Send some btc to the sending address. Alternatively Set \'force\' flag to proceed without balance checks" })
     exit()
 
 #build multisig data address
@@ -150,7 +152,12 @@ for output in prev_tx['outputs']:
 
 
 #validnextoutputs add the exodus address and the receipiant to the output
-validnextoutputs="-o 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P:"+str(output_minimum)+" -o "+listOptions['transaction_to']+":"+str(output_minimum)
+#If change is less than dust but greater than 0 send it to the receipiant
+to_fee=output_minimum
+if change < output_minimum and change > 0:
+    to_fee+=change
+
+validnextoutputs="-o 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P:"+str(output_minimum)+" -o "+listOptions['transaction_to']+":"+str(to_fee)
 
 #if there's any leftover change above dust send it back to yourself
 if change > output_minimum: 
@@ -195,8 +202,6 @@ for _input in json_tx['inputs']:
     prior_input_index = str(prior_out_str[1]).rjust(2,"0").ljust(8,"0")
     input_raw_signature = commands.getoutput('sx fetch-transaction '+prior_out_str[0])
 
-    #print prior_out_str    
-
     prior_txhash_bytes =  [prior_input_txhash[ start: start + 2 ] for start in range(0, len(prior_input_txhash), 2)][::-1]
     assert len(prior_txhash_bytes) == 32
 
@@ -235,15 +240,23 @@ for output in output_hex:
 
 hex_transaction = hex_transaction + blocklocktime
 
-#verify that transaction is valid
+#prepare and populate unsigned_raw_tx_file
 phash = ''.join(hex_transaction).lower()
 commands.getoutput('echo '+phash+' > '+unsigned_raw_tx_file)
-pht = commands.getoutput('echo '+phash+' | sx showtx -j')
-#assert type(pht) == type({})
 
+#verify that transaction is valid
+pht = commands.getoutput('echo '+phash+' | sx showtx -j')
+
+try:
+   fc = json.loads(pht)
+except ValueError, e:
+    # invalid json
+    print json.dumps({ "status": "NOT OK", "error": "unsigned tx not valid/malformed: "+pht, "fix": "Check your inputs/json file"})
+    exit()
+else:
+    pass # valid json
 
 #We will now sign the first input using our private key.
-
 PRIVATE_KEY = ''+listOptions['from_private_key']
 PUBLIC_KEY=commands.getoutput('echo '+PRIVATE_KEY+' | sx pubkey')
 DECODED_ADDR=commands.getoutput('echo '+PRIVATE_KEY+' | sx addr | sx decode-addr')
@@ -255,12 +268,13 @@ commands.getoutput('sx set-input '+unsigned_raw_tx_file+' 0 '+SIGNATURE_AND_PUBK
 tx_valid=commands.getoutput('sx validtx '+signed_raw_tx_file)
 
 if "Success" not in tx_valid:
-    print json.dumps({ "status": "NOT OK", "error": "signed tx not valid/failed sx validation: "+tx_valid})
+    print json.dumps({ "status": "NOT OK", "error": "signed tx not valid/failed sx validation: "+tx_valid, "fix": "Check your inputs/json file"})
     exit()
 
-
-
-print "signed file prepared: "+signed_raw_tx_file
+tx_hash=json.loads(commands.getoutput('cat '+signed_raw_tx_file+' | sx showtx -j'))['hash']
 
 #broadcast to obelisk node
-#commands.getoutput('sx sendtx-obelisk '+signed_raw_tx_file)
+#bcast_status=commands.getoutput('sx sendtx-obelisk '+signed_raw_tx_file)
+bcast_status="out: success"
+
+print json.dumps({ "Status": bcast_status.split(':')[1], "Hash": tx_hash, "STFile": signed_raw_tx_file})
