@@ -246,7 +246,7 @@ DECODED_ADDR=commands.getoutput('echo '+PRIVATE_KEY+' | sx addr | sx decode-addr
 PREVOUT_SCRIPT=commands.getoutput('sx rawscript dup hash160 [ '+DECODED_ADDR+' ] equalverify checksig')
 SIGNATURE=commands.getoutput('echo '+PRIVATE_KEY+' | sx sign-input '+unsigned_raw_tx_file+' 0 '+PREVOUT_SCRIPT)
 SIGNATURE_AND_PUBKEY_SCRIPT=commands.getoutput('sx rawscript [ '+SIGNATURE+' ] [ '+PUBLIC_KEY+' ]')
-commands.getoutput('sx set-input '+unsigned_raw_tx_file+' 0 SIGNATURE_AND_PUBKEY_SCRIPT > '+signed_raw_tx_file)  # the first input has index 0
+commands.getoutput('sx set-input '+unsigned_raw_tx_file+' 0 '+SIGNATURE_AND_PUBKEY_SCRIPT+' > '+signed_raw_tx_file)  # the first input has index 0
 
 
 print "signed file prepared: "+signed_raw_tx_file
