@@ -7,7 +7,7 @@ import hashlib
 import operator
 import commands
 import pybitcointools
-from decimal import *
+#from decimal import *
 from pycoin import encoding
 from ecdsa import curves, ecdsa
 
@@ -53,7 +53,6 @@ broadcast_fee = int(10000)
 output_minimum = int(5555) #dust threshold
 
 fee_total = broadcast_fee + (output_minimum * 4)
-change = available_balance - fee_total
 
 
 #check if minimum BTC balance is met
@@ -81,16 +80,21 @@ lsi_array=[]
 for x in nws.splitlines():
   lsi_array.append(x.split(':'))
 
+#print lsi_array
 z=0
 for item in lsi_array:
   if lsi_array[z][0] == "output":
 	largest_spendable_input=(lsi_array[z][1],lsi_array[z][2])
+  if lsi_array[z][0] == "value":
+	tx_unspent_bal=lsi_array[z][1]
   z += 1
 
 #real stuff happens here:
 
 # calculate change : 
 # (total input amount) - (broadcast fee) - (total transaction fee)
+
+change = int(tx_unspent_bal) - fee_total
 
 if change < 0 or fee_total > available_balance and not force:
     print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Set \'force\' flag to proceed without balance checks" })
@@ -149,7 +153,7 @@ for output in prev_tx['outputs']:
 validnextoutputs="-o 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P:"+str(output_minimum)+" -o "+listOptions['transaction_to']+":"+str(output_minimum)
 
 #if there's any leftover change above dust send it back to yourself
-if change > Decimal(0.00006): 
+if change > output_minimum: 
     validnextoutputs+=" -o "+listOptions['transaction_from']+":"+str(change)
 
 #create a temp file for the unsigned raw tx and the signed tx data for sx
@@ -247,6 +251,13 @@ PREVOUT_SCRIPT=commands.getoutput('sx rawscript dup hash160 [ '+DECODED_ADDR+' ]
 SIGNATURE=commands.getoutput('echo '+PRIVATE_KEY+' | sx sign-input '+unsigned_raw_tx_file+' 0 '+PREVOUT_SCRIPT)
 SIGNATURE_AND_PUBKEY_SCRIPT=commands.getoutput('sx rawscript [ '+SIGNATURE+' ] [ '+PUBLIC_KEY+' ]')
 commands.getoutput('sx set-input '+unsigned_raw_tx_file+' 0 '+SIGNATURE_AND_PUBKEY_SCRIPT+' > '+signed_raw_tx_file)  # the first input has index 0
+
+tx_valid=commands.getoutput('sx validtx '+signed_raw_tx_file)
+
+if "Success" not in tx_valid:
+    print json.dumps({ "status": "NOT OK", "error": "signed tx not valid/failed sx validation: "+tx_valid})
+    exit()
+
 
 
 print "signed file prepared: "+signed_raw_tx_file
