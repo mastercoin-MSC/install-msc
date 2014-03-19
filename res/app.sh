@@ -10,18 +10,15 @@ trap "kill_child_processes 1 $$; exit 0" INT
 
 APPDIR=`pwd`
 
-DATADIR=$APPDIR/data
+DATADIR=$APPDIR/logs
 LOCK_FILE=$DATADIR/msc_cron.lock
 PARSE_LOG=$DATADIR/parsed.log
 VALIDATE_LOG=$DATADIR/validated.log
 ARCHIVE_LOG=$DATADIR/archived.log
 
 if [ ! -d $DATADIR ]; then
-	mkdir $DATADIR
+	mkdir -p $DATADIR
 fi
-
-#create directories for downloaded tx's
-mkdir -p tx addr general
 
 SERVER_PID=$!
 
