@@ -15,14 +15,15 @@ Inputs:
 ^^^^^^^
 Takes json input via STDIN for the following variables
 
-transaction_from: The Public Address of the Sender
-transaction_from_pubkey_comp: If the sending address has not been used before you can provide the Compressed Public Key here
-transaction_to: The Public address of the Receipiant
-currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
-msc_send_amt: The amount of the Currency ID to send
-from_private_key: The base58 Private Key of the sender's Public Address (Note: Should start with 5)
-broadcast: Create the Tx and/or Broadcast to the network. 1 to create and broadcast or 0 to just create
-clean: Clean up any of the tx files created.
+| transaction_from: The Public Address of the Sender
+| transaction_from_pubkey_comp: If the sending address has not been used before you can provide the Compressed Public Key here
+| transaction_to: The Public address of the Receipiant
+| currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
+| msc_send_amt: The amount of the Currency ID to send
+| from_private_key: The base58 Private Key of the sender's Public Address (Note: Should start with 5)
+| broadcast: Create the Tx and/or Broadcast to the network. 1 to create and broadcast or 0 to just create
+| clean: Clean up any of the tx files created.
+
 * 0 - Keep all Tx files created
 * 1 - Remove only the intersigned Tx files. (Leaves the original unsigned Tx and the signed Tx)
 * 2 - Remove all unsigned Tx files. Will leave only the signed Tx file that can be broadcast to the network. 

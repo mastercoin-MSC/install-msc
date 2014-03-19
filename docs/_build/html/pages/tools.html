@@ -57,18 +57,22 @@
 <div class="section" id="inputs">
 <h3>Inputs:<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h3>
 <p>Takes json input via STDIN for the following variables</p>
-<p>transaction_from: The Public Address of the Sender
-transaction_from_pubkey_comp: If the sending address has not been used before you can provide the Compressed Public Key here
-transaction_to: The Public address of the Receipiant
-currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
-msc_send_amt: The amount of the Currency ID to send
-from_private_key: The base58 Private Key of the sender&#8217;s Public Address (Note: Should start with 5)
-broadcast: Create the Tx and/or Broadcast to the network. 1 to create and broadcast or 0 to just create
-clean: Clean up any of the tx files created.
-* 0 - Keep all Tx files created
-* 1 - Remove only the intersigned Tx files. (Leaves the original unsigned Tx and the signed Tx)
-* 2 - Remove all unsigned Tx files. Will leave only the signed Tx file that can be broadcast to the network.
-* 3 - Remove all Tx files. Signed and unsigned, make sure you have broadcast the Tx before you do this.</p>
+<div class="line-block">
+<div class="line">transaction_from: The Public Address of the Sender</div>
+<div class="line">transaction_from_pubkey_comp: If the sending address has not been used before you can provide the Compressed Public Key here</div>
+<div class="line">transaction_to: The Public address of the Receipiant</div>
+<div class="line">currency_id: Currency ID to send. 1 for MSC, 2 for TMSC</div>
+<div class="line">msc_send_amt: The amount of the Currency ID to send</div>
+<div class="line">from_private_key: The base58 Private Key of the sender&#8217;s Public Address (Note: Should start with 5)</div>
+<div class="line">broadcast: Create the Tx and/or Broadcast to the network. 1 to create and broadcast or 0 to just create</div>
+<div class="line">clean: Clean up any of the tx files created.</div>
+</div>
+<ul class="simple">
+<li>0 - Keep all Tx files created</li>
+<li>1 - Remove only the intersigned Tx files. (Leaves the original unsigned Tx and the signed Tx)</li>
+<li>2 - Remove all unsigned Tx files. Will leave only the signed Tx file that can be broadcast to the network.</li>
+<li>3 - Remove all Tx files. Signed and unsigned, make sure you have broadcast the Tx before you do this.</li>
+</ul>
 <p>The json takes the following format:</p>
 <div class="highlight-python"><div class="highlight"><pre>{
   &quot;transaction_from&quot;: &quot;{{Public from Address}}&quot;,
