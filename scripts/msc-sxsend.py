@@ -48,8 +48,11 @@ BAL = commands.getoutput('sx balance -j '+listOptions['transaction_from'])
 balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
-broadcast_fee = int(10000)
-output_minimum = int(5555) #dust threshold
+#broadcast_fee = int(10000)
+#output_minimum = int(5555) #dust threshold
+
+broadcast_fee = int(1000)
+output_minimum = int(1500) #dust threshold
 
 
 fee_total = broadcast_fee + (output_minimum * 4)
@@ -80,13 +83,12 @@ lsi_array=[]
 for x in nws.splitlines():
   lsi_array.append(x.split(':'))
 
-print json.dumps(lsi_array, sort_keys=True, indent=4, separators=(',', ': '))
-
 z=0
 tx_unspent_bal=0
+utxo_list=[]
 for item in lsi_array:
   if lsi_array[z][0] == "output":
-	largest_spendable_input=(lsi_array[z][1],lsi_array[z][2])
+	utxo_list.append([lsi_array[z][1],lsi_array[z][2]])
   if lsi_array[z][0] == "value":
 	tx_unspent_bal += int(lsi_array[z][1])
   z += 1
@@ -142,17 +144,19 @@ while invalid:
 #the last byte of the key and try again
 
 #### Build transaction
+#retrieve raw transaction data to spend it and add it to the input 
+validnextinputs=""
+input_counter=0
+for utxo in utxo_list:
+   prev_tx = json.loads(commands.getoutput('sx fetch-transaction '+utxo[0]+' | sx showtx -j'))
 
-#retrieve raw transaction data to spend it
-prev_tx = json.loads(commands.getoutput('sx fetch-transaction '+largest_spendable_input[0]+' | sx showtx -j'))
-
-for output in prev_tx['outputs']:
-   if output['address'] == listOptions['transaction_from']:
-       validnextinputs="-i "+largest_spendable_input[0]+":"+largest_spendable_input[1]
-
+   for output in prev_tx['outputs']:
+      if output['address'] == listOptions['transaction_from']:
+          validnextinputs+=str(" -i "+utxo[0]+":"+utxo[1])
+	  input_counter+=1
 
 #validnextoutputs add the exodus address and the receipiant to the output
-#If change is less than dust but greater than 0 send it to the receipiant
+#If change is less than dust but greater than 0 send it to the receipiant: Bonus!
 to_fee=output_minimum
 if change < output_minimum and change > 0:
     to_fee+=change
@@ -261,9 +265,18 @@ PRIVATE_KEY = ''+listOptions['from_private_key']
 PUBLIC_KEY=commands.getoutput('echo '+PRIVATE_KEY+' | sx pubkey')
 DECODED_ADDR=commands.getoutput('echo '+PRIVATE_KEY+' | sx addr | sx decode-addr')
 PREVOUT_SCRIPT=commands.getoutput('sx rawscript dup hash160 [ '+DECODED_ADDR+' ] equalverify checksig')
-SIGNATURE=commands.getoutput('echo '+PRIVATE_KEY+' | sx sign-input '+unsigned_raw_tx_file+' 0 '+PREVOUT_SCRIPT)
-SIGNATURE_AND_PUBKEY_SCRIPT=commands.getoutput('sx rawscript [ '+SIGNATURE+' ] [ '+PUBLIC_KEY+' ]')
-commands.getoutput('sx set-input '+unsigned_raw_tx_file+' 0 '+SIGNATURE_AND_PUBKEY_SCRIPT+' > '+signed_raw_tx_file)  # the first input has index 0
+
+#Loop through and sign all the tx's inputs so we can create the final signed tx
+x=0
+commands.getoutput('cp '+unsigned_raw_tx_file+' '+unsigned_raw_tx_file+'.0')
+while x < input_counter:
+    y=x+1
+    SIGNATURE=commands.getoutput('echo '+PRIVATE_KEY+' | sx sign-input '+unsigned_raw_tx_file+' '+str(x)+' '+PREVOUT_SCRIPT)
+    SIGNATURE_AND_PUBKEY_SCRIPT=commands.getoutput('sx rawscript [ '+SIGNATURE+' ] [ '+PUBLIC_KEY+' ]')
+    commands.getoutput('sx set-input '+unsigned_raw_tx_file+'.'+str(x)+' '+str(x)+' '+SIGNATURE_AND_PUBKEY_SCRIPT+' > '+unsigned_raw_tx_file+'.'+str(y))  # the first input has index 0
+    x+=1
+
+commands.getoutput('cp '+unsigned_raw_tx_file+'.'+str(y)+' '+signed_raw_tx_file)
 
 tx_valid=commands.getoutput('sx validtx '+signed_raw_tx_file)
 
@@ -273,8 +286,11 @@ if "Success" not in tx_valid:
 
 tx_hash=json.loads(commands.getoutput('cat '+signed_raw_tx_file+' | sx showtx -j'))['hash']
 
-#broadcast to obelisk node
-#bcast_status=commands.getoutput('sx sendtx-obelisk '+signed_raw_tx_file)
-bcast_status="out: success"
+#broadcast to obelisk node if requested
+if listOptions['broadcast'] == 1:
+    bcast_status=commands.getoutput('sx sendtx-obelisk '+signed_raw_tx_file)
+else:
+    bcast_status="out: Created, No TX"
 
+#return our final output
 print json.dumps({ "Status": bcast_status.split(':')[1], "Hash": tx_hash, "STFile": signed_raw_tx_file})
