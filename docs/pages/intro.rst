@@ -19,6 +19,7 @@ Here is a breakdown of everything that is needed/installed to support Mastercoin
 
   * ecdsa==0.10
   * pycoin==0.25 
+  * pybitcointools==1.1
 
 * git 
 * build-essential 

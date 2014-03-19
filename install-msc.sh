@@ -113,6 +113,7 @@ cd
 git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
 
 cp $SRC/res/app.sh mastercoin-tools
+cp $SRC/scripts/* mastercoin-tools
 
 #update ~/.sx.cfg with an obelisk server details
 # ~/.sx.cfg Sample file.

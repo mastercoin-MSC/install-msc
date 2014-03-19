@@ -30,8 +30,11 @@ else:
     force=False
 
 JSON = sys.stdin.readlines()
-
 listOptions = json.loads(str(''.join(JSON)))
+
+#Define and make sure we have a data dir
+DATA='data/'
+commands.getoutput('mkdir -p '+DATA)
 
 #check if private key provided produces correct address
 address = pybitcointools.privkey_to_address(listOptions['from_private_key'])
@@ -166,7 +169,7 @@ if change >= output_minimum:
 
 #create a temp file for the unsigned raw tx and the signed tx data for sx
 #format: sender_address.recpt_address.secs_since_1970.random_hex
-unsigned_raw_tx_file = 'data/'+listOptions['transaction_from']+'.'+listOptions['transaction_to']+'.'+commands.getoutput('date +%s')+'.'+hex(random.randint(0,255))[2:].rjust(2,"0")
+unsigned_raw_tx_file = DATA+listOptions['transaction_from']+'.'+listOptions['transaction_to']+'.'+commands.getoutput('date +%s')+'.'+hex(random.randint(0,255))[2:].rjust(2,"0")
 signed_raw_tx_file = unsigned_raw_tx_file+'.signed'
 
 #store the unsigned tx data in the file
@@ -290,5 +293,26 @@ if listOptions['broadcast'] == 1:
 else:
     bcast_status="out: Created, No TX"
 
+print input_counter
+
+if listOptions['clean'] == 0:
+    pass
+elif listOptions['clean'] == 1:
+    x=0
+    while x <= input_counter:
+        commands.getoutput('rm '+unsigned_raw_tx_file+'.'+str(x))
+        x+=1
+elif listOptions['clean'] == 2:
+    x=0
+    commands.getoutput('rm '+unsigned_raw_tx_file)
+    while x <= input_counter:
+        commands.getoutput('rm '+unsigned_raw_tx_file+'.'+str(x))
+        x+=1
+elif listOptions['clean'] == 3:
+    commands.getoutput('rm '+unsigned_raw_tx_file)
+    commands.getoutput('rm '+unsigned_raw_tx_file+'.*')
+    signed_raw_tx_file='Cleaned/removed by request'
+
+
 #return our final output
-print json.dumps({ "Status": bcast_status.split(':')[1], "Valid_Check": tx_valid.split(':')[1], "Hash": tx_hash, "STFile": signed_raw_tx_file})
+print json.dumps({ "status": bcast_status.split(':')[1], "valid_check": tx_valid.split(':')[1], "hash": tx_hash, "st_file": signed_raw_tx_file})
