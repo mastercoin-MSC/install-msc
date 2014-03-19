@@ -52,7 +52,7 @@ balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
 broadcast_fee = int(10000)
-output_minimum = int(5555) #dust threshold
+output_minimum = int(5500) #dust threshold 5460 , 
 
 fee_total = broadcast_fee + (output_minimum * 4)
 
