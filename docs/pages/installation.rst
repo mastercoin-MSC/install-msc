@@ -9,6 +9,13 @@ The msc-tools leverage an existing obelisk server.
 During installation the script will prompt you if you have one.
 If not you can come back later and update your ~/.sx.cfg file with the correct details.
 
+Recommended System Requirements
+---------------------------
+
+* 12Gb+ Disk space
+* 1 Gig+ Ram (Amazon base EC2 instance with 512 will fail to build)
+* Use a Tested Environment
+
 Tested Environments
 -------------------
 
