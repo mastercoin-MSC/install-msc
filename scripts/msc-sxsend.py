@@ -161,11 +161,12 @@ if change < output_minimum and change > 0:
 validnextoutputs="-o 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P:"+str(output_minimum)+" -o "+listOptions['transaction_to']+":"+str(to_fee)
 
 #if there's any leftover change above dust send it back to yourself
-if change > output_minimum: 
+if change >= output_minimum: 
     validnextoutputs+=" -o "+listOptions['transaction_from']+":"+str(change)
 
 #create a temp file for the unsigned raw tx and the signed tx data for sx
-unsigned_raw_tx_file = 'data/'+listOptions['transaction_from']+'.'+listOptions['transaction_to']+'.'+commands.getoutput('date +%s')
+#format: sender_address.recpt_address.secs_since_1970.random_hex
+unsigned_raw_tx_file = 'data/'+listOptions['transaction_from']+'.'+listOptions['transaction_to']+'.'+commands.getoutput('date +%s')+'.'+hex(random.randint(0,255))[2:].rjust(2,"0")
 signed_raw_tx_file = unsigned_raw_tx_file+'.signed'
 
 #store the unsigned tx data in the file
