@@ -105,7 +105,8 @@ if change < 0 or fee_total > available_balance and not force:
 from_address = listOptions['transaction_from']
 transaction_type = 0   #simple send
 sequence_number = 1    #packet number
-currency_id = 2        #TMSC
+#currency_id = 2        #MSC=1, TMSC=2
+currency_id = int(listOptions['currency_id'])
 amount = int(listOptions['msc_send_amt']*1e8)  #maran's impl used float??
 
 cleartext_packet = ( 
@@ -289,4 +290,4 @@ else:
     bcast_status="out: Created, No TX"
 
 #return our final output
-print json.dumps({ "Status": bcast_status.split(':')[1], "Hash": tx_hash, "STFile": signed_raw_tx_file})
+print json.dumps({ "Status": bcast_status.split(':')[1], "Valid_Check": tx_valid.split(':')[1], "Hash": tx_hash, "STFile": signed_raw_tx_file})
