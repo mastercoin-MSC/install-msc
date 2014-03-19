@@ -6,5 +6,5 @@
   "msc_send_amt": {{amount to send}},
   "from_private_key": "{{private key for signing}}",
   "broadcast": {{1 to create and broadcast or 0 to just create}},
-  "clean": ((0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
+  "clean": {{0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
 }
