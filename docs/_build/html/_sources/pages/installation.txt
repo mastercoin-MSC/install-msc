@@ -58,8 +58,9 @@ If you want to manually install all of the components you can do so with the fol
     #Download the mastercoin-tools
     git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
 
-    #copy the app.sh wrapper for mastercoin tools to the mastercoin-tools directory
+    #copy the scripts and app.sh wrapper for mastercoin tools to the mastercoin-tools directory
     cp install-msc/res/app.sh mastercoin-tools/
+    cp install-msc/scripts/* mastercoin-tools/
 
     #update ~/.sx.cfg with an obelisk server details
     # ~/.sx.cfg Sample file.
