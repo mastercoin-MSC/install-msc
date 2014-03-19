@@ -48,12 +48,8 @@ BAL = commands.getoutput('sx balance -j '+listOptions['transaction_from'])
 balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
-#broadcast_fee = int(10000)
-#output_minimum = int(5555) #dust threshold
-
-broadcast_fee = int(1000)
-output_minimum = int(1500) #dust threshold
-
+broadcast_fee = int(10000)
+output_minimum = int(5555) #dust threshold
 
 fee_total = broadcast_fee + (output_minimum * 4)
 
