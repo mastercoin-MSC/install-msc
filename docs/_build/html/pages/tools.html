@@ -48,7 +48,73 @@
   <div class="section" id="tools">
 <h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
 <p>List of tools included with the isntallation and how to use them</p>
-<p>Work in progress</p>
+<div class="section" id="msc-sxsend-py">
+<h2>msc_sxsend.py<a class="headerlink" href="#msc-sxsend-py" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="purpose">
+<h3>Purpose:<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h3>
+<p>Used to create (and/or send) a Mastercoin transaction</p>
+</div>
+<div class="section" id="input">
+<h3>Input:<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<p>Takes json input via STDIN with the format:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  &quot;transaction_from&quot;: &quot;{{Public from Address}}&quot;,
+  &quot;transaction_from_pubkey_comp&quot;: &quot;{{Compressed Public Key if address has not sent to blockchain yet}}&quot;,
+  &quot;transaction_to&quot;: &quot;{{Public to Address}}&quot;,
+  &quot;currency_id&quot;: {{1 for MSC, 2 for TMSC}},
+  &quot;msc_send_amt&quot;: {{amount to send}},
+  &quot;from_private_key&quot;: &quot;{{private key for signing}}&quot;,
+  &quot;broadcast&quot;: {{1 to create and broadcast or 0 to just create}},
+  &quot;clean&quot;: {{0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
+}
+</pre></div>
+</div>
+<p>Ex:</p>
+<p><em>Note: for security the following was a brand new empty wallet. You should replace it&#8217;s details with your own applicable info</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  &quot;transaction_from&quot;: &quot;1CMauYumpA7YG8i4cPod8FadRLK95HxSob&quot;,
+  &quot;transaction_from_pubkey_comp&quot;: &quot;0368d7c560e7376596dfa574b28badde241a80309f4fbbba204c2034e5ed4fa353&quot;,
+  &quot;transaction_to&quot;: &quot;19hf8QEkD3GR7NhUrujWXRg6e4gsHUTysp&quot;,
+  &quot;currency_id&quot;: 1,
+  &quot;msc_send_amt&quot;: 5.1,
+  &quot;from_private_key&quot;: &quot;KzPeWRBj1qDfLZNsDyFrWdnfi4cdoqxHWkkJ2pedRVKtEMEh2oxE&quot;,
+  &quot;broadcast&quot;: 1
+  &quot;clean&quot;: 1
+}
+</pre></div>
+</div>
+<p>And here is what the brainwallet.org generator page looked like for reference</p>
+<img alt="../_images/brainwallet.png" class="align-center" src="../_images/brainwallet.png" />
+</div>
+<div class="section" id="output">
+<h3>Output:<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>Will return json formated output</p>
+<p>Errors will be returned with json that contains</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s">&quot;status&quot;</span><span class="p">:</span> <span class="s">&quot;Status message&quot;</span><span class="p">,</span>
+   <span class="s">&quot;error&quot;</span><span class="p">:</span> <span class="s">&quot;error details&quot;</span><span class="p">,</span>
+   <span class="s">&quot;fix&quot;</span><span class="p">:</span> <span class="s">&quot;Corrective action to resolve the issue&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Successful run will return json that contains:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="s">&quot;status&quot;</span><span class="p">:</span> <span class="s">&quot;Broadcast/Created status&quot;</span><span class="p">,</span>
+  <span class="s">&quot;valid_check&quot;</span><span class="p">:</span> <span class="s">&quot;Validity check of signed file&quot;</span><span class="p">,</span>
+  <span class="s">&quot;hash&quot;</span><span class="p">:</span> <span class="s">&quot;Hash of the tx&quot;</span><span class="p">,</span>
+  <span class="s">&quot;st_file&quot;</span><span class="p">:</span> <span class="s">&quot;location/name of the signed tx file&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running">
+<h3>Running:<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<p>Standalone running/testing can be done by creating a json file (see input details or example_send.json for structure)
+You can execute/run the program with:</p>
+<div class="highlight-python"><div class="highlight"><pre>cat your_file.json | python msc_sxsend.py
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -57,6 +123,20 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tools</a><ul>
+<li><a class="reference internal" href="#msc-sxsend-py">msc_sxsend.py</a><ul>
+<li><a class="reference internal" href="#purpose">Purpose:</a></li>
+<li><a class="reference internal" href="#input">Input:</a></li>
+<li><a class="reference internal" href="#output">Output:</a></li>
+<li><a class="reference internal" href="#running">Running:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="running.html"
                         title="previous chapter">Running</a></p>
