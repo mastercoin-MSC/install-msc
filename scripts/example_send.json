@@ -1,6 +1,6 @@
 { 
   "transaction_from": "{{Public from Address}}",
-  "transaction_from_pubkey_comp": "{{Publick Key if address has not sent}}",
+  "transaction_from_pubkey": "{{Publick Key if address has not sent}}",
   "transaction_to": "{{Public to Address}}",
   "currency_id": {{1 for MSC, 2 for TMSC}},
   "msc_send_amt": {{amount to send}},

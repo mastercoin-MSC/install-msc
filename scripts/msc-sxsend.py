@@ -66,8 +66,8 @@ if available_balance < fee_total and not force:
 validated = commands.getoutput('sx get-pubkey '+listOptions['transaction_from'])
 if "ddress" not in validated:
     pubkey = validated
-elif is_pubkey_valid(listOptions['transaction_from_pubkey_comp']):
-    pubkey = listOptions['transaction_from_pubkey_comp']
+elif is_pubkey_valid(listOptions['transaction_from_pubkey']):
+    pubkey = listOptions['transaction_from_pubkey']
 elif not force:
     print json.dumps({ "status": "NOT OK", "error": "from address is invalid or hasn't been used on the network" , "fix": "Check from address or provide from address public key. Alternatively Set \'force\' flag to proceed without balance checks" })
     exit()
