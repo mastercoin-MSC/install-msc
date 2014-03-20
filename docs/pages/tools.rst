@@ -95,7 +95,7 @@ You can execute/run the program with::
 
 
 msc_balance.py
----_----------
+--------------
 
 Purpose:
 ^^^^^^^^
