@@ -9,6 +9,8 @@ The msc-tools leverage an existing obelisk server.
 During installation the script will prompt you if you have one.
 If not you can come back later and update your ~/.sx.cfg file with the correct details.
 
+Need a server? Try checking `UN Systems wiki <https://wiki.unsystem.net/index.php/Obelisk/Servers>`_
+
 Recommended System Requirements
 ---------------------------
 
