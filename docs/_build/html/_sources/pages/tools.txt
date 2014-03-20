@@ -125,9 +125,7 @@ The json takes the following format::
           "currency_id": {{1 for MSC, 2 for TMSC}},
         }
 
-Ex:
-
-*Note: for security the following was a brand new empty wallet. You should replace it's details with your own applicable info*::
+Ex: ::
 
         {
           "address": "1CMauYumpA7YG8i4cPod8FadRLK95HxSob",
