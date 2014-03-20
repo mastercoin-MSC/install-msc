@@ -78,7 +78,8 @@ Errors will be returned with json that contains ::
 
 Successful run will return json that contains::
 
- { "status": "Broadcast/Created status", 
+ { 
+   "status": "Broadcast/Created status", 
    "valid_check": "Validity check of signed file", 
    "hash": "Hash of the tx", 
    "st_file": "location/name of the signed tx file"
@@ -90,3 +91,66 @@ Standalone running/testing can be done by creating a json file (see input detail
 You can execute/run the program with::
 
  cat your_file.json | python msc_sxsend.py
+
+
+
+msc_balance.py
+---_----------
+
+Purpose:
+^^^^^^^^
+Used to get the Mastercoin balance of an address
+
+Requirements:
+^^^^^^^^^^^^^
+This script leverages the existing mastercoin tools parsed/validated output.
+Mastercoin tools should be installed and fully updated with the Mastercoin Data in::
+
+ /var/lib/mastercoin-tools/mastercoin_verify/addresses/
+
+Inputs:
+^^^^^^^
+Takes json input via STDIN for the following variables:
+
+* address: The address you want to check the balance for
+* currency_id: The currency you want the balance for
+
+  * 1 - Mastercoin
+  * 2 - Test Mastercoins
+
+The json takes the following format::
+
+        {
+          "address": "{{Address to check}}",
+          "currency_id": {{1 for MSC, 2 for TMSC}},
+        }
+
+Ex:
+
+*Note: for security the following was a brand new empty wallet. You should replace it's details with your own applicable info*::
+
+        {
+          "address": "1CMauYumpA7YG8i4cPod8FadRLK95HxSob",
+          "currency_id": 1,
+	}
+
+
+Output:
+^^^^^^^
+Will return a json formated output
+
+Successful run will return json that contains::
+
+ { 
+   "address": "Address checked",
+   "currency_id": "Currency checked",
+   "balance": "Balance or error message",
+ }
+
+Running:
+^^^^^^^^
+Standalone running/testing can be done by creating a json file (see input details or example_balance.json for structure)
+You can execute/run the program with::
+
+ cat your_file.json | python msc_balance.py
+

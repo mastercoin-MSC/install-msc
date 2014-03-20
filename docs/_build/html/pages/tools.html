@@ -116,7 +116,8 @@ Errors will be returned with json that contains</p>
 </pre></div>
 </div>
 <p>Successful run will return json that contains:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="s">&quot;status&quot;</span><span class="p">:</span> <span class="s">&quot;Broadcast/Created status&quot;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s">&quot;status&quot;</span><span class="p">:</span> <span class="s">&quot;Broadcast/Created status&quot;</span><span class="p">,</span>
   <span class="s">&quot;valid_check&quot;</span><span class="p">:</span> <span class="s">&quot;Validity check of signed file&quot;</span><span class="p">,</span>
   <span class="s">&quot;hash&quot;</span><span class="p">:</span> <span class="s">&quot;Hash of the tx&quot;</span><span class="p">,</span>
   <span class="s">&quot;st_file&quot;</span><span class="p">:</span> <span class="s">&quot;location/name of the signed tx file&quot;</span>
@@ -129,6 +130,67 @@ Errors will be returned with json that contains</p>
 <p>Standalone running/testing can be done by creating a json file (see input details or example_send.json for structure)
 You can execute/run the program with:</p>
 <div class="highlight-python"><div class="highlight"><pre>cat your_file.json | python msc_sxsend.py
+</pre></div>
+</div>
+<p>msc_balance.py
+&#8212;_&#8212;&#8212;&#8212;-</p>
+</div>
+<div class="section" id="id1">
+<h3>Purpose:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Used to get the Mastercoin balance of an address</p>
+</div>
+<div class="section" id="requirements">
+<h3>Requirements:<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>This script leverages the existing mastercoin tools parsed/validated output.
+Mastercoin tools should be installed and fully updated with the Mastercoin Data in:</p>
+<div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools/mastercoin_verify/addresses/
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Inputs:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Takes json input via STDIN for the following variables:</p>
+<ul class="simple">
+<li>address: The address you want to check the balance for</li>
+<li>currency_id: The currency you want the balance for<ul>
+<li>1 - Mastercoin</li>
+<li>2 - Test Mastercoins</li>
+</ul>
+</li>
+</ul>
+<p>The json takes the following format:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  &quot;address&quot;: &quot;{{Address to check}}&quot;,
+  &quot;currency_id&quot;: {{1 for MSC, 2 for TMSC}},
+}
+</pre></div>
+</div>
+<p>Ex:</p>
+<p><em>Note: for security the following was a brand new empty wallet. You should replace it&#8217;s details with your own applicable info</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;1CMauYumpA7YG8i4cPod8FadRLK95HxSob&quot;</span><span class="p">,</span>
+  <span class="s">&quot;currency_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Output:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Will return a json formated output</p>
+<p>Successful run will return json that contains:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;Address checked&quot;</span><span class="p">,</span>
+  <span class="s">&quot;currency_id&quot;</span><span class="p">:</span> <span class="s">&quot;Currency checked&quot;</span><span class="p">,</span>
+  <span class="s">&quot;balance&quot;</span><span class="p">:</span> <span class="s">&quot;Balance or error message&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Running:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Standalone running/testing can be done by creating a json file (see input details or example_balance.json for structure)
+You can execute/run the program with:</p>
+<div class="highlight-python"><div class="highlight"><pre>cat your_file.json | python msc_balance.py
 </pre></div>
 </div>
 </div>
@@ -149,6 +211,11 @@ You can execute/run the program with:</p>
 <li><a class="reference internal" href="#inputs">Inputs:</a></li>
 <li><a class="reference internal" href="#output">Output:</a></li>
 <li><a class="reference internal" href="#running">Running:</a></li>
+<li><a class="reference internal" href="#id1">Purpose:</a></li>
+<li><a class="reference internal" href="#requirements">Requirements:</a></li>
+<li><a class="reference internal" href="#id2">Inputs:</a></li>
+<li><a class="reference internal" href="#id3">Output:</a></li>
+<li><a class="reference internal" href="#id4">Running:</a></li>
 </ul>
 </li>
 </ul>
