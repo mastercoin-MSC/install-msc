@@ -1,0 +1,4 @@
+{ 
+  "address": "{{Public from Address}}",
+  "currency_id": {{1 for MSC, 2 for TMSC}}
+}
