@@ -2,7 +2,7 @@
 Tools
 =====
 
-List of tools included with the isntallation and how to use them
+List of tools included with the installation and how to use them
 
 msc_sxsend.py
 -------------
