@@ -110,8 +110,9 @@ cd $SRC/res
 sudo bash install-sx.sh
 
 cd
-git clone https://github.com/grazcoin/mastercoin-tools.git
+#git clone https://github.com/grazcoin/mastercoin-tools.git
 #git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
+git clone https://github.com/curtislacy/mastercoin-tools.git
 
 cp $SRC/res/app.sh mastercoin-tools
 cp $SRC/scripts/* mastercoin-tools
