@@ -120,10 +120,14 @@ cp $SRC/scripts/* mastercoin-tools
 # ~/.sx.cfg Sample file.
 #service = "tcp://162.243.29.201:9091"
 
+#create the mastercoin tools data directory
+mkdir -p /var/lib/mastercoin-tools
+
 #add chown for the mastercoin-tools directory.
 
 NAME=`logname`
 sudo chown -R $NAME:$NAME mastercoin-tools
+sudo chown -R $NAME:$NAME /var/lib/mastercoin-tools
 
 cd mastercoin-tools
 
