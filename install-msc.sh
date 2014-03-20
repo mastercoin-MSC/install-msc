@@ -45,6 +45,7 @@ fi
 
 while [ -z "$PREFIG" ]; do
 	echo "Do you have an obelisk server and wish to enter its details now? [y/n]"
+	echo "Need an obelisk server? Try https://wiki.unsystem.net/index.php/Libbitcoin/Servers"
 	read PREFIG
 done
 
