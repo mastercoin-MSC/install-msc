@@ -16,7 +16,6 @@ Inputs:
 Takes json input via STDIN for the following variables:
 
 * transaction_from: The Public Address of the Sender
-* transaction_from_pubkey: If the sending address has not been used before you can provide the Public Key here
 * transaction_to: The Public address of the Receipiant
 * currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
 * msc_send_amt: The amount of the Currency ID to send
@@ -35,7 +34,6 @@ The json takes the following format::
 
 	{
 	  "transaction_from": "{{Public from Address}}",
-	  "transaction_from_pubkey": "{{Sender Public Key if address has not sent to blockchain yet}}",
 	  "transaction_to": "{{Public to Address}}",
 	  "currency_id": {{1 for MSC, 2 for TMSC}},
 	  "msc_send_amt": {{amount to send}},
@@ -50,7 +48,6 @@ Ex:
 
 	{
 	  "transaction_from": "1GGJMZoaxYMS4jsiLwPVbofe5YJyM6ER2i",
-	  "transaction_from_pubkey": "0468d7c560e7376596dfa574b28badde241a80309f4fbbba204c2034e5ed4fa353bc7efc91f19a4639fced1b7d559fe5e46068710544522d071a7a6eae9ea6d78d",
 	  "transaction_to": "19hf8QEkD3GR7NhUrujWXRg6e4gsHUTysp",
 	  "currency_id": 1,
 	  "msc_send_amt": 5.1,
