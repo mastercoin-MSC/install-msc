@@ -52,7 +52,7 @@ balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
 broadcast_fee = int(10000)
-output_minimum = int(5500) #dust threshold 5460 , 
+output_minimum = int(5500) #dust threshold 5460
 
 fee_total = broadcast_fee + (output_minimum * 4)
 
@@ -62,15 +62,23 @@ if available_balance < fee_total and not force:
     print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Set \'force\' flag to proceed without balance checks" })
     exit()
 
-#generate/get public key of bitcoin address 
-validated = commands.getoutput('sx get-pubkey '+listOptions['transaction_from'])
-if "ddress" not in validated:
-    pubkey = validated
-elif is_pubkey_valid(listOptions['transaction_from_pubkey']):
-    pubkey = listOptions['transaction_from_pubkey']
-elif not force:
+#generate public key of bitcoin address from priv key
+#validated = commands.getoutput('sx get-pubkey '+listOptions['transaction_from'])
+pubkey = commands.getoutput('echo '+listOptions['from_private_key']+' | sx pubkey')
+if is_pubkey_valid(pubkey):
+    pass
+else:
     print json.dumps({ "status": "NOT OK", "error": "from address is invalid or hasn't been used on the network" , "fix": "Check from address or provide from address public key. Alternatively Set \'force\' flag to proceed without balance checks" })
     exit()
+
+#don't need to get from block chain, we can use priv key to generate
+#if "ddress" not in validated:
+#    pubkey = validated
+#elif is_pubkey_valid(listOptions['transaction_from_pubkey']):
+#    pubkey =  commands.getoutput('echo '+listOptions['from_private_key']+' | sx pubkey')
+#elif not force:
+#    print json.dumps({ "status": "NOT OK", "error": "from address is invalid or hasn't been used on the network" , "fix": "Check from address or provide from address public key. Alternatively Set \'force\' flag to proceed without balance checks" })
+#    exit()
 
 #find largest spendable input from UTXO
 #find a recent tx that has a balance more than msc send cost (4*.00005500 +.0001 = .00032220)
