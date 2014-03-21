@@ -33,7 +33,7 @@ It will prompt for obelisk server details and can be run with the following comm
 
 ::
 
-    git clone https://github.com/achamely/install-msc.git  
+    git clone https://github.com/mastercoin-MSC/install-msc.git  
     cd install-msc  
     sudo bash install-msc.sh
 
