@@ -1,6 +1,6 @@
-msc-install
-===========
+Mastercoin Tools Installation Package
+=====================================
 
-Documentation and Instructions available at:
+Detailed documentation and instructions available at:
 http://mastercoin-tools-installer.readthedocs.org/en/latest/pages/intro.html
 ```
