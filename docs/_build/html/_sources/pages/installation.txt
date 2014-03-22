@@ -65,7 +65,7 @@ If you want to manually install all of the components you can do so with the fol
     sudo bash install-sx.sh
 
     #Download the mastercoin-tools
-    git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
+    git clone https://github.com/curtislacy/mastercoin-tools.git
 
     #copy the scripts and app.sh wrapper for mastercoin tools to the mastercoin-tools directory
     cp install-msc/res/app.sh mastercoin-tools/
@@ -75,6 +75,14 @@ If you want to manually install all of the components you can do so with the fol
     # ~/.sx.cfg Sample file.
     #service = "tcp://162.243.29.201:9091"
 
+    #create the mastercoin tools data directory
+    mkdir -p /var/lib/mastercoin-tools
+
+    #bootstrap files needed to start the parsing engine
+    tar xzf install-msc/res/bootstrap.tgz -C /var/lib/mastercoin-tools
+
+
     #Mastercoin-tools directory needs to have permissions set to the user who will run it
-     sudo chown -R `logname`:`logname` mastercoin-tools
+    sudo chown -R `logname`:`logname` mastercoin-tools
+    sudo chown -R `logname`:`logname`  /var/lib/mastercoin-tools
 
