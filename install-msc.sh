@@ -123,6 +123,7 @@ cp $SRC/scripts/* mastercoin-tools
 
 #create the mastercoin tools data directory
 mkdir -p /var/lib/mastercoin-tools
+tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
 
 #add chown for the mastercoin-tools directory.
 
