@@ -192,6 +192,74 @@ You can execute/run the program with:</p>
 </div>
 </div>
 </div>
+<div class="section" id="getconsensusmsc-py">
+<h2>getConsensusMSC.py<a class="headerlink" href="#getconsensusmsc-py" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Purpose:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Used to get the consensus of local installation with Online sites
+<em>Note: The final consensus authority is defined by the mastercoin tools code result.</em>
+<a class="reference external" href="https://masterchain.info/general/MSC-difference.txt">Masterchain Consensus Report</a></p>
+</div>
+<div class="section" id="id6">
+<h3>Requirements:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>This script leverages the existing mastercoin tools parsed/validated output.
+Mastercoin tools should be installed and fully updated with the Mastercoin Data in:</p>
+<div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools/mastercoin_verify/addresses/
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>Inputs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>Takes json input via STDIN for the sites you wish to validate consensus against:
+<a href="#id8"><span class="problematic" id="id9">*</span></a>Note: At present generates consensus output for Currency ID 1 (MSC) only.</p>
+<ul class="simple">
+<li>site: The sites to compare local results against</li>
+</ul>
+<p>The json takes the following format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="s">&quot;sites&quot;</span><span class="p">:</span>
+    <span class="p">[</span>
+      <span class="s">&quot;http://masterchain.info/mastercoin_verify/addresses/0&quot;</span><span class="p">,</span>
+      <span class="s">&quot;https://masterchest.info/mastercoin_verify/addresses.aspx&quot;</span><span class="p">,</span>
+      <span class="s">&quot;http://mymastercoins.com/jaddress.aspx&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h3>Output:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>Will return a json formated output array of address not in consensus</p>
+<p>For each address not in Consensus, completed run will return balance of that address for each site checked in json format:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  &quot;consensus&quot;: Number Representing Consensus Rating,
+  &quot;data&quot;:[
+     [
+        {
+           &quot;balance&quot;: Number Representing Current balance for the site checked,
+           &quot;site&quot;:&quot;Site/Data Source name&quot;,
+           &quot;address&quot;:&quot;address not in consensus&quot;
+        },
+        {
+          ... data in format of ^ for each site when address is not in consensus
+        }
+     ],
+     [
+        ... 2nd address (if exists) not in consensus in format ^^^
+     ]
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="id11">
+<h3>Running:<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>Running by creating a json file (see input details) for sites you wish to check or use the provided getConsensus.json
+You can execute/run the program with:</p>
+<div class="highlight-python"><div class="highlight"><pre>cat getConsensus.json | python getConsensusMSC.py
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -216,6 +284,14 @@ You can execute/run the program with:</p>
 <li><a class="reference internal" href="#id2">Inputs:</a></li>
 <li><a class="reference internal" href="#id3">Output:</a></li>
 <li><a class="reference internal" href="#id4">Running:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getconsensusmsc-py">getConsensusMSC.py</a><ul>
+<li><a class="reference internal" href="#id5">Purpose:</a></li>
+<li><a class="reference internal" href="#id6">Requirements:</a></li>
+<li><a class="reference internal" href="#id7">Inputs:</a></li>
+<li><a class="reference internal" href="#id10">Output:</a></li>
+<li><a class="reference internal" href="#id11">Running:</a></li>
 </ul>
 </li>
 </ul>

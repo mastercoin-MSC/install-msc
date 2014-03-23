@@ -149,3 +149,73 @@ You can execute/run the program with::
 
  cat your_file.json | python msc_balance.py
 
+
+
+getConsensusMSC.py
+------------------
+
+Purpose:
+^^^^^^^^
+Used to get the consensus of local installation with Online sites
+*Note: The final consensus authority is defined by the mastercoin tools code result.*
+`Masterchain Consensus Report <https://masterchain.info/general/MSC-difference.txt>`_
+
+
+Requirements:
+^^^^^^^^^^^^^
+This script leverages the existing mastercoin tools parsed/validated output.
+Mastercoin tools should be installed and fully updated with the Mastercoin Data in::
+
+ /var/lib/mastercoin-tools/mastercoin_verify/addresses/
+
+Inputs:
+^^^^^^^
+Takes json input via STDIN for the sites you wish to validate consensus against:
+*Note: At present generates consensus output for Currency ID 1 (MSC) only. 
+
+* site: The sites to compare local results against
+
+
+The json takes the following format::
+
+	{ "sites":
+	    [
+       	      "http://masterchain.info/mastercoin_verify/addresses/0",
+	      "https://masterchest.info/mastercoin_verify/addresses.aspx",
+              "http://mymastercoins.com/jaddress.aspx"
+	    ]
+	}
+
+Output:
+^^^^^^^
+Will return a json formated output array of address not in consensus
+
+For each address not in Consensus, completed run will return balance of that address for each site checked in json format::
+
+ {
+   "consensus": Number Representing Consensus Rating,
+   "data":[
+      [
+         {
+            "balance": Number Representing Current balance for the site checked,
+            "site":"Site/Data Source name",
+            "address":"address not in consensus"
+         },
+	 {
+	   ... data in format of ^ for each site when address is not in consensus
+	 }
+      ],
+      [
+         ... 2nd address (if exists) not in consensus in format ^^^
+      ]
+   ]
+ }
+
+
+Running:
+^^^^^^^^
+Running by creating a json file (see input details) for sites you wish to check or use the provided getConsensus.json
+You can execute/run the program with::
+
+ cat getConsensus.json | python getConsensusMSC.py
+
