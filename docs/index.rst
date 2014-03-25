@@ -15,6 +15,7 @@ Contents:
    pages/installation
    pages/running
    pages/tools
+   pages/obelisk
 
 
 

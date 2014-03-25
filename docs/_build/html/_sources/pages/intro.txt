@@ -16,6 +16,8 @@ The official mastercoin state is defined by mastercoin-tools code result.
 Periodically checking the consensus on the `Masterchain Consensus Report <https://masterchain.info/general/MSC-difference.txt>`_ can alert on potential differences among the implimentations.
 
 
+.. _installed_items:
+
 Installed Items
 ---------------
 

@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Obelisk &mdash; MSC-Tools .11 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MSC-Tools .11 documentation" href="../index.html" />
+    <link rel="prev" title="Tools" href="tools.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tools.html" title="Tools"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MSC-Tools .11 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="obelisk">
+<h1>Obelisk<a class="headerlink" href="#obelisk" title="Permalink to this headline">¶</a></h1>
+<p id="id1">Some Information and Instructions taken from <a class="reference external" href="http://libbitcoin.dyne.org/obelisk-setup.html">Libbitcoin Obelisk Quickstart</a></p>
+<div class="section" id="what-is-obelisk">
+<h2>What is Obelisk<a class="headerlink" href="#what-is-obelisk" title="Permalink to this headline">¶</a></h2>
+<p>Obelisk is a scalable blockchain query infrastructure which allows you to maintain your own copies of the blockchain for parsing/data interaction.
+Mastercoin tools needs/uses an obelisk server to query the blockchain and create/parse Mastercoin Transactions.
+There are some public obelisk servers available already on the <a class="reference external" href="https://wiki.unsystem.net/index.php/Obelisk/Servers">web</a>, however if you wish
+to run your own server in house this guide will help you get started.
+For the purposes of this document there are three relevant parts: Server , Workers, and Clients.</p>
+<div class="section" id="server">
+<h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
+<p>The obelisk server is the main interaction point for clients.
+They send requests to the server and it, using information provided by the workers, responds to the clients.</p>
+</div>
+<div class="section" id="workers">
+<h3>Workers<a class="headerlink" href="#workers" title="Permalink to this headline">¶</a></h3>
+<p>These are the workhorses of the obelisk server. Each server leverages the connected workers to query the blockchain information they are parsing.
+You can run multiple workers on the same machine or spread them out and run them from multiple machines for redundancy. Each worker uses/maintains
+it&#8217;s own copy of the block chain database.</p>
+</div>
+<div class="section" id="client">
+<h3>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
+<p>The client is who/what is actually requesting the information.
+In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information.</p>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>By default Obelisk is installed when you run the Mastercoin-tools installer.
+It is part of the <a class="reference internal" href="intro.html#installed-items"><em>sx dependencies/installation package</em></a>.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The default Obelisk Configuration files are stored in</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/obelisk
+</pre></div>
+</div>
+<p>There are two files</p>
+<ul class="simple">
+<li>balancer.cfg</li>
+<li>worker.cfg</li>
+</ul>
+<div class="section" id="balancer-cfg">
+<h3>balancer.cfg<a class="headerlink" href="#balancer-cfg" title="Permalink to this headline">¶</a></h3>
+<p id="config">Allows you to configure the port clients and workers will connect to.
+The default port for clients is <cite>9091</cite>.
+The default port for workers is <cite>9092</cite>.
+You may modify these to suit your environment or leave them alone.</p>
+</div>
+<div class="section" id="worker-cfg">
+<h3>worker.cfg<a class="headerlink" href="#worker-cfg" title="Permalink to this headline">¶</a></h3>
+<p>Contains all the information a obelisk workers needs to connect/respond to an obelisk server.
+The default settings should work just fine for a normal installation.
+If you have changed the &#8216;client port&#8217; in the balancer.cfg or you are running obelisk workers on seperate machines you will need to update
+the <em>service = &#8220;tcp://localhost:9092&#8221;</em> with your updated/relevant details.</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>Server<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>The obelisk server is what handles the interaction between the client requests and the workers response.
+It&#8217;s entire operation is run by <em>obbalancer</em> which uses the <em>balancer.cfg</em> configuration to listen for workers and clients.</p>
+<p>There are two methods for running the server. Screen or Daemon.</p>
+<div class="section" id="screen">
+<h3>Screen<a class="headerlink" href="#screen" title="Permalink to this headline">¶</a></h3>
+<p>You can run the obbalancer in a screen session. This is easy to get started but may not be the most robust method.:</p>
+<div class="highlight-python"><div class="highlight"><pre>screen -S obbalancer
+obbalancer
+</pre></div>
+</div>
+<p>Disconnect from the screen session with <em>CTRL+A  D</em>. You can reattach to the screen session with:</p>
+<div class="highlight-python"><div class="highlight"><pre>screen -r obbalancer
+</pre></div>
+</div>
+<p>to check on it&#8217;s progress/status</p>
+</div>
+<div class="section" id="daemon">
+<h3>Daemon<a class="headerlink" href="#daemon" title="Permalink to this headline">¶</a></h3>
+<p>The obelisk source includes an init.d script you can use.
+It is located in the <em>&lt;install-src&gt;/obelisk-git/scripts/init.d/</em> directory.
+On a default installation this should be</p>
+<div class="highlight-python"><div class="highlight"><pre>/usr/local/src/obelisk-git/scripts/init.d/obbalancer
+</pre></div>
+</div>
+<p>You will need to copy the <em>obbalancer</em> script to your /etc/init.d/ directory and set its permissions for executing:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/src/obelisk-git/scripts/init.d/obbalancer /etc/init.d/
+sudo chmod 755 /etc/init.d/obbalancer
+</pre></div>
+</div>
+<p>The obbalancer init.d script uses the username <em>ob</em>.
+If it doesn&#8217;t exist create a limited permissions user with this name or update the script with the username you wish it to user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DAEMON_USER</span><span class="o">=</span><span class="n">ob</span>
+</pre></div>
+</div>
+<p>Once the script is setup you can start it with <em>/etc/init.d/obbalancer start</em>.
+If you wish the script to start on system startup you can also run <em>update-rc.d obbalancer defauls</em></p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>Workers<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Each server uses/leverages one or more workers.</p>
+<div class="section" id="initial-setup">
+<h3>Initial-Setup<a class="headerlink" href="#initial-setup" title="Permalink to this headline">¶</a></h3>
+<p><em>Note: Workers CAN NOT share the same data directories.</em>
+Each worker needs it&#8217;s own directory to store it&#8217;s files/information.</p>
+<p>Create and initialize a blockchain database for each worker</p>
+<div class="highlight-python"><div class="highlight"><pre>mkdir worker.1/
+cd worker.1/
+mkdir blockchain/
+sx initchain blockchain/
+</pre></div>
+</div>
+<p><em>Note: If you have a bitcoind bootstrap.dat (can also be downloaded off the PirateBay), then you can bootstrap a blockchain.
+See /usr/local/libbitcoin/tools/ (run &#8216;sudo make&#8217; and see the bootstrap tool).</em></p>
+</div>
+<div class="section" id="running">
+<h3>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<p>Once the worker has been setup. You can start it using obworker.
+It is recommended that workers be run in a screen session for unattendted operation</p>
+<div class="highlight-python"><div class="highlight"><pre>cd worker.1/
+screen -S worker.1
+obworker
+</pre></div>
+</div>
+<p>You can detach from the screen session with <em>CTRL+A D</em>. You can also reattach to the screen to check on the status with:</p>
+<div class="highlight-python"><div class="highlight"><pre>screen -r worker.1
+</pre></div>
+</div>
+<p>Repeat this process for each worker you wish to start.</p>
+<p>Press CTRL-C and wait if you want to stop the worker.</p>
+<p>You can see the output using &#8216;tail -f debug.log&#8217; in each workers directory.</p>
+<p><em>Tip: Running multiple workers is good for redundancy in case one crashes or has problems.</em></p>
+</div>
+</div>
+<div class="section" id="clients">
+<h2>Clients<a class="headerlink" href="#clients" title="Permalink to this headline">¶</a></h2>
+<p>Clients can connect to an obelisk server on the <a class="reference internal" href="#config"><em>configured port</em></a>.
+For proper operation the Obelisk server should be setup, running, and have fully syned workers connected to it.</p>
+<p>If you are using a local installation of the obelisk server make sure to update the sx configuration file</p>
+<div class="highlight-python"><div class="highlight"><pre>~/.sx.cfg
+</pre></div>
+</div>
+<p>Run a few test commands with sx to confirm operation</p>
+<div class="highlight-python"><div class="highlight"><pre>sx fetch-last-height     :Returns current height the obelisk server knows
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre>sx balance &lt;btc address&gt;    :Returns balance in satoshis
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Obelisk</a><ul>
+<li><a class="reference internal" href="#what-is-obelisk">What is Obelisk</a><ul>
+<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#workers">Workers</a></li>
+<li><a class="reference internal" href="#client">Client</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#balancer-cfg">balancer.cfg</a></li>
+<li><a class="reference internal" href="#worker-cfg">worker.cfg</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">Server</a><ul>
+<li><a class="reference internal" href="#screen">Screen</a></li>
+<li><a class="reference internal" href="#daemon">Daemon</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">Workers</a><ul>
+<li><a class="reference internal" href="#initial-setup">Initial-Setup</a></li>
+<li><a class="reference internal" href="#running">Running</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clients">Clients</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tools.html"
+                        title="previous chapter">Tools</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/pages/obelisk.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tools.html" title="Tools"
+             >previous</a> |</li>
+        <li><a href="../index.html">MSC-Tools .11 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Adam Chamely.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
