@@ -52,7 +52,7 @@ worker.cfg
 Contains all the information a obelisk workers needs to connect/respond to an obelisk server.  
 The default settings should work just fine for a normal installation.  
 If you have changed the 'client port' in the balancer.cfg or you are running obelisk workers on seperate machines you will need to update
-the *service = "tcp://localhost:9092"* with your updated/relevant details. 
+the *service = "tcp://localhost:9092"*  with your updated/relevant details. 
 
 .. _server:
 
@@ -60,7 +60,7 @@ Server
 ------
 
 The obelisk server is what handles the interaction between the client requests and the workers response.  
-It's entire operation is run by *obbalancer* which uses the *balancer.cfg* configuration to listen for workers and clients.
+It's entire operation is run by *obbalancer*  which uses the *balancer.cfg*  configuration to listen for workers and clients.
 
 There are two methods for running the server. Screen or Daemon. 
 
@@ -86,12 +86,12 @@ Daemon
 ^^^^^^
 
 The obelisk source includes an init.d script you can use.  
-It is located in the *<install-src>/obelisk-git/scripts/init.d/* directory.  
+It is located in the *<install-src>/obelisk-git/scripts/init.d/*  directory.  
 On a default installation this should be ::
 
  /usr/local/src/obelisk-git/scripts/init.d/obbalancer
 
-You will need to copy the *obbalancer* script to your /etc/init.d/ directory and set its permissions for executing::
+You will need to copy the *obbalancer*  script to your /etc/init.d/ directory and set its permissions for executing::
 
  sudo cp /usr/local/src/obelisk-git/scripts/init.d/obbalancer /etc/init.d/
  sudo chmod 755 /etc/init.d/obbalancer
