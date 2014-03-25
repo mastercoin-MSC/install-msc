@@ -68,7 +68,7 @@ Server
 The obelisk server is what handles the interaction between the client requests and the workers response.  
 It's entire operation is run by a program called: *obbalancer*.
 
-Obbalancer uses the *balancer.cfg*  configuration to listen for workers and clients.
+Obbalancer uses the :ref:`balancer.cfg <config>` configuration to listen for workers and clients.
 
 There are two methods for running the server: Screen or Daemon. 
 
