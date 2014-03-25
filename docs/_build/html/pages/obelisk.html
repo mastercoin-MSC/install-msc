@@ -79,10 +79,12 @@ It is part of the <a class="reference internal" href="intro.html#installed-items
 </ul>
 <div class="section" id="balancer-cfg">
 <h3>balancer.cfg<a class="headerlink" href="#balancer-cfg" title="Permalink to this headline">¶</a></h3>
-<p id="config">Allows you to configure the port clients and workers will connect to.
-The default port for clients is <cite>9091</cite>.
-The default port for workers is <cite>9092</cite>.
-You may modify these to suit your environment or leave them alone.</p>
+<p id="config">Allows you to configure the port clients and workers will connect to:</p>
+<ul class="simple">
+<li>The default port for clients is <cite>9091</cite>.</li>
+<li>The default port for workers is <cite>9092</cite>.</li>
+</ul>
+<p>You may modify these to suit your environment or leave them alone.</p>
 </div>
 <div class="section" id="worker-cfg">
 <h3>worker.cfg<a class="headerlink" href="#worker-cfg" title="Permalink to this headline">¶</a></h3>
@@ -104,7 +106,11 @@ It&#8217;s entire operation is run by <em>obbalancer</em> which uses the <em>bal
 obbalancer
 </pre></div>
 </div>
-<p>Disconnect from the screen session with <em>CTRL+A  D</em>. You can reattach to the screen session with:</p>
+<p>Disconnect from the screen session with:</p>
+<div class="highlight-python"><div class="highlight"><pre>CTRL+A  D
+</pre></div>
+</div>
+<p>You can reattach to the screen session with:</p>
 <div class="highlight-python"><div class="highlight"><pre>screen -r obbalancer
 </pre></div>
 </div>
@@ -169,7 +175,11 @@ screen -S worker.1
 obworker
 </pre></div>
 </div>
-<p>You can detach from the screen session with <em>CTRL+A D</em>. You can also reattach to the screen to check on the status with:</p>
+<p>You can detach from the screen session with:</p>
+<div class="highlight-python"><div class="highlight"><pre>CTRL+A D
+</pre></div>
+</div>
+<p>You can also reattach to the screen to check on the status with:</p>
 <div class="highlight-python"><div class="highlight"><pre>screen -r worker.1
 </pre></div>
 </div>
