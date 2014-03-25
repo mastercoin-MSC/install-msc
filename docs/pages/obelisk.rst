@@ -14,12 +14,6 @@ There are some public obelisk servers available already on the `web <https://wik
 to run your own server in house this guide will help you get started.  
 For the purposes of this document there are three relevant parts: :ref:`server` , :ref:`workers`, and :ref:`clients`.
 
-Client
-^^^^^^
-
-The client is who/what is actually requesting the information.  
-In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information. 
-
 Installation
 ------------
 
