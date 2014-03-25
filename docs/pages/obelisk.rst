@@ -12,7 +12,11 @@ Obelisk is a scalable blockchain query infrastructure which allows you to mainta
 Mastercoin tools needs/uses an obelisk server to query the blockchain and create/parse Mastercoin Transactions.  
 There are some public obelisk servers available already on the `web <https://wiki.unsystem.net/index.php/Obelisk/Servers>`_, however if you wish 
 to run your own server in house this guide will help you get started.  
-For the purposes of this document there are three relevant parts: :ref:`server` , :ref:`workers`, and :ref:`clients`.
+For the purposes of this document there are three relevant parts: 
+
+* :ref:`server` 
+* :ref:`workers`
+* :ref:`clients`
 
 Installation
 ------------
@@ -49,10 +53,13 @@ You may modify these to suit your environment or leave them alone.
 worker.cfg
 ^^^^^^^^^^
 
-Contains all the information a obelisk workers needs to connect/respond to an obelisk server.  
+This file contains all the information an obelisk workers needs to connect/respond to an obelisk server.  
+
 The default settings should work just fine for a normal installation.  
-If you have changed the 'client port' in the balancer.cfg or you are running obelisk workers on seperate machines you will need to update
-the *service = "tcp://localhost:9092"*  with your updated/relevant details. 
+If you have changed the 'client port' in the :ref:`balancer.cfg <config>` or you are running obelisk workers on seperate machines you will need to update
+the service definition with your updated/relevant details::
+
+  service = "tcp://localhost:9092"
 
 .. _server:
 
@@ -60,9 +67,11 @@ Server
 ------
 
 The obelisk server is what handles the interaction between the client requests and the workers response.  
-It's entire operation is run by *obbalancer*  which uses the *balancer.cfg*  configuration to listen for workers and clients.
+It's entire operation is run by a program called: *obbalancer*.
 
-There are two methods for running the server. Screen or Daemon. 
+Obbalancer uses the *balancer.cfg*  configuration to listen for workers and clients.
+
+There are two methods for running the server: Screen or Daemon. 
 
 Screen
 ^^^^^^
@@ -87,6 +96,7 @@ Daemon
 
 The obelisk source includes an init.d script you can use.  
 It is located in the *<install-src>/obelisk-git/scripts/init.d/*  directory.  
+
 On a default installation this should be ::
 
  /usr/local/src/obelisk-git/scripts/init.d/obbalancer
@@ -97,19 +107,27 @@ You will need to copy the *obbalancer*  script to your /etc/init.d/ directory an
  sudo chmod 755 /etc/init.d/obbalancer
 
 The obbalancer init.d script uses the username *ob*.  
-If it doesn't exist create a limited permissions user with this name or update the script with the username you wish it to user::
+
+If it doesn't exist create a limited permissions user with this name or update the script line shown below with the username you wish it to use::
 
  DAEMON_USER=ob
 
-Once the script is setup you can start it with */etc/init.d/obbalancer start*.  
-If you wish the script to start on system startup you can also run *update-rc.d obbalancer defauls*
+Once the script is setup you can start it with::
+
+ /etc/init.d/obbalancer start
+
+If you wish the script to start on system startup you can also run::
+
+ update-rc.d obbalancer defauls
 
 .. _workers:
 
 Workers
 -------
 
-These are the workhorses of the obelisk server. Each server leverages one or more connected workers to query the blockchain information they have.  
+These are the workhorses of the obelisk server. 
+
+Each server leverages one or more connected workers to query the blockchain information they have.  
 You can run multiple workers on the same machine or spread them out and run them from multiple machines for redundancy. Each worker uses/maintains
 it's own copy of the block chain database.
 
@@ -159,11 +177,11 @@ You can also reattach to the screen to check on the status with::
 
 Repeat this process for each worker you wish to start. 
 
-Press CTRL-C and wait if you want to stop the worker.
+Working Notes/Tips:
 
-You can see the output using 'tail -f debug.log' in each workers directory.
-
-*Tip: Running multiple workers is good for redundancy in case one crashes or has problems.*
+* Press CTRL-C and wait if you want to stop the worker.
+* You can see the output using 'tail -f debug.log' in each workers directory.
+* Running multiple workers is good for redundancy in case one crashes or has problems.
 
 .. _clients:
 
@@ -171,6 +189,7 @@ Clients
 -------
 
 The client is who/what is actually requesting the information.  
+
 In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information.  
 Clients can connect to an obelisk server on the :ref:`configured port <config>`.  
 For proper operation the Obelisk server should be setup, running, and have fully syned workers connected to it. 

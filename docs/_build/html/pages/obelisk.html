@@ -54,7 +54,12 @@
 Mastercoin tools needs/uses an obelisk server to query the blockchain and create/parse Mastercoin Transactions.
 There are some public obelisk servers available already on the <a class="reference external" href="https://wiki.unsystem.net/index.php/Obelisk/Servers">web</a>, however if you wish
 to run your own server in house this guide will help you get started.
-For the purposes of this document there are three relevant parts: <a class="reference internal" href="#server"><em>Server</em></a> , <a class="reference internal" href="#workers"><em>Workers</em></a>, and <a class="reference internal" href="#clients"><em>Clients</em></a>.</p>
+For the purposes of this document there are three relevant parts:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#server"><em>Server</em></a></li>
+<li><a class="reference internal" href="#workers"><em>Workers</em></a></li>
+<li><a class="reference internal" href="#clients"><em>Clients</em></a></li>
+</ul>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -83,17 +88,21 @@ It is part of the <a class="reference internal" href="intro.html#installed-items
 </div>
 <div class="section" id="worker-cfg">
 <h3>worker.cfg<a class="headerlink" href="#worker-cfg" title="Permalink to this headline">¶</a></h3>
-<p>Contains all the information a obelisk workers needs to connect/respond to an obelisk server.
-The default settings should work just fine for a normal installation.
-If you have changed the &#8216;client port&#8217; in the balancer.cfg or you are running obelisk workers on seperate machines you will need to update
-the <em>service = &#8220;tcp://localhost:9092&#8221;</em>  with your updated/relevant details.</p>
+<p>This file contains all the information an obelisk workers needs to connect/respond to an obelisk server.</p>
+<p>The default settings should work just fine for a normal installation.
+If you have changed the &#8216;client port&#8217; in the <a class="reference internal" href="#config"><em>balancer.cfg</em></a> or you are running obelisk workers on seperate machines you will need to update
+the service definition with your updated/relevant details:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">service</span> <span class="o">=</span> <span class="s">&quot;tcp://localhost:9092&quot;</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="server">
 <span id="id2"></span><h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
 <p>The obelisk server is what handles the interaction between the client requests and the workers response.
-It&#8217;s entire operation is run by <em>obbalancer</em>  which uses the <em>balancer.cfg</em>  configuration to listen for workers and clients.</p>
-<p>There are two methods for running the server. Screen or Daemon.</p>
+It&#8217;s entire operation is run by a program called: <em>obbalancer</em>.</p>
+<p>Obbalancer uses the <em>balancer.cfg</em>  configuration to listen for workers and clients.</p>
+<p>There are two methods for running the server: Screen or Daemon.</p>
 <div class="section" id="screen">
 <h3>Screen<a class="headerlink" href="#screen" title="Permalink to this headline">¶</a></h3>
 <p>You can run the obbalancer in a screen session. This is easy to get started but may not be the most robust method.:</p>
@@ -114,8 +123,8 @@ obbalancer
 <div class="section" id="daemon">
 <h3>Daemon<a class="headerlink" href="#daemon" title="Permalink to this headline">¶</a></h3>
 <p>The obelisk source includes an init.d script you can use.
-It is located in the <em>&lt;install-src&gt;/obelisk-git/scripts/init.d/</em>  directory.
-On a default installation this should be</p>
+It is located in the <em>&lt;install-src&gt;/obelisk-git/scripts/init.d/</em>  directory.</p>
+<p>On a default installation this should be</p>
 <div class="highlight-python"><div class="highlight"><pre>/usr/local/src/obelisk-git/scripts/init.d/obbalancer
 </pre></div>
 </div>
@@ -124,18 +133,25 @@ On a default installation this should be</p>
 sudo chmod 755 /etc/init.d/obbalancer
 </pre></div>
 </div>
-<p>The obbalancer init.d script uses the username <em>ob</em>.
-If it doesn&#8217;t exist create a limited permissions user with this name or update the script with the username you wish it to user:</p>
+<p>The obbalancer init.d script uses the username <em>ob</em>.</p>
+<p>If it doesn&#8217;t exist create a limited permissions user with this name or update the script line shown below with the username you wish it to use:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DAEMON_USER</span><span class="o">=</span><span class="n">ob</span>
 </pre></div>
 </div>
-<p>Once the script is setup you can start it with <em>/etc/init.d/obbalancer start</em>.
-If you wish the script to start on system startup you can also run <em>update-rc.d obbalancer defauls</em></p>
+<p>Once the script is setup you can start it with:</p>
+<div class="highlight-python"><div class="highlight"><pre>/etc/init.d/obbalancer start
+</pre></div>
+</div>
+<p>If you wish the script to start on system startup you can also run:</p>
+<div class="highlight-python"><div class="highlight"><pre>update-rc.d obbalancer defauls
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="workers">
 <span id="id3"></span><h2>Workers<a class="headerlink" href="#workers" title="Permalink to this headline">¶</a></h2>
-<p>These are the workhorses of the obelisk server. Each server leverages one or more connected workers to query the blockchain information they have.
+<p>These are the workhorses of the obelisk server.</p>
+<p>Each server leverages one or more connected workers to query the blockchain information they have.
 You can run multiple workers on the same machine or spread them out and run them from multiple machines for redundancy. Each worker uses/maintains
 it&#8217;s own copy of the block chain database.</p>
 <div class="section" id="initial-setup">
@@ -179,15 +195,18 @@ obworker
 </pre></div>
 </div>
 <p>Repeat this process for each worker you wish to start.</p>
-<p>Press CTRL-C and wait if you want to stop the worker.</p>
-<p>You can see the output using &#8216;tail -f debug.log&#8217; in each workers directory.</p>
-<p><em>Tip: Running multiple workers is good for redundancy in case one crashes or has problems.</em></p>
+<p>Working Notes/Tips:</p>
+<ul class="simple">
+<li>Press CTRL-C and wait if you want to stop the worker.</li>
+<li>You can see the output using &#8216;tail -f debug.log&#8217; in each workers directory.</li>
+<li>Running multiple workers is good for redundancy in case one crashes or has problems.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="clients">
 <span id="id4"></span><h2>Clients<a class="headerlink" href="#clients" title="Permalink to this headline">¶</a></h2>
-<p>The client is who/what is actually requesting the information.
-In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information.
+<p>The client is who/what is actually requesting the information.</p>
+<p>In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information.
 Clients can connect to an obelisk server on the <a class="reference internal" href="#config"><em>configured port</em></a>.
 For proper operation the Obelisk server should be setup, running, and have fully syned workers connected to it.</p>
 <p>If you are using a local installation of the obelisk server make sure to update the sx configuration file</p>
