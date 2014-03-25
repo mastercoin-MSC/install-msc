@@ -8,24 +8,11 @@ Some Information and Instructions taken from `Libbitcoin Obelisk Quickstart <htt
 What is Obelisk
 ---------------
 
-Obelisk is a scalable blockchain query infrastructure which allows you to maintain your own copies of the blockchain for parsing/data interaction.
+Obelisk is a scalable blockchain query infrastructure which allows you to maintain your own copies of the blockchain for parsing/data interaction. 
 Mastercoin tools needs/uses an obelisk server to query the blockchain and create/parse Mastercoin Transactions. 
 There are some public obelisk servers available already on the `web <https://wiki.unsystem.net/index.php/Obelisk/Servers>`_, however if you wish 
-to run your own server in house this guide will help you get started.
-For the purposes of this document there are three relevant parts: Server , Workers, and Clients.
-
-Server
-^^^^^^
-
-The obelisk server is the main interaction point for clients. 
-They send requests to the server and it, using information provided by the workers, responds to the clients. 
-
-Workers
-^^^^^^^
-
-These are the workhorses of the obelisk server. Each server leverages the connected workers to query the blockchain information they are parsing. 
-You can run multiple workers on the same machine or spread them out and run them from multiple machines for redundancy. Each worker uses/maintains
-it's own copy of the block chain database.
+to run your own server in house this guide will help you get started. 
+For the purposes of this document there are three relevant parts: :ref:`server` , :ref:`workers`, and :ref:`clients`.
 
 Client
 ^^^^^^
@@ -71,6 +58,8 @@ The default settings should work just fine for a normal installation.
 If you have changed the 'client port' in the balancer.cfg or you are running obelisk workers on seperate machines you will need to update
 the *service = "tcp://localhost:9092"* with your updated/relevant details. 
 
+.. _server:
+
 Server
 ------
 
@@ -115,10 +104,15 @@ If it doesn't exist create a limited permissions user with this name or update t
 Once the script is setup you can start it with */etc/init.d/obbalancer start*. 
 If you wish the script to start on system startup you can also run *update-rc.d obbalancer defauls*
 
+.. _workers:
+
 Workers
 -------
 
-Each server uses/leverages one or more workers.
+These are the workhorses of the obelisk server. Each server leverages one or more connected workers to query the blockchain information they have.
+You can run multiple workers on the same machine or spread them out and run them from multiple machines for redundancy. Each worker uses/maintains
+it's own copy of the block chain database.
+
 
 Initial-Setup
 ^^^^^^^^^^^^^
@@ -133,9 +127,17 @@ Create and initialize a blockchain database for each worker ::
   mkdir blockchain/
   sx initchain blockchain/
     
+Bootstraping Data
+^^^^^^^^^^^^^^^^^
 
-*Note: If you have a bitcoind bootstrap.dat (can also be downloaded off the PirateBay), then you can bootstrap a blockchain. 
-See /usr/local/libbitcoin/tools/ (run 'sudo make' and see the bootstrap tool).*
+If you have a bitcoind bootstrap.dat, then you can bootstrap a blockchain. 
+See /usr/local/libbitcoin/tools/ (run 'sudo make' and see the bootstrap tool).
+
+Alternatively, once 1 worker is up and running/fully synced, you can:
+
+* Stop that workers 'obworker'
+* copy the blockchain/ directory to the new workers directory
+* start the original worker and then the new worker.
 
 Running
 ^^^^^^^
@@ -159,10 +161,13 @@ You can see the output using 'tail -f debug.log' in each workers directory.
 
 *Tip: Running multiple workers is good for redundancy in case one crashes or has problems.*
 
+.. _clients:
 
 Clients
 -------
 
+The client is who/what is actually requesting the information.
+In Mastercoin tools the client is the local installation of sx which queries the obelisk server for blockchain information.
 Clients can connect to an obelisk server on the :ref:`configured port <config>`.
 For proper operation the Obelisk server should be setup, running, and have fully syned workers connected to it.
 
