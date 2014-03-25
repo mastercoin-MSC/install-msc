@@ -37,11 +37,10 @@ There are two files
 * balancer.cfg
 * worker.cfg
 
+.. _config:
 
 balancer.cfg
 ^^^^^^^^^^^^
-
-.. _config:
 
 Allows you to configure the port clients and workers will connect to:
 
