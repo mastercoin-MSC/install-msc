@@ -11,6 +11,16 @@ Purpose:
 ^^^^^^^^
 Used to create (and/or send) a Mastercoin transaction
 
+Checks:
+^^^^^^^
+
+Checks from address to make sure it has:
+
+* Enough BTC to create/send the transaction
+* Balance of the CurrencyID to make sure it has enough to send msc_send_amt
+
+ * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
+
 Inputs:
 ^^^^^^^
 Takes json input via STDIN for the following variables:
@@ -91,6 +101,8 @@ You can execute/run the program with::
 
 
 
+.. _msc-balance:
+
 msc_balance.py
 --------------
 
@@ -104,6 +116,15 @@ This script leverages the existing mastercoin tools parsed/validated output.
 Mastercoin tools should be installed and fully updated with the Mastercoin Data in::
 
  /var/lib/mastercoin-tools/mastercoin_verify/addresses/
+
+Checks:
+^^^^^^^
+
+Will check the date of the parsed date as listed in ::
+
+ /var/lib/mastercoin-tools/www/revision.json
+
+To make sure the data is not out of date (30min+ older)
 
 Inputs:
 ^^^^^^^
@@ -134,7 +155,7 @@ Output:
 ^^^^^^^
 Will return a json formated output
 
-Successful run will return json that contains::
+Completed run will return json that contains::
 
  { 
    "address": "Address checked",

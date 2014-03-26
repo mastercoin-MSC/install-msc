@@ -24,6 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MSC-Tools .11 documentation" href="../index.html" />
+    <link rel="next" title="Obelisk" href="obelisk.html" />
     <link rel="prev" title="Running" href="running.html" /> 
   </head>
   <body>
@@ -33,6 +34,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="obelisk.html" title="Obelisk"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="running.html" title="Running"
              accesskey="P">previous</a> |</li>
@@ -53,6 +57,19 @@
 <div class="section" id="purpose">
 <h3>Purpose:<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h3>
 <p>Used to create (and/or send) a Mastercoin transaction</p>
+</div>
+<div class="section" id="checks">
+<h3>Checks:<a class="headerlink" href="#checks" title="Permalink to this headline">¶</a></h3>
+<p>Checks from address to make sure it has:</p>
+<ul class="simple">
+<li>Enough BTC to create/send the transaction</li>
+<li>Balance of the CurrencyID to make sure it has enough to send msc_send_amt</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Balance is checked using the <a class="reference internal" href="#msc-balance"><em>msc-balance.py</em></a> script</li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="inputs">
 <h3>Inputs:<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h3>
@@ -132,7 +149,7 @@ You can execute/run the program with:</p>
 </div>
 </div>
 <div class="section" id="msc-balance-py">
-<h2>msc_balance.py<a class="headerlink" href="#msc-balance-py" title="Permalink to this headline">¶</a></h2>
+<span id="msc-balance"></span><h2>msc_balance.py<a class="headerlink" href="#msc-balance-py" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
 <h3>Purpose:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Used to get the Mastercoin balance of an address</p>
@@ -146,7 +163,15 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </div>
 </div>
 <div class="section" id="id2">
-<h3>Inputs:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3>Checks:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Will check the date of the parsed date as listed in</p>
+<div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools/www/revision.json
+</pre></div>
+</div>
+<p>To make sure the data is not out of date (30min+ older)</p>
+</div>
+<div class="section" id="id3">
+<h3>Inputs:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Takes json input via STDIN for the following variables:</p>
 <ul class="simple">
 <li>address: The address you want to check the balance for</li>
@@ -171,10 +196,10 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id3">
-<h3>Output:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Output:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>Will return a json formated output</p>
-<p>Successful run will return json that contains:</p>
+<p>Completed run will return json that contains:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
   <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;Address checked&quot;</span><span class="p">,</span>
   <span class="s">&quot;currency_id&quot;</span><span class="p">:</span> <span class="s">&quot;Currency checked&quot;</span><span class="p">,</span>
@@ -183,8 +208,8 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h3>Running:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>Running:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>Standalone running/testing can be done by creating a json file (see input details or example_balance.json for structure)
 You can execute/run the program with:</p>
 <div class="highlight-python"><div class="highlight"><pre>cat your_file.json | python msc_balance.py
@@ -194,24 +219,24 @@ You can execute/run the program with:</p>
 </div>
 <div class="section" id="getconsensusmsc-py">
 <h2>getConsensusMSC.py<a class="headerlink" href="#getconsensusmsc-py" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id5">
-<h3>Purpose:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Purpose:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>Used to get the consensus of local installation with Online sites
 <em>Note: The final consensus authority is defined by the mastercoin tools code result.</em>
 <a class="reference external" href="https://masterchain.info/general/MSC-difference.txt">Masterchain Consensus Report</a></p>
 </div>
-<div class="section" id="id6">
-<h3>Requirements:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>Requirements:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>This script leverages the existing mastercoin tools parsed/validated output.
 Mastercoin tools should be installed and fully updated with the Mastercoin Data in:</p>
 <div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools/mastercoin_verify/addresses/
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h3>Inputs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>Inputs:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>Takes json input via STDIN for the sites you wish to validate consensus against:
-<a href="#id8"><span class="problematic" id="id9">*</span></a>Note: At present generates consensus output for Currency ID 1 (MSC) only.</p>
+<a href="#id9"><span class="problematic" id="id10">*</span></a>Note: At present generates consensus output for Currency ID 1 (MSC) only.</p>
 <ul class="simple">
 <li>site: The sites to compare local results against</li>
 </ul>
@@ -226,8 +251,8 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id10">
-<h3>Output:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>Output:<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>Will return a json formated output array of address not in consensus</p>
 <p>For each address not in Consensus, completed run will return balance of that address for each site checked in json format:</p>
 <div class="highlight-python"><div class="highlight"><pre>{
@@ -251,8 +276,8 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id11">
-<h3>Running:<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>Running:<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>Running by creating a json file (see input details) for sites you wish to check or use the provided getConsensus.json
 You can execute/run the program with:</p>
 <div class="highlight-python"><div class="highlight"><pre>cat getConsensus.json | python getConsensusMSC.py
@@ -273,6 +298,7 @@ You can execute/run the program with:</p>
 <li><a class="reference internal" href="#">Tools</a><ul>
 <li><a class="reference internal" href="#msc-sxsend-py">msc_sxsend.py</a><ul>
 <li><a class="reference internal" href="#purpose">Purpose:</a></li>
+<li><a class="reference internal" href="#checks">Checks:</a></li>
 <li><a class="reference internal" href="#inputs">Inputs:</a></li>
 <li><a class="reference internal" href="#output">Output:</a></li>
 <li><a class="reference internal" href="#running">Running:</a></li>
@@ -281,17 +307,18 @@ You can execute/run the program with:</p>
 <li><a class="reference internal" href="#msc-balance-py">msc_balance.py</a><ul>
 <li><a class="reference internal" href="#id1">Purpose:</a></li>
 <li><a class="reference internal" href="#requirements">Requirements:</a></li>
-<li><a class="reference internal" href="#id2">Inputs:</a></li>
-<li><a class="reference internal" href="#id3">Output:</a></li>
-<li><a class="reference internal" href="#id4">Running:</a></li>
+<li><a class="reference internal" href="#id2">Checks:</a></li>
+<li><a class="reference internal" href="#id3">Inputs:</a></li>
+<li><a class="reference internal" href="#id4">Output:</a></li>
+<li><a class="reference internal" href="#id5">Running:</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getconsensusmsc-py">getConsensusMSC.py</a><ul>
-<li><a class="reference internal" href="#id5">Purpose:</a></li>
-<li><a class="reference internal" href="#id6">Requirements:</a></li>
-<li><a class="reference internal" href="#id7">Inputs:</a></li>
-<li><a class="reference internal" href="#id10">Output:</a></li>
-<li><a class="reference internal" href="#id11">Running:</a></li>
+<li><a class="reference internal" href="#id6">Purpose:</a></li>
+<li><a class="reference internal" href="#id7">Requirements:</a></li>
+<li><a class="reference internal" href="#id8">Inputs:</a></li>
+<li><a class="reference internal" href="#id11">Output:</a></li>
+<li><a class="reference internal" href="#id12">Running:</a></li>
 </ul>
 </li>
 </ul>
@@ -301,6 +328,9 @@ You can execute/run the program with:</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="running.html"
                         title="previous chapter">Running</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="obelisk.html"
+                        title="next chapter">Obelisk</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/pages/tools.txt"
@@ -329,6 +359,9 @@ You can execute/run the program with:</p>
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="obelisk.html" title="Obelisk"
+             >next</a> |</li>
         <li class="right" >
           <a href="running.html" title="Running"
              >previous</a> |</li>
