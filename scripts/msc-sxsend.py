@@ -51,15 +51,34 @@ BAL = commands.getoutput('sx balance -j '+listOptions['transaction_from'])
 balOptions = json.loads(str(''.join(BAL)))
 available_balance = int(balOptions[0]['paid'])
 
-broadcast_fee = int(10000)
-output_minimum = int(5500) #dust threshold 5460
+#broadcast_fee = int(10000)
+#output_minimum = int(5500) #dust threshold 5460
+
+broadcast_fee = int(1000)
+output_minimum = int(550) #dust threshold 5460
+
+
 
 fee_total = broadcast_fee + (output_minimum * 4)
-
 
 #check if minimum BTC balance is met
 if available_balance < fee_total and not force:
     print json.dumps({ "status": "NOT OK", "error": "Not enough funds" , "fix": "Set \'force\' flag to proceed without balance checks" })
+    exit()
+
+#check if Currency ID balance is available
+#print json.dumps({ "address": addr, "currency": currency, "balance": balance})
+cid_query = '{ \\"address\\": \\"'+listOptions['transaction_from']+'\\", \\"currency_id\\": '+str(listOptions['currency_id'])+'}'
+cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py'))['balance']
+
+try:
+    float(cid_balance)
+except ValueError:
+    print json.dumps({"status": "NOT OK", "error": cid_balance , "fix": "Make sure Balance data is up to date: "})
+    exit()
+
+if  float(cid_balance) < float(listOptions['msc_send_amt']):
+    print json.dumps({"status": "NOT OK", "error": "Currency ID balance too low" , "fix": "Check Currency ID balance: "+cid_balance})
     exit()
 
 #generate public key of bitcoin address from priv key
