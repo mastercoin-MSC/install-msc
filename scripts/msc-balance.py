@@ -4,9 +4,17 @@ import json
 import operator
 import time,  calendar
 
-if len(sys.argv) > 1: 
+if len(sys.argv) > 1 and "--force" not in sys.argv: 
     print "Takes addresses and currency in JSON and outputs balance in JSON \nUsage: cat address.json | python msc-balance.py\nRequires mastercoin-tools updated and synced"
     exit()
+
+if "--force" in sys.argv:
+    #WARNING: '--force' WILL STEAL YOUR BITCOINS IF YOU DONT KNOW WHAT YOU'RE DOING
+    force=True
+else:
+    force=False
+
+
 
 #where is the data stored (mastercoin-tools outputs to here)
 DATA="/var/lib/mastercoin-tools/"
@@ -28,7 +36,7 @@ listOptions = json.loads(str(''.join(JSON)))
 addr = listOptions['address']
 currency = listOptions['currency_id']
 
-if parsedTime < checkTime:
+if parsedTime < checkTime and not force:
     print json.dumps({ "address": addr, "currency": currency, "balance": "Error, Balance Data older than 30min"})
     exit()
 

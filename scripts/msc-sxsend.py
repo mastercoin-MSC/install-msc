@@ -64,7 +64,11 @@ if available_balance < fee_total and not force:
 #check if Currency ID balance is available
 #print json.dumps({ "address": addr, "currency": currency, "balance": balance})
 cid_query = '{ \\"address\\": \\"'+listOptions['transaction_from']+'\\", \\"currency_id\\": '+str(listOptions['currency_id'])+'}'
-cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py'))['balance']
+
+if force:
+    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py --force '))['balance']
+else:
+    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py'))['balance']
 
 try:
     float(cid_balance)
@@ -72,7 +76,7 @@ except ValueError:
     print json.dumps({"status": "NOT OK", "error": cid_balance , "fix": "Make sure Balance data is up to date: "})
     exit()
 
-if  float(cid_balance) < float(listOptions['msc_send_amt']):
+if  float(cid_balance) < float(listOptions['msc_send_amt']) and not force:
     print json.dumps({"status": "NOT OK", "error": "Currency ID balance too low" , "fix": "Check Currency ID balance: "+cid_balance})
     exit()
 
@@ -315,7 +319,7 @@ if listOptions['broadcast'] == 1:
 else:
     bcast_status="out: Created, No TX"
 
-print input_counter
+#print input_counter
 
 if listOptions['clean'] == 0:
     pass
