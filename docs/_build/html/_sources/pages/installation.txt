@@ -16,6 +16,9 @@ Recommended System Requirements
 -------------------------------
 
 * 12Gb+ Disk space
+
+ * For every Obelisk Worker you plan to run add ~35-40Gb for block chain storage
+
 * 1 Gig+ Ram (Amazon base EC2 instance with 512 will fail to build)
 * Use a Tested Environment
 
