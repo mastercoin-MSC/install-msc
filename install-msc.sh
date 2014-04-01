@@ -143,7 +143,7 @@ cp -r /var/lib/mastercoin-tools/www/* /var/lib/mastercoin-tools/
 rm /var/lib/mastercoin-tools/revision.json
 
 #add chown for the mastercoin-tools directory.
-
+cd
 NAME=`logname`
 sudo chown -R $NAME:$NAME mastercoin-tools
 sudo chown -R $NAME:$NAME /var/lib/mastercoin-tools
