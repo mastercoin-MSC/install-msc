@@ -133,7 +133,14 @@ cp $SRC/scripts/* mastercoin-tools
 
 #create the mastercoin tools data directory
 mkdir -p /var/lib/mastercoin-tools
-#tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
+cd $SRC
+wget https://masterchain.info/downloads/ -O list
+latest=`cat list | grep tar.gz | sed -e "s/^.*\"\(.*\)\".*$/\1/" | sort -n -r | head -1`
+wget https://masterchain.info/downloads/$latest -O latest.tar.gz
+rm list
+tar xzf latest.tar.gz -C /var/lib/mastercoin-tools
+cp -r /var/lib/mastercoin-tools/www/* /var/lib/mastercoin-tools/
+rm /var/lib/mastercoin-tools/revision.json
 
 #add chown for the mastercoin-tools directory.
 
