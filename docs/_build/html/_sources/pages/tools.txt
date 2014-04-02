@@ -160,7 +160,7 @@ Completed run will return json that contains::
  { 
    "address": "Address checked",
    "currency_id": "Currency checked",
-   "balance": "Balance or error message",
+   "balance": "Balance or error message"
  }
 
 Running:
