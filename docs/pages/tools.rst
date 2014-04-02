@@ -62,7 +62,7 @@ Ex:
 	  "currency_id": 1,
 	  "msc_send_amt": 5.1,
 	  "from_private_key": "5JXxd7qecXrzd9hJGdJsBnwkfJauHxVqbqRmBqQUjhrbGJPgoWb",
-	  "broadcast": 1
+	  "broadcast": 1,
           "clean": 1
 	}
 
