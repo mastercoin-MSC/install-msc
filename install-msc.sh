@@ -4,7 +4,7 @@
 
 #get the current directory
 
-set -e
+#set -e
 echo
 echo " Mastercoin Tools Installation Script "
 echo
