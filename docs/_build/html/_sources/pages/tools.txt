@@ -4,7 +4,7 @@ Tools
 
 List of tools included with the installation and how to use them
 
-msc_sxsend.py
+msc-sxsend.py
 -------------
 
 Purpose:
@@ -62,7 +62,7 @@ Ex:
 	  "currency_id": 1,
 	  "msc_send_amt": 5.1,
 	  "from_private_key": "5JXxd7qecXrzd9hJGdJsBnwkfJauHxVqbqRmBqQUjhrbGJPgoWb",
-	  "broadcast": 1
+	  "broadcast": 1,
           "clean": 1
 	}
 
@@ -103,7 +103,7 @@ You can execute/run the program with::
 
 .. _msc-balance:
 
-msc_balance.py
+msc-balance.py
 --------------
 
 Purpose:
@@ -140,14 +140,14 @@ The json takes the following format::
 
         {
           "address": "{{Address to check}}",
-          "currency_id": {{1 for MSC, 2 for TMSC}},
+          "currency_id": {{1 for MSC, 2 for TMSC}}
         }
 
 Ex: ::
 
         {
           "address": "1CMauYumpA7YG8i4cPod8FadRLK95HxSob",
-          "currency_id": 1,
+          "currency_id": 1
 	}
 
 
