@@ -192,7 +192,7 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 Inputs:
 ^^^^^^^
 Takes json input via STDIN for the sites you wish to validate consensus against:
-*Note: At present generates consensus output for Currency ID 1 (MSC) only. 
+*Note: At present generates consensus output for Currency ID 1 (MSC) only.* 
 
 * site: The sites to compare local results against
 
