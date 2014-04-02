@@ -107,7 +107,9 @@ sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pk
 sudo pip install -r pip.packages
 
 #check for sx and install it if it doesn't exist
-SX_INSTALLED=`which sx || echo $?`
+#SX_INSTALLED=`which sx || echo $?`
+which sx
+SX_INSTALLED=$?
 
 if [[ $SX_INSTALLED -eq 1 ]]; then
         cd $SRC/res
