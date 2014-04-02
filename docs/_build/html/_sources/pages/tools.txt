@@ -74,7 +74,7 @@ Take note of the 'Uncompressed/Compressed' option
 
 Output:
 ^^^^^^^
-Will return a json formated output
+Will return a json formated output.
 Errors will be returned with json that contains ::
 
  { 
