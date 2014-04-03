@@ -16,7 +16,7 @@ Contents:
    pages/running
    pages/tools
    pages/obelisk
-
+   pages/troubleshooting
 
 
 Indices and tables
