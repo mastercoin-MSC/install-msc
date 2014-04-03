@@ -100,6 +100,78 @@ You can execute/run the program with::
  cat your_file.json | python msc_sxsend.py
 
 
+msc-txcreate.py
+---------------
+
+Purpose:
+^^^^^^^^
+Used to create an unsigned Mastercoin transaction
+
+Checks:
+^^^^^^^
+
+Checks from address to make sure it has:
+
+* Enough BTC to create/send the transaction
+* Balance of the CurrencyID to make sure it has enough to send msc_send_amt
+
+ * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
+
+Inputs:
+^^^^^^^
+Takes json input via STDIN for the following variables:
+
+* transaction_from: The Public Address of the Sender
+* transaction_to: The Public address of the Receipiant
+* currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
+* msc_send_amt: The amount of the Currency ID to send
+
+
+The json takes the following format::
+
+        {
+          "transaction_from": "{{Public from Address}}",
+          "transaction_to": "{{Public to Address}}",
+          "currency_id": {{1 for MSC, 2 for TMSC}},
+          "msc_send_amt": {{amount to send}}
+        }
+
+Ex:
+
+*Note: for security the following was a brand new empty wallet. You should replace it's details with your own applicable info*::
+
+        {
+          "transaction_from": "1GGJMZoaxYMS4jsiLwPVbofe5YJyM6ER2i",
+          "transaction_to": "19hf8QEkD3GR7NhUrujWXRg6e4gsHUTysp",
+          "currency_id": 1,
+          "msc_send_amt": 5.1
+        }
+
+Output:
+^^^^^^^
+Will return a json formated output.
+Errors will be returned with json that contains ::
+
+ {
+    "status": "Status message",
+    "error": "error details",
+    "fix": "Corrective action to resolve the issue"
+ }
+
+Successful run will return json that contains::
+
+ {
+   "status": "Created status",
+   "st_file": "location/name of the unsigned tx file"
+ }
+
+Running:
+^^^^^^^^
+Standalone running/testing can be done by creating a json file (see input details or example_send.json for structure)
+You can execute/run the program with::
+
+ cat your_file.json | python msc-txcreate.py
+
 
 .. _msc-balance:
 
