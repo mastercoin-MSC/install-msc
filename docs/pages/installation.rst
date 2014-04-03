@@ -11,6 +11,7 @@ During installation the script will prompt you if you have one.
 If not you can come back later and update your ~/.sx.cfg file with the correct details.
 
 Need a server? Try checking `UN Systems wiki <https://wiki.unsystem.net/index.php/Obelisk/Servers>`_
+*Note: At present most of the listed servers seem to have issues except obelisk.bysh.me:9091*
 
 Recommended System Requirements
 -------------------------------

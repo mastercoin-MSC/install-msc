@@ -11,15 +11,24 @@ Permissions
 
 One of the first things to check is folder permissions. 
 The installer tries to figure out what user is running the installer and set the permissions for the folders it creates appropriately. 
-If this happens the user you run "app.sh" as may not have permission to access the necessary folders. 
+If this does not happen properly the user you run "app.sh" as may not have permission to access the necessary folders. 
 
 Items to Check
 ^^^^^^^^^^^^^^
 
 There are 2 main items that need their permissions checked:
 
-* /var/lib/mastercoin-tools    # Data directory
-* ~/mastercoin-tools           # Tools directory
+Data directory
+
+::
+
+ /var/lib/mastercoin-tools
+
+Tools directory
+
+::
+
+ ~/mastercoin-tools
 
 Fix
 ^^^
@@ -33,27 +42,37 @@ These need to be owned by the user who is going to run "app.sh"::
 SX Settimgs
 -----------
 
-One of the other issues we've seen is the use of an Obelisk server that isn't responding properly. 
+One of the other issues we've seen is when sx 'Hangs' or just fails to respond. 
+Also visible if you are watching the system processes (command below) and notice it not moving/changing from the same command
+
+::
+
+ watch 'ps aux | grep -i -e sx -e sleep | grep -v grep'
 
 Items to Check
 ^^^^^^^^^^^^^^
 
-* sx config file in the home directory of the user running "app.sh" 
+* The user running app.sh or calling sx commands needs to have a/the sx config file in the home directory of the user running "app.sh" 
 
 ::
 
  /home/<youruser>/.sx.cfg
 
-* Check that the sx server is actually responding 
+* Also check to make sure the sx server is actually responding 
 
 ::
 
- sx fetch-last-height   #should return the block height number
-
+ #should return the block height number of the obelisk server
+ sx fetch-last-height
+ 
+ #should return the block height number of blockchain.info
+ sx bci-fetch-last-height
 
 Fix
 ^^^
 
 * Make sure you are running "app.sh" as the user who has the sx config file in their home directory
 * Try a different sx server. We have had decent experience using: *obelisk.bysh.me:9091*
+
+
 

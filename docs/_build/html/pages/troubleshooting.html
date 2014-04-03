@@ -53,14 +53,18 @@
 <h2>Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h2>
 <p>One of the first things to check is folder permissions.
 The installer tries to figure out what user is running the installer and set the permissions for the folders it creates appropriately.
-If this happens the user you run &#8220;app.sh&#8221; as may not have permission to access the necessary folders.</p>
+If this does not happen properly the user you run &#8220;app.sh&#8221; as may not have permission to access the necessary folders.</p>
 <div class="section" id="items-to-check">
 <h3>Items to Check<a class="headerlink" href="#items-to-check" title="Permalink to this headline">¶</a></h3>
 <p>There are 2 main items that need their permissions checked:</p>
-<ul class="simple">
-<li>/var/lib/mastercoin-tools    # Data directory</li>
-<li>~/mastercoin-tools           # Tools directory</li>
-</ul>
+<p>Data directory</p>
+<div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools
+</pre></div>
+</div>
+<p>Tools directory</p>
+<div class="highlight-python"><div class="highlight"><pre>~/mastercoin-tools
+</pre></div>
+</div>
 </div>
 <div class="section" id="fix">
 <h3>Fix<a class="headerlink" href="#fix" title="Permalink to this headline">¶</a></h3>
@@ -73,19 +77,27 @@ sudo chown -R &lt;youruser&gt;:&lt;youruser&gt; /home/&lt;youruser&gt;/mastercoi
 </div>
 <div class="section" id="sx-settimgs">
 <h2>SX Settimgs<a class="headerlink" href="#sx-settimgs" title="Permalink to this headline">¶</a></h2>
-<p>One of the other issues we&#8217;ve seen is the use of an Obelisk server that isn&#8217;t responding properly.</p>
+<p>One of the other issues we&#8217;ve seen is when sx &#8216;Hangs&#8217; or just fails to respond.
+Also visible if you are watching the system processes (command below) and notice it not moving/changing from the same command</p>
+<div class="highlight-python"><div class="highlight"><pre>watch &#39;ps aux | grep -i -e sx -e sleep | grep -v grep&#39;
+</pre></div>
+</div>
 <div class="section" id="id1">
 <h3>Items to Check<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>sx config file in the home directory of the user running &#8220;app.sh&#8221;</li>
+<li>The user running app.sh or calling sx commands needs to have a/the sx config file in the home directory of the user running &#8220;app.sh&#8221;</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre>/home/&lt;youruser&gt;/.sx.cfg
 </pre></div>
 </div>
 <ul class="simple">
-<li>Check that the sx server is actually responding</li>
+<li>Also check to make sure the sx server is actually responding</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre>sx fetch-last-height   #should return the block height number
+<div class="highlight-python"><div class="highlight"><pre>#should return the block height number of the obelisk server
+sx fetch-last-height
+
+#should return the block height number of blockchain.info
+sx bci-fetch-last-height
 </pre></div>
 </div>
 </div>
