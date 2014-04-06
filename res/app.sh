@@ -23,8 +23,6 @@ export DATADIR
 
 if [ ! -d $DATADIR/tx ]; then
         cp -r $TOOLSDIR/www/tx $DATADIR/tx
-        cd $DATADIR
-        python $TOOLSDIR/msc_validate.py 2>&1 > $VALIDATE_LOG
 fi
 
 cd $DATADIR
