@@ -240,11 +240,10 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 </div>
 <div class="section" id="id7">
 <h3>Checks:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>Will check the date of the parsed date as listed in</p>
+<p>Will check/return the date of the parsed date as listed in</p>
 <div class="highlight-python"><div class="highlight"><pre>/var/lib/mastercoin-tools/www/revision.json
 </pre></div>
 </div>
-<p>To make sure the data is not out of date (30min+ older)</p>
 </div>
 <div class="section" id="id8">
 <h3>Inputs:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
@@ -279,10 +278,13 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
   <span class="s">&quot;address&quot;</span><span class="p">:</span> <span class="s">&quot;Address checked&quot;</span><span class="p">,</span>
   <span class="s">&quot;currency_id&quot;</span><span class="p">:</span> <span class="s">&quot;Currency checked&quot;</span><span class="p">,</span>
-  <span class="s">&quot;balance&quot;</span><span class="p">:</span> <span class="s">&quot;Balance or error message&quot;</span>
+  <span class="s">&quot;balance&quot;</span><span class="p">:</span> <span class="s">&quot;Balance or error message&quot;</span><span class="p">,</span>
+  <span class="s">&quot;balancetime&quot;</span><span class="p">:</span> <span class="s">&quot;Time in GMT human readable&quot;</span><span class="p">,</span>
+  <span class="s">&quot;epochtime&quot;</span><span class="p">:</span> <span class="s">&quot;Balance Timestamp in GMT epoch&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><em>Note: If the revision file or currency address files are missing the time is omitted and an error message is returned for balance.</em></p>
 </div>
 <div class="section" id="id10">
 <h3>Running:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>

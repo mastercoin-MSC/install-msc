@@ -192,11 +192,10 @@ Mastercoin tools should be installed and fully updated with the Mastercoin Data 
 Checks:
 ^^^^^^^
 
-Will check the date of the parsed date as listed in ::
+Will check/return the date of the parsed date as listed in ::
 
  /var/lib/mastercoin-tools/www/revision.json
 
-To make sure the data is not out of date (30min+ older)
 
 Inputs:
 ^^^^^^^
@@ -232,8 +231,12 @@ Completed run will return json that contains::
  { 
    "address": "Address checked",
    "currency_id": "Currency checked",
-   "balance": "Balance or error message"
+   "balance": "Balance or error message",
+   "balancetime": "Time in GMT human readable",
+   "epochtime": "Balance Timestamp in GMT epoch"
  }
+
+*Note: If the revision file or currency address files are missing the time is omitted and an error message is returned for balance.*
 
 Running:
 ^^^^^^^^
