@@ -10,12 +10,12 @@ app.sh
 Continuous running application that you can start in a screen session. 
 It will download/process the entire block chain and then sleep for 60 secs before checking for updates.::
 
-    screen -S msc
+    screen -R msc
     ./app.sh
-    ctrl+a , d  <disconnect screen>
+    ctrl+a, d  <disconnect screen>
 
     reconnect at anytime with
-    screen -r msc
+    screen -R msc
 
 
 
