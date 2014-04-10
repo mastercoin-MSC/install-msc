@@ -53,7 +53,7 @@ parsedTime = calendar.timegm( time.strptime(revOptions['last_parsed'], '%d %b %Y
 if currency == 1:
     #msc
     try:
-       json_file = open(DATA+CID+'1', 'r')
+       json_file = open(DATA+CID+'0', 'r')
     except IOError:
        print json.dumps({ "address": addr, "currency": currency, "balance": "Error, Can't Open Address file"+DATA+CID+"0"})
        exit()      
