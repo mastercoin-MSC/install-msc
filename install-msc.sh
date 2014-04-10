@@ -172,7 +172,7 @@ echo "----------------------------------"
 echo ""
 echo "-----Automated Run Commands-------"
 echo "start a new screen session or open a detached one with: screen -R msc-tools"
-echo "cd "$INSTALLDIR/mastercoin-tools
+echo "navigate to the install dir: cd "$INSTALLDIR/mastercoin-tools
 echo "launch the wrapper: ./app.sh"
 echo "you can disconnect from the screen session with <ctrl-a> d"
 echo "----------------------------------"
