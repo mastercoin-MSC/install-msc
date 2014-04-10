@@ -2,7 +2,8 @@
 #Outside Requirements: Existing Obelisk Server
 #Instructions are for Ubuntu 13.04 and newer
 
-#get the current directory
+#set user directory as default install dir
+INSTALLDIR=$HOME
 
 #set -e
 echo
@@ -33,7 +34,7 @@ if [ "$1" = "--help" ] || [ $HELP ]; then
 fi
 
 if [ `id -u` = "0" ]; then
-    SRC=$PWD
+    SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
     echo
     echo "[+] ERROR: This script must be run as root." 1>&2
@@ -104,7 +105,7 @@ sudo apt-get update
 sudo apt-get -y install git python-simplejson python-git python-pip
 sudo apt-get -y install make
 sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pkg-config libcurl4-openssl-dev libleveldb-dev libzmq-dev libconfig++-dev libncurses5-dev
-sudo pip install -r pip.packages
+sudo pip install -r $SRC/pip.packages
 
 #check for sx and install it if it doesn't exist
 #SX_INSTALLED=`which sx || echo $?`
@@ -121,13 +122,13 @@ else
 
 fi
 
-cd
+cd $INSTALLDIR
 #git clone https://github.com/grazcoin/mastercoin-tools.git
 #git clone https://github.com/curtislacy/mastercoin-tools.git
 git clone https://github.com/mastercoin-MSC/mastercoin-tools.git
 
-cp $SRC/res/app.sh mastercoin-tools
-cp $SRC/scripts/* mastercoin-tools
+cp $SRC/res/app.sh $INSTALLDIR/mastercoin-tools
+cp $SRC/scripts/* $INSTALLDIR/mastercoin-tools
 
 #update ~/.sx.cfg with an obelisk server details
 # ~/.sx.cfg Sample file.
@@ -145,24 +146,21 @@ cp -r /var/lib/mastercoin-tools/www/* /var/lib/mastercoin-tools/
 rm /var/lib/mastercoin-tools/revision.json
 
 #add chown for the mastercoin-tools directory.
-cd
 NAME=`logname`
-sudo chown -R $NAME:$NAME mastercoin-tools
+sudo chown -R $NAME:$NAME $INSTALLDIR/mastercoin-tools
 sudo chown -R $NAME:$NAME /var/lib/mastercoin-tools
-
-cd mastercoin-tools
 
 
 echo ""
 echo ""
 echo "Installation complete"
-echo "MSC-Tools should have been downloaded/installed in "$PWD
+echo "MSC-Tools should have been downloaded/installed in "$INSTALLDIR/mastercoin-tools
 echo "A wrapper app has also been included which automates the following tasks"
 echo ""
 echo "------Manual Run Commands---------"
 echo "To update with the latest transactions run: python msc_parse.py"
-echo "To Validate and update address balances run: python msc_validate.py"
-echo "Once thats done copy the results to the www directory"
+echo "To validate and update address balances run: python msc_validate.py"
+echo "Once that's done copy the results to the www directory"
 echo "cp --no-clobber tx/* www/tx/"
 echo "cp --no-clobber addr/* www/addr/"
 echo "cp --no-clobber general/* www/general/"
@@ -170,7 +168,7 @@ echo "----------------------------------"
 echo ""
 echo "-----Automated Run Commands-------"
 echo "start a new screen session or open a detached one with: screen -R msc-tools"
-echo "cd "$SRC"/mastercoin-tools"
+echo "cd "$INSTALLDIR/mastercoin-tools
 echo "launch the wrapper:  ./app.sh"
 echo "you can disconnect from the screen session with <ctrl-a> d"
 echo "----------------------------------"
