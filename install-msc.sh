@@ -5,6 +5,9 @@
 #set user directory as default install dir
 INSTALLDIR=$HOME
 
+#set data dir
+DATADIR="/var/lib"
+
 #set -e
 echo
 echo " Mastercoin Tools Installation Script "
@@ -135,20 +138,20 @@ cp $SRC/scripts/* $INSTALLDIR/mastercoin-tools
 #service = "tcp://162.243.29.201:9091"
 
 #create the mastercoin tools data directory
-mkdir -p /var/lib/mastercoin-tools
+mkdir -p $DATADIR/mastercoin-tools
 cd $SRC
 wget https://masterchain.info/downloads/ -O list
 latest=`cat list | grep tar.gz | sed -e "s/^.*\"\(.*\)\".*$/\1/" | sort -n -r | head -1`
 wget https://masterchain.info/downloads/$latest -O latest.tar.gz
 rm list
-tar xzf latest.tar.gz -C /var/lib/mastercoin-tools
-cp -r /var/lib/mastercoin-tools/www/* /var/lib/mastercoin-tools/
-rm /var/lib/mastercoin-tools/revision.json
+tar xzf latest.tar.gz -C $DATADIR/mastercoin-tools
+cp -r $DATADIR/mastercoin-tools/www/* $DATADIR/mastercoin-tools/
+rm $DATADIR/mastercoin-tools/revision.json
 
 #add chown for the mastercoin-tools directory.
 NAME=`logname`
 sudo chown -R $NAME:$NAME $INSTALLDIR/mastercoin-tools
-sudo chown -R $NAME:$NAME /var/lib/mastercoin-tools
+sudo chown -R $NAME:$NAME $DATADIR/mastercoin-tools
 
 
 echo ""
@@ -160,7 +163,8 @@ echo ""
 echo "------Manual Run Commands---------"
 echo "To update with the latest transactions run: python msc_parse.py"
 echo "To validate and update address balances run: python msc_validate.py"
-echo "Once that's done copy the results to the www directory"
+echo "Once that's done copy the results to the www directory:"
+echo "cd "$DATADIR/mastercoin-tools
 echo "cp --no-clobber tx/* www/tx/"
 echo "cp --no-clobber addr/* www/addr/"
 echo "cp --no-clobber general/* www/general/"
@@ -169,6 +173,6 @@ echo ""
 echo "-----Automated Run Commands-------"
 echo "start a new screen session or open a detached one with: screen -R msc-tools"
 echo "cd "$INSTALLDIR/mastercoin-tools
-echo "launch the wrapper:  ./app.sh"
+echo "launch the wrapper: ./app.sh"
 echo "you can disconnect from the screen session with <ctrl-a> d"
 echo "----------------------------------"
