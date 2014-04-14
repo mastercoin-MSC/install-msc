@@ -140,13 +140,15 @@ cp $SRC/scripts/* $INSTALLDIR/mastercoin-tools
 #create the mastercoin tools data directory
 mkdir -p $DATADIR/mastercoin-tools
 cd $SRC
-wget https://masterchain.info/downloads/ -O list
-latest=`cat list | grep tar.gz | sed -e "s/^.*\"\(.*\)\".*$/\1/" | sort -n -r | head -1`
-wget https://masterchain.info/downloads/$latest -O latest.tar.gz
-rm list
-tar xzf latest.tar.gz -C $DATADIR/mastercoin-tools
-cp -r $DATADIR/mastercoin-tools/www/* $DATADIR/mastercoin-tools/
-rm $DATADIR/mastercoin-tools/revision.json
+
+#temp remove bootstrap until we iron out consensus issue
+#wget https://masterchain.info/downloads/ -O list
+#latest=`cat list | grep tar.gz | sed -e "s/^.*\"\(.*\)\".*$/\1/" | sort -n -r | head -1`
+#wget https://masterchain.info/downloads/$latest -O latest.tar.gz
+#rm list
+#tar xzf latest.tar.gz -C $DATADIR/mastercoin-tools
+#cp -r $DATADIR/mastercoin-tools/www/* $DATADIR/mastercoin-tools/
+#rm $DATADIR/mastercoin-tools/revision.json
 
 #add chown for the mastercoin-tools directory.
 NAME=`logname`
