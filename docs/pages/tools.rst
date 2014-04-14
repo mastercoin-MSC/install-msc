@@ -243,7 +243,7 @@ Running:
 Standalone running/testing can be done by creating a json file (see input details or example_balance.json for structure)
 You can execute/run the program with::
 
- cat your_file.json | python msc_balance.py
+ cat your_file.json | python msc-balance.py
 
 
 
