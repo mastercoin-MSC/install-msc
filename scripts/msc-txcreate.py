@@ -7,6 +7,7 @@ import hashlib
 import operator
 import commands
 import pybitcointools
+import os
 from pycoin import encoding
 from ecdsa import curves, ecdsa
 
@@ -32,9 +33,13 @@ else:
 JSON = sys.stdin.readlines()
 listOptions = json.loads(str(''.join(JSON)))
 
+#Get local running directory
+RDIR=os.path.dirname(os.path.realpath(__file__))
+
 #Define and make sure we have a data dir
-DATA='data/'
+DATA=RDIR+'/data/'
 commands.getoutput('mkdir -p '+DATA)
+
 
 #check if private key provided produces correct address
 #address = pybitcointools.privkey_to_address(listOptions['from_private_key'])
@@ -66,9 +71,9 @@ if available_balance < fee_total and not force:
 cid_query = '{ \\"address\\": \\"'+listOptions['transaction_from']+'\\", \\"currency_id\\": '+str(listOptions['currency_id'])+'}'
 
 if force:
-    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py --force '))['balance']
+    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py --force '))['balance']
 else:
-    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python msc-balance.py'))['balance']
+    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py'))['balance']
 
 try:
     float(cid_balance)
