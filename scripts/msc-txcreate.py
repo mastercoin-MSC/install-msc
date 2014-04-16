@@ -30,8 +30,12 @@ if "--force" in sys.argv:
 else:
     force=False
 
-JSON = sys.stdin.readlines()
-listOptions = json.loads(str(''.join(JSON)))
+try:
+    JSON = sys.stdin.readlines()
+    listOptions = json.loads(str(''.join(JSON)))
+except TypeError:
+    print json.dumps({ "status": "NOT OK", "error": "Can't Load Json Data" , "fix": "Check input data: "+JSON})
+    exit()
 
 #Get local running directory
 RDIR=os.path.dirname(os.path.realpath(__file__))
