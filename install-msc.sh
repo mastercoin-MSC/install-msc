@@ -13,7 +13,9 @@ set -x
 echo
 echo " Mastercoin Tools Installation Script "
 echo
-if [ "$#" = "2" ]; then
+if [ "$#" = "1" ] && [ "$1" = "-auto" ] ; then
+    PREFIG=n
+elif [ "$#" = "2" ]; then
     if [[ "$1" = "-os" ]]; then
         #Absolute path
         SERVER=$2
@@ -27,9 +29,6 @@ if [ "$#" = "2" ]; then
     fi
 fi
 
-if [ "$1" = "-auto" ] ; then
-    PREFIG=n
-fi
 
 if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " [+] Install script help:"
