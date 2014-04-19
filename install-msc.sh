@@ -18,17 +18,29 @@ if [ "$#" = "2" ]; then
         #Absolute path
         SERVER=$2
         PREFIG=CLE
+    elif [[ "$1" = "-auto" ]]; then
+        #Absolute path
+        SERVER=$2
+        PREFIG=AUTO
     else
     	HELP=1
     fi
 fi
 
+if [ "$1" = "-auto" ] ; then
+    PREFIG=n
+fi
+
 if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " [+] Install script help:"
-     echo " --> To execute this script type:"
+     echo " --> To run this script type:"
      echo " <sudo bash install-msc.sh>"
-     echo " --> To execute this script and install with a specific obelisk server"
+     echo " --> To run this script and configure with a specific obelisk server:"
      echo " <bash install-msc.sh -os server-details:port>"
+     echo " --> To run this script non-interactively:"
+     echo " <bash install-msc.sh -auto>"
+     echo " --> To run this script non-interactively, configuring with a specific obelisk server:"
+     echo " <bash install-msc.sh -auto server-details:port>"
      echo " This script will install SX and the required prerequisites"
      echo " The SX install script will install libbitcoin, libwallet, obelisk and sx tools."
      echo " The standard path for the installation is /usr/local/"
@@ -64,6 +76,10 @@ case $PREFIG in
 	CLE)
 		ACTIVE=1
 		CONFIRM=P
+	;;
+
+	AUTO)
+		ACTIVE=0
 	;;
 
 	*)
@@ -120,9 +136,9 @@ if [[ $SX_INSTALLED -eq 1 ]]; then
         cd $SRC/res
         sudo bash install-sx.sh
 else
-        echo "#########################################"
-        echo "sx alredy installed Skipping installation"
-        echo "#########################################"
+        echo "##########################################"
+        echo "sx already installed Skipping installation"
+        echo "##########################################"
 
 fi
 
