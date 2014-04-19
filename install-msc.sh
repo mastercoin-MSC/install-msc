@@ -92,7 +92,6 @@ while [ $ACTIVE -ne 0 ]; do
 	y* | Y* )
 		echo "Writing Details to ~/.sx.cfg"
 		echo "You can update/change this file as needed later"
-		echo "service = \""$SERVER"\"" > ~/.sx.cfg
 		ACTIVE=0
 	;;
 
@@ -117,6 +116,14 @@ while [ $ACTIVE -ne 0 ]; do
 	;;
 	esac
 done
+
+if [ -n "$SERVER" ]; then
+    echo "service = \""$SERVER"\"" > ~/.sx.cfg
+elif; then
+    echo "#~/.sx.cfg Sample file." > ~/.sx.cfg
+    echo "#service = \"tcp://162.243.29.201:9091\"" > ~/.sx.cfg
+fi
+
 
 sudo apt-get update
 
