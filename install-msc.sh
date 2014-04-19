@@ -82,7 +82,7 @@ case $PREFIG in
 	;;
 
 	*)
-		active=0
+		ACTIVE=0
 	;;
 esac
 
