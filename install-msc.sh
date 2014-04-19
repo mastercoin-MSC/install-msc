@@ -119,9 +119,9 @@ done
 
 if [ -n "$SERVER" ]; then
     echo "service = \""$SERVER"\"" > ~/.sx.cfg
-elif; then
+else
     echo "#~/.sx.cfg Sample file." > ~/.sx.cfg
-    echo "#service = \"tcp://162.243.29.201:9091\"" > ~/.sx.cfg
+    echo "#service = \"tcp://162.243.29.201:9091\"" >> ~/.sx.cfg
 fi
 
 
