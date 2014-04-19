@@ -9,7 +9,6 @@ INSTALLDIR=$HOME
 DATADIR="/var/lib"
 
 #set -e
-set -x
 echo
 echo " Mastercoin Tools Installation Script "
 echo
