@@ -12,22 +12,33 @@ DATADIR="/var/lib"
 echo
 echo " Mastercoin Tools Installation Script "
 echo
-if [ "$#" = "2" ]; then
+if [ "$#" = "1" ] && [ "$1" = "-auto" ] ; then
+    PREFIG=n
+elif [ "$#" = "2" ]; then
     if [[ "$1" = "-os" ]]; then
         #Absolute path
         SERVER=$2
         PREFIG=CLE
+    elif [[ "$1" = "-auto" ]]; then
+        #Absolute path
+        SERVER=$2
+        PREFIG=AUTO
     else
     	HELP=1
     fi
 fi
 
+
 if [ "$1" = "--help" ] || [ $HELP ]; then
      echo " [+] Install script help:"
-     echo " --> To execute this script type:"
+     echo " --> To run this script type:"
      echo " <sudo bash install-msc.sh>"
-     echo " --> To execute this script and install with a specific obelisk server"
+     echo " --> To run this script and configure with a specific obelisk server:"
      echo " <bash install-msc.sh -os server-details:port>"
+     echo " --> To run this script non-interactively:"
+     echo " <bash install-msc.sh -auto>"
+     echo " --> To run this script non-interactively, configuring with a specific obelisk server:"
+     echo " <bash install-msc.sh -auto server-details:port>"
      echo " This script will install SX and the required prerequisites"
      echo " The SX install script will install libbitcoin, libwallet, obelisk and sx tools."
      echo " The standard path for the installation is /usr/local/"
@@ -65,8 +76,12 @@ case $PREFIG in
 		CONFIRM=P
 	;;
 
+	AUTO)
+		ACTIVE=0
+	;;
+
 	*)
-		active=0
+		ACTIVE=0
 	;;
 esac
 
@@ -76,7 +91,6 @@ while [ $ACTIVE -ne 0 ]; do
 	y* | Y* )
 		echo "Writing Details to ~/.sx.cfg"
 		echo "You can update/change this file as needed later"
-		echo "service = \""$SERVER"\"" > ~/.sx.cfg
 		ACTIVE=0
 	;;
 
@@ -102,6 +116,14 @@ while [ $ACTIVE -ne 0 ]; do
 	esac
 done
 
+if [ -n "$SERVER" ]; then
+    echo "service = \""$SERVER"\"" > ~/.sx.cfg
+else
+    echo "#~/.sx.cfg Sample file." > ~/.sx.cfg
+    echo "#service = \"tcp://162.243.29.201:9091\"" >> ~/.sx.cfg
+fi
+
+
 sudo apt-get update
 
 #install packages:
@@ -119,9 +141,9 @@ if [[ $SX_INSTALLED -eq 1 ]]; then
         cd $SRC/res
         sudo bash install-sx.sh
 else
-        echo "#########################################"
-        echo "sx alredy installed Skipping installation"
-        echo "#########################################"
+        echo "##########################################"
+        echo "sx already installed Skipping installation"
+        echo "##########################################"
 
 fi
 
