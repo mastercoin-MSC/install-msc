@@ -55,7 +55,7 @@ fi
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ `id -u` = "0" ]; then
     echo "Running as root"
-elif [ -z "$SKIPPREREQ" ]; then
+elif [ -n "$SKIPPREREQ" ]; then
     echo "Skipping prequisites, not running as root"
 else
     echo
