@@ -23,6 +23,11 @@ elif [ "$#" = "2" ]; then
         #Absolute path
         SERVER=$2
         PREFIG=AUTO
+    elif [[ "$1" = "-autoskipprereq" ]]; then
+        #Absolute path
+        SERVER=$2
+        PREFIG=AUTO
+        SKIPPREREQ=1
     else
     	HELP=1
     fi
@@ -47,8 +52,11 @@ if [ "$1" = "--help" ] || [ $HELP ]; then
      exit
 fi
 
+SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ `id -u` = "0" ]; then
-    SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    echo "Running as root"
+elif [ -z "$SKIPPREREQ" ]; then
+    echo "Skipping prequisites, not running as root"
 else
     echo
     echo "[+] ERROR: This script must be run as root." 1>&2
@@ -124,26 +132,23 @@ else
 fi
 
 
-sudo apt-get update
+if [ -z "$SKIPPREREQ" ]; then
+    bash install-prerequisites.sh
 
-#install packages:
-sudo apt-get -y install git python-simplejson python-git python-pip
-sudo apt-get -y install make
-sudo apt-get -y install git build-essential autoconf libtool libboost-all-dev pkg-config libcurl4-openssl-dev libleveldb-dev libzmq-dev libconfig++-dev libncurses5-dev
-sudo pip install -r $SRC/pip.packages
+    #check for sx and install it if it doesn't exist
+    #SX_INSTALLED=`which sx || echo $?`
+    which sx
+    SX_INSTALLED=$?
 
-#check for sx and install it if it doesn't exist
-#SX_INSTALLED=`which sx || echo $?`
-which sx
-SX_INSTALLED=$?
+    if [[ $SX_INSTALLED -eq 1 ]]; then
+            cd $SRC/res
+            bash install-sx.sh
+    else
+            echo "##########################################"
+            echo "sx already installed Skipping installation"
+            echo "##########################################"
 
-if [[ $SX_INSTALLED -eq 1 ]]; then
-        cd $SRC/res
-        sudo bash install-sx.sh
-else
-        echo "##########################################"
-        echo "sx already installed Skipping installation"
-        echo "##########################################"
+    fi
 
 fi
 
