@@ -1,4 +1,5 @@
-#get balance
+#!/usr/bin/python
+#Create Unsigned Masterprotocol Currencies Send TX
 import sys
 import json
 import time
@@ -7,7 +8,7 @@ import hashlib
 import operator
 import commands
 import pybitcointools
-import os
+import os, decimal
 from pycoin import encoding
 from ecdsa import curves, ecdsa
 
@@ -19,6 +20,43 @@ def is_pubkey_valid(pubkey):
     except TypeError:
         return False
 
+def get_balance(address, csym, div):
+    bal1=-3
+    bal2=-4
+    url =  'https://test.omniwallet.org/v1/address/addr/'
+    PAYLOAD = {'addr': address }
+    try:
+        tx_data= requests.post(url, data=PAYLOAD, verify=False).json()
+        for bal in tx_data['balance']:
+            if csym == bal['symbol']:
+                if div == 1:
+                    bal1=('%.8f' % float(bal['value']))
+                else:
+                    fbal=float(bal['value'])/100000000
+                    bal1=('%.8f' % fbal)
+    except ValueError:  # includes simplejson.decoder.JSONDecodeError
+        #print('Site 1 Unresponsive, Using 0 balance for now')
+        bal1=-1
+
+    url2 = 'https://www.masterchest.info/mastercoin_verify/adamtest.aspx?address='+address
+    try:
+        tx2_data=requests.get(url2, verify=False).json()
+        for bal in tx2_data['balance']:
+            if csym == bal['symbol']:
+                bal2= ('%.8f' % float(bal['value']))
+    except ValueError:  # includes simplejson.decoder.JSONDecodeError
+        #print('Site 2 Unresponsive, Using 0 balance for now')
+        bal2=-2
+
+    if bal1 == bal2:
+        #print(' Confirmed Balance of '+str(bal1)+' '+str(csym)+' for '+str(address)+' from 2 data points')
+        return bal1
+    elif bal1 > 0 and bal2 < 0:
+        #print(' Balance mismatch, Site 1:['+str(bal1)+'] Site 2:['+str(bal2)+'] '+str(csym)+' for '+str(address)+' from 2 data points. Preffering Non Negative Balance Site 1: '+str(bal1))
+        return bal1
+    else:
+        #print(' Balance mismatch, Site 1:['+str(bal1)+'] Site 2:['+str(bal2)+'] '+str(csym)+' for '+str(address)+' from 2 data points. Preffering Site 2: '+str(bal2))
+        return bal2
 
 if len(sys.argv) > 1 and "--force" not in sys.argv: 
     print "Takes a list of bitcoind options, addresses and a send amount and outputs a transaction in JSON \nUsage: cat send.json | python msc-sxsend.py\nRequires sx and a configured obelisk server"
@@ -33,8 +71,8 @@ else:
 JSON = sys.stdin.readlines()
 try:
     listOptions = json.loads(str(''.join(JSON)))
-except TypeError:
-    print json.dumps({ "status": "NOT OK", "error": "Can't Load Json Data" , "fix": "Check input data: "+JSON})
+except ValueError:
+    print json.dumps({ "status": "NOT OK", "error": "Couldn't read input variables" , "fix": "Check input data: "+str(JSON)})
     exit()
 
 #Get local running directory
@@ -57,7 +95,12 @@ commands.getoutput('mkdir -p '+DATA)
 available_balance = int(0)
 
 BAL = commands.getoutput('sx balance -j '+listOptions['transaction_from'])
-balOptions = json.loads(str(''.join(BAL)))
+try:
+    balOptions = json.loads(str(''.join(BAL)))
+except ValueError:
+    print json.dumps({ "status": "NOT OK", "error": "Couldn't read/load available btc balance from sx", "fix": "check input data"+str(BAL) })
+    exit()
+
 available_balance = int(balOptions[0]['paid'])
 
 broadcast_fee = int(10000)
@@ -72,12 +115,20 @@ if available_balance < fee_total and not force:
 
 #check if Currency ID balance is available
 #print json.dumps({ "address": addr, "currency": currency, "balance": balance})
-cid_query = '{ \\"address\\": \\"'+listOptions['transaction_from']+'\\", \\"currency_id\\": '+str(listOptions['currency_id'])+'}'
+#cid_query = '{ \\"address\\": \\"'+listOptions['transaction_from']+'\\", \\"currency_id\\": '+str(listOptions['currency_id'])+'}'
 
-if force:
-    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py --force '))['balance']
+#if force:
+#    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py --force '))['balance']
+#else:
+#    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py'))['balance']
+
+#get balance from  web interfaces
+if listOptions['currency_id'] == 1:
+    cid_balance=get_balance(listOptions['transaction_from'], 'MSC',2)
+elif listOptions['currency_id'] == 2:
+    cid_balance=get_balance(listOptions['transaction_from'], 'TMSC',2)
 else:
-    cid_balance = json.loads(commands.getoutput('echo '+cid_query+' | python '+RDIR+'/msc-balance.py'))['balance']
+    cid_balance=get_balance(listOptions['transaction_from'], 'SP'+str(listOptions['currency_id']),listOptions['property_type'])
 
 try:
     float(cid_balance)
@@ -89,7 +140,7 @@ if  float(cid_balance) < float(listOptions['msc_send_amt']) and not force:
     print json.dumps({"status": "NOT OK", "error": "Currency ID balance too low" , "fix": "Check Currency ID balance: "+cid_balance})
     exit()
 
-#generate public key of bitcoin address from priv key
+#get pubkey from blockchain
 pubkey = commands.getoutput('sx get-pubkey '+listOptions['transaction_from'])
 #pubkey = commands.getoutput('echo '+listOptions['from_private_key']+' | sx pubkey')
 if is_pubkey_valid(pubkey):
@@ -145,7 +196,8 @@ transaction_type = 0   #simple send
 sequence_number = 1    #packet number
 #currency_id = 2        #MSC=1, TMSC=2
 currency_id = int(listOptions['currency_id'])
-amount = int(listOptions['msc_send_amt']*1e8)  #maran's impl used float??
+#amount = int(listOptions['msc_send_amt']*1e8)  #maran's impl used float??
+amount = int(decimal.Decimal(listOptions['msc_send_amt'])*decimal.Decimal("1e8"))
 
 cleartext_packet = ( 
         (hex(sequence_number)[2:].rjust(2,"0") + 
@@ -183,7 +235,11 @@ while invalid:
 validnextinputs=""
 input_counter=0
 for utxo in utxo_list:
-   prev_tx = json.loads(commands.getoutput('sx fetch-transaction '+utxo[0]+' | sx showtx -j'))
+   try:
+	prev_tx = json.loads(commands.getoutput('sx fetch-transaction '+utxo[0]+' | sx showtx -j'))
+   except ValueError:
+        print json.dumps({ "status": "NOT OK", "error": "Problem getting json format of utxo", "fix": "check utxo tx: "+str(utxo[0]) })
+        exit()
 
    for output in prev_tx['outputs']:
       if output['address'] == listOptions['transaction_from']:
@@ -211,7 +267,11 @@ signed_raw_tx_file = unsigned_raw_tx_file+'.signed'
 commands.getoutput('sx mktx '+unsigned_raw_tx_file+' '+validnextinputs+' '+validnextoutputs)
 
 #convert it to json for adding the msc multisig
-json_tx = json.loads(commands.getoutput('cat '+unsigned_raw_tx_file+' | sx showtx -j'))
+try:
+    json_tx = json.loads(commands.getoutput('cat '+unsigned_raw_tx_file+' | sx showtx -j'))
+except ValueError:
+    print json.dumps({ "status": "NOT OK", "error": "Problem getting json format of unsigned_raw_tx", "fix": "check filename: "+str(unsigned_raw_tx_file) })
+    exit()
 
 #add multisig output to json object
 json_tx['outputs'].append({ "value": output_minimum*2, "script": "1 [ " + pubkey + " ] [ " + data_pubkey.lower() + " ] 2 checkmultisig", "addresses": "null"})
