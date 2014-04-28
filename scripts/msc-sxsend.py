@@ -299,7 +299,8 @@ for _input in json_tx['inputs']:
     prior_out_str = _input['previous_output'].split(':')
     #prior_input_txhash = _input['previous_output'].upper()  
     prior_input_txhash = prior_out_str[0].upper()  
-    prior_input_index = str(prior_out_str[1]).rjust(2,"0").ljust(8,"0")
+    #prior_input_index = str(prior_out_str[1]).rjust(2,"0").ljust(8,"0")
+    prior_input_index = str(hex(int(prior_out_str[1]))[2: ]).rjust(2,"0").ljust(8,"0")
     input_raw_signature = commands.getoutput('sx fetch-transaction '+prior_out_str[0])
 
     prior_txhash_bytes =  [prior_input_txhash[ start: start + 2 ] for start in range(0, len(prior_input_txhash), 2)][::-1]
