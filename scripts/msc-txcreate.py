@@ -9,6 +9,7 @@ import operator
 import commands
 import pybitcointools
 import os, decimal
+import requests, urlparse
 from pycoin import encoding
 from ecdsa import curves, ecdsa
 
