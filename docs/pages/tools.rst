@@ -29,6 +29,7 @@ Takes json input via STDIN for the following variables:
 * transaction_to: The Public address of the Receipiant
 * currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
 * msc_send_amt: The amount of the Currency ID to send
+* property_type: 1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)
 * from_private_key: Base58 Private Key of the sender's Public Address (Note: Should start with 5)
 * broadcast: Create and/or Broadcast Tx. 1 to create and broadcast or 0 to just create
 * clean: Clean up any of the tx files created.
@@ -47,6 +48,7 @@ The json takes the following format::
 	  "transaction_to": "{{Public to Address}}",
 	  "currency_id": {{1 for MSC, 2 for TMSC}},
 	  "msc_send_amt": {{amount to send}},
+	  "property_type": {{1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)}}
 	  "from_private_key": "{{private key for signing}}",
 	  "broadcast": {{1 to create and broadcast or 0 to just create}},
           "clean": {{0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
@@ -61,6 +63,7 @@ Ex:
 	  "transaction_to": "19hf8QEkD3GR7NhUrujWXRg6e4gsHUTysp",
 	  "currency_id": 1,
 	  "msc_send_amt": 5.1,
+	  "property_type": 2,
 	  "from_private_key": "5JXxd7qecXrzd9hJGdJsBnwkfJauHxVqbqRmBqQUjhrbGJPgoWb",
 	  "broadcast": 1,
           "clean": 1
@@ -125,6 +128,7 @@ Takes json input via STDIN for the following variables:
 * transaction_to: The Public address of the Receipiant
 * currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
 * msc_send_amt: The amount of the Currency ID to send
+* property_type: 1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)
 
 
 The json takes the following format::
@@ -133,7 +137,8 @@ The json takes the following format::
           "transaction_from": "{{Public from Address}}",
           "transaction_to": "{{Public to Address}}",
           "currency_id": {{1 for MSC, 2 for TMSC}},
-          "msc_send_amt": {{amount to send}}
+          "msc_send_amt": {{amount to send}},
+	  "property_type": {{1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)}}
         }
 
 Ex:
