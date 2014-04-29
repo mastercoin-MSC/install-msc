@@ -49,7 +49,7 @@ Takes json input via STDIN for the following variables:
   * 2 - Remove all unsigned Tx files. Leaves only the signed Tx file that can be broadcast.
   * 3 - Remove all Tx files. Signed and unsigned, make sure you have broadcast the Tx before you do this.
 
-*``*`` Only required if you are signing/broadcasting the tx file and can be omitted if just creating unsigned file.*
+* ``*`` Only required if you are signing/broadcasting the tx file and can be omitted if just creating unsigned file.*
 
 The json takes the following format::
 
