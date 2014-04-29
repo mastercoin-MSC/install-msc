@@ -4,11 +4,119 @@ Tools
 
 List of tools included with the installation and how to use them
 
+.. _msc_createtx:
+
+msc_createtx.py
+---------------
+
+Purpose:
+^^^^^^^^
+Used to create, sign and/or send a Masterprotocol currency transaction
+
+Checks:
+^^^^^^^
+
+Checks from address to make sure it has:
+
+* Enough BTC to create/send the transaction
+* Balance of the CurrencyID to make sure it has enough to send msc_send_amt
+
+ * Balance is checked using 2 online resources (Masterchest.info and Omniwallet)
+
+Inputs:
+^^^^^^^
+Takes json input via STDIN for the following variables:
+
+* transaction_from: The Public Address of the Sender
+* transaction_to: The Public address of the Receipiant
+* currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
+* property_type: 1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)
+* send_amt: The amount of the Currency ID to send
+* from_private_key: Base58 Private Key of the sender's Public Address (Note: Should start with 5)``*``
+* broadcast: Create, Sign and/or Broadcast Tx.
+
+  * 0 - Create the Unsigned TX file only
+  * 1 - Create and Sign the TX file 
+  * 2 - Create, Sign and Broadcast the TX file
+
+* clean: Clean up any of the tx files created.``*``
+
+  * 0 - Keep all Tx files created
+  * 1 - Remove only the intersigned Tx files. (Leaves the original unsigned Tx and the signed Tx)
+  * 2 - Remove all unsigned Tx files. Will leave only the signed Tx file that can be broadcast to the network.
+  * 3 - Remove all Tx files. Signed and unsigned, make sure you have broadcast the Tx before you do this.
+
+*Note: ``*`` Only required if you are signing/broadcasting the tx file and can be omitted if just creating unsigned file.*
+
+The json takes the following format::
+
+        {
+          "transaction_from": "{{Public from Address}}",
+          "transaction_to": "{{Public to Address}}",
+          "currency_id": {{1 for MSC, 2 for TMSC}},
+          "send_amt": {{amount to send}},
+          "property_type": {{1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)}}
+          "broadcast": {{1 to create and broadcast or 0 to just create}},
+          "from_private_key": "{{private key for signing}}",
+          "clean": {{0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
+        }
+
+Ex:
+
+*Note: for security the following was a brand new empty wallet. You should replace it's details with your own applicable info*::
+
+        {
+          "transaction_from": "1GGJMZoaxYMS4jsiLwPVbofe5YJyM6ER2i",
+          "transaction_to": "19hf8QEkD3GR7NhUrujWXRg6e4gsHUTysp",
+          "currency_id": 1,
+          "send_amt": 5.1,
+          "property_type": 2,
+          "from_private_key": "5JXxd7qecXrzd9hJGdJsBnwkfJauHxVqbqRmBqQUjhrbGJPgoWb",
+          "broadcast": 1,
+          "clean": 1
+        }
+
+For reference, here is what the brainwallet.org generator page for the above address looks like.
+Take note of the 'Uncompressed/Compressed' option
+
+.. image:: brainwallet.uncompressed.png
+    :align: center
+
+Output:
+^^^^^^^
+Will return a json formated output.
+Errors will be returned with json that contains ::
+
+ {
+    "status": "Status message",
+    "error": "error details",
+    "fix": "Corrective action to resolve the issue"
+ }
+
+Successful run will return json that contains::
+
+ {
+   "status": "Broadcast/Created/Signed status",
+   "valid_check": "Validity check of signed file",
+   "hash": "Hash of the tx",
+   "st_file": "location/name of the signed tx file"
+ }
+
+Running:
+^^^^^^^^
+Standalone running/testing can be done by creating a json file (see input details or example_send.json for structure)
+You can execute/run the program with::
+
+ cat your_file.json | python msc_txcreate.py
+
+
+
 msc-sxsend.py
 -------------
 
 Purpose:
 ^^^^^^^^
+DEPRECIATED, Please see :ref:`msc_createtx.py <msc_createtx>`
 Used to create (and/or send) a Mastercoin transaction
 
 Checks:
@@ -108,6 +216,7 @@ msc-txcreate.py
 
 Purpose:
 ^^^^^^^^
+DEPRECIATED, Please see :ref:`msc_createtx.py <msc_createtx>`
 Used to create an unsigned Mastercoin transaction
 
 Checks:
