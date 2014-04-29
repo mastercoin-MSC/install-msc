@@ -38,15 +38,15 @@ DATA=RDIR+'/data/'
 commands.getoutput('mkdir -p '+DATA)
 
 #get some variables from the json iput
-FROMADDRESS=listOptions['transaction_from']
-TOADDRESS=listOptions['transaction_to']
+FROMADDRESS=listOptions['transaction_from'].strip()
+TOADDRESS=listOptions['transaction_to'].strip()
 CID=listOptions['currency_id']
 TOAMOUNT=listOptions['send_amt']
 PTYPE=listOptions['property_type']
 BROADCAST=listOptions['broadcast']
 CLEAN=1
-if BROADCAST == 1:
-    PRIVATE_KEY=listOptions['from_private_key']
+if BROADCAST > 0:
+    PRIVATE_KEY=listOptions['from_private_key'].strip()
     CLEAN=listOptions['clean']
     #check if private key provided produces correct address
     address = pybitcointools.privkey_to_address(PRIVATE_KEY)
@@ -146,7 +146,7 @@ for item in utxo_array:
 
 change = int(tx_unspent_bal) - fee_total
 if change < 0 or fee_total > available_balance and not force:
-    print json.dumps({ "status": "NOT OK", "error": "Not enough funds "+str(available_balance)+" of "+str(fee_total), "fix": "Send some btc to the sending address. Check db tx to make sure they are accurate" })
+    print json.dumps({ "status": "NOT OK", "error": "Not enough utxo tx's. Unspent "+str(tx_unspent_bal)+" out of "+str(available_balance)+" Pending Balance. Need at least "+str(fee_total), "fix": "Send some btc to the sending address or check db tx list to make sure they are accurate" })
     exit()
 
 #build multisig data address
@@ -317,6 +317,7 @@ except ValueError, e:
 else:
     pass # valid json
 
+print PRIVATE_KEY
 if BROADCAST > 0:
 #We will now sign the first input using our private key.
     DECODED_ADDR=commands.getoutput('echo '+PRIVATE_KEY+' | sx addr | sx decode-addr')
@@ -357,9 +358,9 @@ if BROADCAST > 0:
     if BROADCAST == 2:
 	bcast_status=commands.getoutput('sx sendtx-obelisk '+signed_raw_tx_file)
     else:
-	bcast_status="out: Created/Signed, Not Sent"
+	bcast_status="out:Created/Signed, Not Sent"
 else:
-    bcast_status="out: Created, Not Signed/Not Sent"
+    bcast_status="out:Created, Not Signed/Not Sent"
     tx_valid="TX Unsigned, not checked"
     try:
         tx_hash=json.loads(commands.getoutput('cat '+unsigned_raw_tx_file+' | sx showtx -j'))['hash']
@@ -395,6 +396,6 @@ elif CLEAN == 3:
 
 #return our final output
 if BROADCAST > 0:
-    print json.dumps({ "status": bcast_status.split(':')[1], "valid_check": tx_valid.split(':')[1], "hash": tx_hash, "st_file": signed_raw_tx_file})
+    print json.dumps({ "status": bcast_status.split(':')[1], "valid_check": tx_valid.split(':')[1].strip(), "hash": tx_hash, "st_file": signed_raw_tx_file})
 else:
     print json.dumps({ "status": bcast_status.split(':')[1], "valid_check": tx_valid, "hash": tx_hash, "st_file": unsigned_raw_tx_file})
