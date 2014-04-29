@@ -32,7 +32,10 @@ Takes json input via STDIN for the following variables:
 * currency_id: Currency ID to send. 1 for MSC, 2 for TMSC
 * property_type: 1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)
 * send_amt: The amount of the Currency ID to send
-* from_private_key: Base58 Private Key of the sender's Public Address (Note: Should start with 5)``*``
+* from_private_key: Base58 Private Key of the sender's Public Address ``*``
+
+  * (Note: Should start with the number 5)
+
 * broadcast: Create, Sign and/or Broadcast Tx.
 
   * 0 - Create the Unsigned TX file only
@@ -43,10 +46,10 @@ Takes json input via STDIN for the following variables:
 
   * 0 - Keep all Tx files created
   * 1 - Remove only the intersigned Tx files. (Leaves the original unsigned Tx and the signed Tx)
-  * 2 - Remove all unsigned Tx files. Will leave only the signed Tx file that can be broadcast to the network.
+  * 2 - Remove all unsigned Tx files. Leaves only the signed Tx file that can be broadcast.
   * 3 - Remove all Tx files. Signed and unsigned, make sure you have broadcast the Tx before you do this.
 
-*Note: ``*`` Only required if you are signing/broadcasting the tx file and can be omitted if just creating unsigned file.*
+*``*`` Only required if you are signing/broadcasting the tx file and can be omitted if just creating unsigned file.*
 
 The json takes the following format::
 
@@ -107,7 +110,7 @@ Running:
 Standalone running/testing can be done by creating a json file (see input details or example_send.json for structure)
 You can execute/run the program with::
 
- cat your_file.json | python msc_txcreate.py
+ cat your_file.json | python msc_createtx.py
 
 
 
@@ -117,6 +120,7 @@ msc-sxsend.py
 Purpose:
 ^^^^^^^^
 DEPRECIATED, Please see :ref:`msc_createtx.py <msc_createtx>`
+
 Used to create (and/or send) a Mastercoin transaction
 
 Checks:
@@ -217,6 +221,7 @@ msc-txcreate.py
 Purpose:
 ^^^^^^^^
 DEPRECIATED, Please see :ref:`msc_createtx.py <msc_createtx>`
+
 Used to create an unsigned Mastercoin transaction
 
 Checks:
