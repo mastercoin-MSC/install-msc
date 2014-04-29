@@ -2,9 +2,9 @@
   "transaction_from": "{{Public from Address}}",
   "transaction_to": "{{Public to Address}}",
   "currency_id": {{1 for MSC, 2 for TMSC}},
-  "msc_send_amt": {{amount to send}},
-  "property_type": {{1 for indivisible currency, 2 for divisible (MSC/TMSC are 2, Maidsafecoins are 1)}},
+  "send_amt": {{amount to send}},
+  "property_type": {{1 for indivisible currency, 2 for divisible (MSC/TMSC are type 2, Maidsafecoins are type 1)}},
   "from_private_key": "{{private key for signing}}",
-  "broadcast": {{1 to create and broadcast or 0 to just create}},
+  "broadcast": {{2 to create, sign and broadcast, 1 to create and sign or 0 to just create}},
   "clean": {{0 -keep all tx files, 1 -remove intersigned tx, 2 -remove all unsigned, 3 -remove all}}
 }
