@@ -55,7 +55,9 @@ if BROADCAST == 1:
     	exit()
 
 #prime out utxo files
-sync_utxo(FROMADDRESS)
+if sync_utxo(FROMADDRESS) == 1:
+    print json.dumps({ "status": "NOT OK", "error": "Couldn't update utxo list", "fix": "Check connection to internet, sx operating properly and try again" })
+    exit()
 
 #calculate minimum unspent balance (everything in satoshi's)
 available_balance = int(0)
@@ -130,7 +132,7 @@ else:
 tx_unspent_bal=0
 utxo_list=[]
 for item in utxo_array:
-    if item['address'] == FROMADDRESS:
+    if item['address'] == FROMADDRESS and item['lock'] == '1':
         tx_unspent_bal += int(item['satoshi'])
 	utxo_list.append(item)
 	item['lock'] = 2
@@ -143,7 +145,6 @@ for item in utxo_array:
 # (total input amount) - (broadcast fee) - (total transaction fee)
 
 change = int(tx_unspent_bal) - fee_total
-
 if change < 0 or fee_total > available_balance and not force:
     print json.dumps({ "status": "NOT OK", "error": "Not enough funds "+str(available_balance)+" of "+str(fee_total), "fix": "Send some btc to the sending address. Check db tx to make sure they are accurate" })
     exit()

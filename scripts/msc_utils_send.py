@@ -116,7 +116,21 @@ def get_balance(address, csym, div):
 
 
 def sync_utxo(address):
-	current_block = commands.getoutput('/usr/local/bin/sx fetch-last-height')
+	z=0
+	while z < 3:
+	    current_block = commands.getoutput('/usr/local/bin/sx fetch-last-height')
+	    try: 
+		int(current_block)
+		z=4
+	    except ValueError:
+		pass
+	    z+=1
+
+	try:
+            int(current_block)
+        except ValueError:
+            return 1
+
 	utxo_list=[] 
 	utxo_list=get_utxo()
 	updated_list=[]
@@ -146,11 +160,15 @@ def sync_utxo(address):
 		if len(updated_list) == 0:
 		    updated_list.append({'address':address,'tx_hash':tx_hash,'hash_index':tx_hash_index,'satoshi':satoshi,'block':current_block,'lock':1})
 		else:
+		    u=1
 	            for item in updated_list:
 	            	if item['address'] == address and item['tx_hash'] == tx_hash and item['hash_index'] == tx_hash_index:
+			    u=0
 			    break
-		    updated_list.append({'address':address,'tx_hash':tx_hash,'hash_index':tx_hash_index,'satoshi':satoshi,'block':current_block,'lock':1})
+		    if u == 1:
+			    updated_list.append({'address':address,'tx_hash':tx_hash,'hash_index':tx_hash_index,'satoshi':satoshi,'block':current_block,'lock':1})
 	    write_utxo(updated_list)
         else:
 	    pass
             #print ('No new transactions to update')
+	return 0
