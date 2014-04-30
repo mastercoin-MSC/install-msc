@@ -317,7 +317,6 @@ except ValueError, e:
 else:
     pass # valid json
 
-print PRIVATE_KEY
 if BROADCAST > 0:
 #We will now sign the first input using our private key.
     DECODED_ADDR=commands.getoutput('echo '+PRIVATE_KEY+' | sx addr | sx decode-addr')
