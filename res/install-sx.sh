@@ -81,7 +81,7 @@ install_dependencies(){
     elif [ "$flavour_id" = "ubuntu" ]; then
         if [ "$ROOT_INSTALL" = 1 ]; then
 # Ubuntu dependencies (some people have libboost1.53-dev installed, determine which is installed rather than error out.  Defaults onto 1.49)
-            for BOOST_VER in 1.49 1.53 ; do
+            for BOOST_VER in 1.49 1.53 1.54 1.55; do
                 dpkg -s "libboost$BOOST_VER-dev" >/dev/null 2>&1 && U_BOOST=$BOOST_VER
             done
             [[  $U_BOOST && ${U_BOOST-x} ]] && echo "Found libboost $U_BOOST" || export U_BOOST=1.49 ; echo "Defaulting to libboost $U_BOOST"
