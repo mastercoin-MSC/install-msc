@@ -20,11 +20,11 @@ Checks from address to make sure it has:
 
 * Enough BTC to create/send the transaction
 
- * Note: To avoid potential double spends all unspent TX used to create a new TX are tracked/locked for 10 Blocks from use. It is recommended, when offline signing, to make sure you broadcast within this timeframe.
+  * Note: To avoid potential double spends all unspent TX used to create a new TX are tracked/locked for 10 Blocks from use. It is recommended, when offline signing, to make sure you broadcast within this timeframe.
 
 * Balance of the CurrencyID to make sure it has enough to send msc_send_amt
 
- * Balance is checked using 2 online resources (Masterchest.info and Omniwallet)
+  * Balance is checked using 2 online resources (Masterchest.info and Omniwallet)
 
 Inputs:
 ^^^^^^^
@@ -134,7 +134,7 @@ Checks from address to make sure it has:
 * Enough BTC to create/send the transaction
 * Balance of the CurrencyID to make sure it has enough to send msc_send_amt
 
- * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
+  * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
 
 Inputs:
 ^^^^^^^
@@ -235,7 +235,7 @@ Checks from address to make sure it has:
 * Enough BTC to create/send the transaction
 * Balance of the CurrencyID to make sure it has enough to send msc_send_amt
 
- * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
+  * Balance is checked using the :ref:`msc-balance.py <msc-balance>` script
 
 Inputs:
 ^^^^^^^
