@@ -19,6 +19,9 @@ Checks:
 Checks from address to make sure it has:
 
 * Enough BTC to create/send the transaction
+
+ * Note: To avoid potential double spends all unspent TX used to create a new TX are tracked/locked for 10 Blocks from use. It is recommended, when offline signing, to make sure you broadcast within this timeframe.
+
 * Balance of the CurrencyID to make sure it has enough to send msc_send_amt
 
  * Balance is checked using 2 online resources (Masterchest.info and Omniwallet)

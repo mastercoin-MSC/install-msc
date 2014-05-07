@@ -56,12 +56,12 @@
 <h2>app.sh<a class="headerlink" href="#app-sh" title="Permalink to this headline">¶</a></h2>
 <p>Continuous running application that you can start in a screen session.
 It will download/process the entire block chain and then sleep for 60 secs before checking for updates.:</p>
-<div class="highlight-python"><div class="highlight"><pre>screen -S msc
+<div class="highlight-python"><div class="highlight"><pre>screen -R msc
 ./app.sh
-ctrl+a , d  &lt;disconnect screen&gt;
+ctrl+a, d  &lt;disconnect screen&gt;
 
 reconnect at anytime with
-screen -r msc
+screen -R msc
 </pre></div>
 </div>
 </div>
