@@ -34,14 +34,15 @@ Instructions
 
 1. [Install VirtualBox](https://www.virtualbox.org/manual/ch02.html)
 1. [Install Vagrant](http://docs.vagrantup.com/v2/installation/)
-1. Clone this repository
+1. Clone this repository and check out the 'vagrant' branch
 
         git clone git@github.com:msgilligan/install-msc.git
+        cd install-msc
+        git checkout vagrant
 
 1. Run Vagrant
 
-        cd install-msc
-        vagrant up
+        vagrant up tools
 
 1. Connect to VirtualBox VM
 
