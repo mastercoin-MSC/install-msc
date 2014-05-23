@@ -9,5 +9,5 @@ Detailed documentation and instructions are available at:
 Using Vagrant to Install
 ------------------------
 
-If you'd like to use [Vagrant](http://www.vagrantup.com) to install Mastercoin Tools, there is now a [Vagrantfile and scripts](README-vagrant.md) that you can use.
+If you'd like to use [Vagrant](http://www.vagrantup.com) to install Mastercoin Tools, there is now a [Vagrantfile and scripts](README-Vagrant.md) that you can use.
 
