@@ -30,6 +30,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 #
+# empty
+#
+# Configuration for an empty install based on 'base'
+#
+  config.vm.define "empty" do |empty|
+  end
+
+
+#
 # tools
 #
 # Configuration for a base Ubuntu VM for Mastercoin Tools
