@@ -1,0 +1,20 @@
+= Mastercoin Tools Component Version Tracking 
+
+This document is for tracking the versions of system components used in the https://github.com/msgilligan/mastercoin-vagrant[Vagrant install] of Mastercoin Tools.
+
+[options="header",frame="all"]
+|===
+| Component | Where specified | How specified | Current version | Notes, To Do
+| Ubuntu Base Box | Vagrantfile | Vagrant | parallels/ubuntu-13.10 | We should make/verify our own base box.
+| install-msc | install-mastercoin-tools-auto.sh | git ref | default branch | Create tag after more testing
+| Ubuntu packages | install-msc.sh | apt-get | default/latest | Defaulting to latest version probably OK for most packages.
+| ecdsa | pip.packages | PIP | 0.10 | 
+| pycoin | pip.packages | PIP | 0.25 | 
+| pybitcointools | pip.packages | PIP| 1.1 | 
+| More Ubuntu packages | install-sx.sh | apt-get | default/latest | Defaulting to latest version probably OK for most packages.
+| libbitcoin | install-sx.sh | git ref | ebadde8 | Wait for tagged/stable version of SX toolchain?
+| libwallet | install-sx.sh | git ref | 9be05b6 | ""
+| obelisk | install-sx.sh | git ref | 4962e2c | ""
+| sx | install-sx.sh | git ref | d9b566e | ""
+| mastercoin-tools | install-msc.sh  | git ref | default branch | Create tag after more testing
+|===
