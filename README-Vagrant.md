@@ -12,7 +12,7 @@ The initial Vagrant file contains multiple VMs
 * tools - Mastercoin Tools
 * bitcoind-dev - A bitcoind VM (or can be mastercoind if you change the repo/branch)
 
-uses the ```install-msc.sh``` script to install Mastercoin Tools. It pulls ```install-msc.sh``` directly from the [mastercoin-MSC/install-msc](https://github.com/mastercoin-MSC/install-msc) repository.
+uses the ```install-msc.sh``` script to install Mastercoin Tools.
 
 Prerequisites
 -------------
@@ -27,7 +27,7 @@ Base Box
 
 The Vagrantfile is currently using (*trusting*) the [parallels/ubuntu-13.10](https://vagrantcloud.com/parallels/ubuntu-13.10) base box created by Parallels and the Mastercoin base box [msgilligan/mastercoin-ubuntu-base](https://vagrantcloud.com/msgilligan/mastercoin-ubuntu-base).
 
-You should consider them untrusted binaries. Only use them with TEST-MSC and samll amounts of Bitcoin.
+You should consider them untrusted binaries. Only use them with TEST-MSC and small amounts of Bitcoin.
 
 Instructions
 ------------
@@ -66,7 +66,7 @@ To Do
 
 1. Track versions of all components used and update to released/stable versions asap.
 
-    [versions.adoc](versions.adoc) os a startig point
+    [versions.adoc](versions.adoc) as a starting point
 
 1. Create a verified/trusted Mastercoin "base box"
 
