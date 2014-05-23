@@ -1,4 +1,4 @@
-mastercoin-vagrant
+Mastercoin Vagrant
 ==================
 
 Vagrant support for Mastercoin Development Environments.
@@ -7,10 +7,10 @@ Vagrant support for Mastercoin Development Environments.
 
 The initial Vagrant file contains multiple VMs
 
-base - used to make a base box for the other VMs (advanced users only)
-empty - empty VM for quick tests of install from 'base'
-tools - Mastercoin Tools
-bitcoind-dev - A bitcoind VM (or can be mastercoind if you change the repo/branch)
+* base - used to make a base box for the other VMs (advanced users only)
+* empty - empty VM for quick tests of install from 'base'
+* tools - Mastercoin Tools
+* bitcoind-dev - A bitcoind VM (or can be mastercoind if you change the repo/branch)
 
 uses the ```install-msc.sh``` script to install Mastercoin Tools. It pulls ```install-msc.sh``` directly from the [mastercoin-MSC/install-msc](https://github.com/mastercoin-MSC/install-msc) repository.
 
