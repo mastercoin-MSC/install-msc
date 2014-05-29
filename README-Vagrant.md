@@ -10,7 +10,7 @@ The initial Vagrant file contains multiple VMs
 * base - used to make a base box for the other VMs (advanced users only)
 * empty - empty VM for quick tests of install from 'base'
 * tools - Mastercoin Tools
-* bitcoind-dev - A bitcoind VM (or can be mastercoind if you change the repo/branch)
+* mastercore-dev - A mastercore VM (built from latest dev version)
 
 uses the ```install-msc.sh``` script to install Mastercoin Tools.
 
@@ -25,18 +25,20 @@ Vagrant is available for Mac OS X, Windows, and  Linux. In addition to VirtualBo
 Base Box
 --------
 
-The Vagrantfile is currently using (*trusting*) the [parallels/ubuntu-13.10](https://vagrantcloud.com/parallels/ubuntu-13.10) base box created by Parallels and the Mastercoin base box [msgilligan/mastercoin-ubuntu-base](https://vagrantcloud.com/msgilligan/mastercoin-ubuntu-base).
+The [Vagrantfile](Vagrantfile) is currently using (*trusting*) the [parallels/ubuntu-13.10](https://vagrantcloud.com/parallels/ubuntu-13.10) base box created by Parallels and the Mastercoin base box [msgilligan/mastercoin-ubuntu-base](https://vagrantcloud.com/msgilligan/mastercoin-ubuntu-base).
 
 You should consider them untrusted binaries. Only use them with TEST-MSC and small amounts of Bitcoin.
 
-Instructions
-------------
+Installing Mastercoin Tools
+---------------------------
+
+The ```tools``` VM is configured to install Mastercoin Tools.
 
 1. [Install VirtualBox](https://www.virtualbox.org/manual/ch02.html)
 1. [Install Vagrant](http://docs.vagrantup.com/v2/installation/)
 1. Clone this repository and check out the 'vagrant' branch
 
-        git clone git@github.com:msgilligan/install-msc.git
+        git clone git@github.com:mastercoin-MSC/install-msc.git
         cd install-msc
         git checkout vagrant
 
@@ -54,11 +56,23 @@ Instructions
 
 1. Follow the instructions in the [Running](http://mastercoin-tools-installer.readthedocs.org/en/latest/pages/running.html) section of the install-msc documentation.
 
+Installing Mastercore
+---------------------
+
+The ```mastercore-dev``` VM is configured to install Mastercore.
+
+The procedure is the same as for ```tools``` but use:
+
+    vagrant up mastercore-dev
+
+and
+
+    vagrant ssh mastercore-dev
+
+
+
 To Do
 -----
-1. Find the proper repo on Github to host Mastercoin Vagrant files
-
-    That's install-msc I think.
 
 1. Better documentation
 
@@ -74,7 +88,9 @@ To Do
 
 1. Vagrant file support for Omniwallet
 1. Add [Shared folders and port-forwarding](http://pastie.org/9083315)
-1. Vagrant file support for an Obelisk VM
+1. AWS Instance configurations
+
+    Using the [AWS Provider](https://github.com/mitchellh/vagrant-aws).
 
 
 
