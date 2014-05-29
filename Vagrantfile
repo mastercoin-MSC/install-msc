@@ -45,6 +45,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #
   config.vm.define "tools" do |tools|
 
+#      tools.vm.network :forwarded_port, guest: 22, host: 2223
+
       tools.vm.provider "virtualbox" do |v|
         v.memory = 1024
         v.cpus = 2
@@ -63,21 +65,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
 #
-# bitcoind-dev
+# mastercore-dev
 #
-# Configuration for Bitcoind/Mastercoind development
+# Configuration for Mastercore development
 #
-  config.vm.define "bitcoind-dev", autostart: false do |bitcoind|
-      bitcoind.vm.provider "virtualbox" do |v|
-        v.memory = 2048
-        v.cpus = 4
-      end
+  config.vm.define "mastercore-dev", autostart: false do |mastercore|
 
-      bitcoind.vm.provision "shell" do |s|
+#    mastercore.vm.network :forwarded_port, guest: 22, host: 2230
+ 
+    mastercore.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 8
+    end
+
+    mastercore.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "clone-and-build-bitcoind.sh"
-        s.args = ["https://github.com/msgilligan/bitcoin.git", "omniwallet-master", "bitcoin"]
-      end
+        s.args = ["https://github.com/m21/mastercore.git", "new_m13", "mastercore"]
+    end
 
   end
 
