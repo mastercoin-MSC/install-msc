@@ -61,15 +61,34 @@ Installing Mastercore
 
 The ```mastercore-dev``` VM is configured to install Mastercore.
 
-The procedure is the same as for ```tools``` but use:
+1. [Install VirtualBox](https://www.virtualbox.org/manual/ch02.html)
+1. [Install Vagrant](http://docs.vagrantup.com/v2/installation/)
+1. Clone this repository and check out the 'vagrant' branch
 
-    vagrant up mastercore-dev
+        git clone git@github.com:mastercoin-MSC/install-msc.git
+        cd install-msc
+        git checkout vagrant
 
-and
+1. Run Vagrant
 
-    vagrant ssh mastercore-dev
+        vagrant up  mastercore-dev
 
+1. Connect to VirtualBox VM
 
+        vagrant ssh  mastercore-dev
+
+1. Go to the mastercore build directory
+
+        cd mastercore
+
+1. Run the unit tests
+
+        ./src/test/test_bitcoin
+The unit tests will generate about a dozen screens of output and, if successful, the last line should read:
+
+        *** No errors detected
+
+1. Congratulations you have built and tested Mastercore!
 
 To Do
 -----
