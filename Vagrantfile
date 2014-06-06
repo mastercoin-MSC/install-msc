@@ -72,6 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "mastercore-dev", autostart: false do |mastercore|
 
 #    mastercore.vm.network :forwarded_port, guest: 22, host: 2230
+    mastercore.vm.network :forwarded_port, host_ip: "127.0.0.1", guest: 18332, host: 28332
  
     mastercore.vm.provider "virtualbox" do |v|
         v.memory = 2048
