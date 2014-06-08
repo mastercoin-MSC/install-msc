@@ -63,6 +63,41 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
   end
 
+#
+# tools-ub14
+#
+# Configuration for a base Ubuntu VM for Mastercoin Tools
+# Using Ubuntu 14.04 LTS
+#
+  config.vm.define "tools-ub14", autostart: false  do |tools|
+
+      tools.vm.box = "ubuntu/trusty64"
+
+      tools.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 2
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.path = "install-mastercoin-base-root.sh"
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.path = "install-mastercoin-tools-root.sh"
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.privileged = false
+        s.path = "install-mastercoin-tools-user.sh"
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.privileged = false
+        s.path = "install-mastercoin-tools-snapshot.sh"
+      end
+
+  end
+
 
 #
 # mastercore-dev
