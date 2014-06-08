@@ -31,6 +31,12 @@ cd $DATADIR
 mkdir -p tmptx tx addr general offers wallets sessions mastercoin_verify/addresses mastercoin_verify/transactions www
 SERVER_PID=$!
 
+if [ "$1" = "-status" ]; then
+    cat $DATADIR/www/revision.json | cut -d"," -f3
+    cat $DATADIR/www/revision.json | cut -d"," -f4
+    exit
+fi
+
 echo "Beginning main run loop..."
 while true
 do
@@ -48,9 +54,10 @@ do
 		# parse until full success
 		x=1 # assume failure
 		echo -n > $PARSE_LOG
-  		echo "Parsing last block $(cat www/revision.json | cut -b 102-109) at $(TZ='America/Chicago' date)"
+
 		while [ "$x" != "0" ];
 		do
+      		echo "Parsing last block $(cat www/revision.json | cut -b 102-109) at $(TZ='America/Chicago' date)"
 			python $TOOLSDIR/msc_parse.py -r $TOOLSDIR 2>&1 >> $PARSE_LOG
   			x=$?
 		done
@@ -58,9 +65,9 @@ do
 		echo "Running validation step..."
 		python $TOOLSDIR/msc_validate.py 2>&1 > $VALIDATE_LOG
 
-		echo "Getting price calculation..."
-		mkdir -p $DATADIR/www/values $DATADIR/www/values/history
-		python $APPDIR/api/coin_values.py
+#		echo "Getting price calculation..."
+#		mkdir -p $DATADIR/www/values $DATADIR/www/values/history
+#		python $APPDIR/api/coin_values.py
 
 		# update archive
 		echo "Running archive tool..."
