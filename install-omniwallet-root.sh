@@ -5,7 +5,7 @@ echo "Running install-sx..."
 cd /vagrant/res
 bash install-sx.sh
 
-mkdir /var/lib/mastercoin-tools
-chown -R $MSC_USER:$MSC_GROUP /var/lib/mastercoin-tools
+mkdir /var/lib/omniwallet
+chown -R $MSC_USER:$MSC_GROUP /var/lib/omniwallet
 
 
