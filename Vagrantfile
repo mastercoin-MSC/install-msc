@@ -104,9 +104,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
     tools.vm.provider :aws do |aws, override|
-      aws.access_key_id = ENV['AWS_ACCESS_KEY']
-      aws.secret_access_key = ENV['AWS_SECRET_KEY']
-      aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+      aws.access_key_id = ENV['AWS_ACCESS_KEY'] || ""
+      aws.secret_access_key = ENV['AWS_SECRET_KEY'] || ""
+      aws.keypair_name = ENV['AWS_KEYPAIR_NAME'] || ""
 
       aws.region = "us-west-1"
       aws.instance_type = "m1.small"
@@ -118,7 +118,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.ami = "ami-a26265e7"
 
       override.ssh.username = "ubuntu"
-      override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH']
+      override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH'] || ""
     end
 
   end
