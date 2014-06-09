@@ -98,9 +98,14 @@ We now have experimental AWS support for Mastercoin Tools. Currently it is in a 
 
     vagrant plugin install vagrant-aws
 
+We use a "dummy" AWS base box [as recommended](https://github.com/mitchellh/vagrant-aws#quick-start) by mitchellh in the `vagrant-aws` README. This is a small text file that simply specifies that the base box is an AWS image, but leaves the specification of the actual base AMI image to the `Vagrantfile` itself. Use the following command to install the "dummy" box:
+
+    vagrant box add mitchellh-dummy-aws https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+
 You'll also need to configure your private AWS information by creating a *private* shell script:
 
     cp setup-aws-template.sh setup-aws-private.sh
+    chmod 700 setup-aws-private.sh
 
 Edit `setup-aws-private.sh` and enter your AWS information.
 
