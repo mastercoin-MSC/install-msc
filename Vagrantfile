@@ -10,6 +10,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Version 0.2.0 is Ubuntu 14.04 LTS built from "ubuntu/trusty64"
   config.vm.box = "msgilligan/mastercoin-ubuntu-base"
 
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['AWS_ACCESS_KEY'] || ""
+    aws.secret_access_key = ENV['AWS_SECRET_KEY'] || ""
+    aws.keypair_name = ENV['AWS_KEYPAIR_NAME'] || ""
+
+    aws.region = "us-west-1"
+    aws.instance_type = "m1.small"
+    aws.security_groups =  [ 'vagrant' ]
+
+# ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-20140607.1 - ami-a26265e7
+# ebs, paravirtualization, 64-bit
+# uswest-1
+    aws.ami = "ami-a26265e7"
+
+    override.vm.box = "mitchellh-dummy-aws"
+    override.ssh.username = "ubuntu"
+    override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH'] || ""
+  end
 
 #
 # base
@@ -36,6 +54,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Configuration for an empty install based on 'base'
 #
   config.vm.define "empty", autostart: false  do |empty|
+
+#
+# Use echo-params.sh to demonstrate provisioning script overrides.
+#
+
+    empty.vm.provision "shell" do |s|
+      s.path = "echo-params.sh"
+      s.args = [ "script", "1" ]
+    end
+
+    empty.vm.provision "shell", id: "script2"  do |s|
+      s.path = "echo-params.sh"
+      s.args = [ "script", "2" ]
+    end
+
+    empty.vm.provider :aws do |aws, override|
+      aws.instance_type = "t1.micro"
+      override.vm.provision "shell", id: "script2" do |s|
+        s.args = [ "script", "2", "with modified params" ] 
+      end
+    end
+
   end
 
 
@@ -48,80 +88,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 #      tools.vm.network :forwarded_port, guest: 22, host: 2223
 
-      tools.vm.provider "virtualbox" do |v|
-        v.memory = 1024
-        v.cpus = 2
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.path = "install-mastercoin-tools-root.sh"
-        s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/mastercoin-tools
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.privileged = false
-        s.path = "install-mastercoin-tools-user.sh"
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.privileged = false
-        s.path = "install-mastercoin-tools-snapshot.sh"
-      end
-
-  end
-
-#
-# tools-aws
-#
-# Configuration for Ubuntu VM with Mastercoin Tools
-#
-# With a little tweaking this can be combined with tools
-# and switched via provider, but this is a first cut
-#
-#
-
-  config.vm.define "tools-aws" do |tools|
-      tools.vm.box = "mitchellh-dummy-aws"
-
       tools.vm.provision "shell" do |s|
         s.path = "install-mastercoin-base-root.sh"
       end
 
-      tools.vm.provision "shell" do |s|
+      tools.vm.provision "shell", id: "sh-tools-root" do |s|
         s.path = "install-mastercoin-tools-root.sh"
-        s.args = [ "ubuntu", "ubuntu" ]   # user, group for /var/lib/mastercoin-tools
+        s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/mastercoin-tools
       end
 
-      tools.vm.provision "shell" do |s|
+      tools.vm.provider :aws do |aws, override|
+        override.vm.provision "shell", id: "sh-tools-root" do |s|
+          s.args = [ "ubuntu", "ubuntu" ]   # user, group for /var/lib/mastercoin-tools
+        end
+      end
+
+     tools.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "install-mastercoin-tools-user.sh"
       end
 
-      tools.vm.provision "shell" do |s|
+     tools.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "install-mastercoin-tools-snapshot.sh"
       end
 
-
-    tools.vm.provider :aws do |aws, override|
-      aws.access_key_id = ENV['AWS_ACCESS_KEY'] || ""
-      aws.secret_access_key = ENV['AWS_SECRET_KEY'] || ""
-      aws.keypair_name = ENV['AWS_KEYPAIR_NAME'] || ""
-
-      aws.region = "us-west-1"
-      aws.instance_type = "m1.small"
-      aws.security_groups =  [ 'vagrant' ]
-
-  # ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-20140607.1 - ami-a26265e7
-  # ebs, paravirtualization, 64-bit
-  # uswest-1
-      aws.ami = "ami-a26265e7"
-
-      override.ssh.username = "ubuntu"
-      override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH'] || ""
-    end
-
+      tools.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 2
+      end
   end
+
 
 #
 # omni
@@ -157,15 +154,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #    mastercore.vm.network :forwarded_port, guest: 22, host: 2230
     mastercore.vm.network :forwarded_port, host_ip: "127.0.0.1", guest: 18332, host: 28332
  
-    mastercore.vm.provider "virtualbox" do |v|
-        v.memory = 2048
-        v.cpus = 8
+    mastercore.vm.provision "shell" do |s|
+      s.path = "install-mastercoin-base-root.sh"
     end
 
     mastercore.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "clone-and-build-bitcoind.sh"
         s.args = ["https://github.com/m21/mastercore.git", "new_m13", "mastercore"]
+    end
+
+    mastercore.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 8
     end
 
   end

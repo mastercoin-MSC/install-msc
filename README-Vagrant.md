@@ -10,6 +10,7 @@ The initial Vagrant file contains multiple VMs
 * base - used to make a base box for the other VMs (advanced users only)
 * empty - empty VM for quick tests of install from 'base'
 * tools - Mastercoin Tools
+* omni - Omniwallet (still under development)
 * mastercore-dev - A mastercore VM (built from latest dev version)
 
 uses the ```install-msc.sh``` script to install Mastercoin Tools.
@@ -94,7 +95,7 @@ The unit tests will generate about a dozen screens of output and, if successful,
 AWS Installation
 ----------------
 
-We now have experimental AWS support for Mastercoin Tools. Currently it is in a new VM called `tools-aws`. Before using the Vagrant AWS provider you'll need to install it:
+We now have experimental AWS support for all VMs in the Vagrantfile (Omniwallet not finished yet). Before using the Vagrant AWS provider you'll need to install it:
 
     vagrant plugin install vagrant-aws
 
@@ -109,16 +110,16 @@ You'll also need to configure your private AWS information by creating a *privat
 
 Edit `setup-aws-private.sh` and enter your AWS information.
 
-VM Installation is the same as for the Virtual Box version of Mastercoin Tools with the `vagrant up` command changed to:
+VM Installation is the same as for the Virtual Box provider, but with the `vagrant up` command changed to:
 
     source setup-aws-private.sh
-    vagrant up tools-aws --provider=aws
+    vagrant up tools --provider=aws
     source unset-aws-private.sh
 
 and the `vagrant ssh` command changed to:
 
     source setup-aws-private.sh
-    vagrant ssh tools-aws
+    vagrant ssh tools
     source unset-aws-private.sh
 
 Don't forget to source the `unset-aws-private.sh` to remove your private information from environment variables.
@@ -140,9 +141,6 @@ To Do
 
 1. Vagrant file support for Omniwallet
 1. Add [Shared folders and port-forwarding](http://pastie.org/9083315)
-1. AWS Instance configurations
-
-    Using the [AWS Provider](https://github.com/mitchellh/vagrant-aws).
 
 
 
