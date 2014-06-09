@@ -42,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #
 # tools
 #
-# Configuration for a base Ubuntu VM for Mastercoin Tools
+# Configuration for Ubuntu VM with Mastercoin Tools
 #
   config.vm.define "tools" do |tools|
 
@@ -55,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       tools.vm.provision "shell" do |s|
         s.path = "install-mastercoin-tools-root.sh"
-    #    s.args = [$obeliskServerUrl]
+        s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/mastercoin-tools
       end
 
       tools.vm.provision "shell" do |s|
@@ -66,6 +66,83 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       tools.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "install-mastercoin-tools-snapshot.sh"
+      end
+
+  end
+
+#
+# tools-aws
+#
+# Configuration for Ubuntu VM with Mastercoin Tools
+#
+# With a little tweaking this can be combined with tools
+# and switched via provider, but this is a first cut
+#
+#
+
+  config.vm.define "tools-aws" do |tools|
+      tools.vm.box = "mitchellh-dummy-aws"
+
+      tools.vm.provision "shell" do |s|
+        s.path = "install-mastercoin-base-root.sh"
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.path = "install-mastercoin-tools-root.sh"
+        s.args = [ "ubuntu", "ubuntu" ]   # user, group for /var/lib/mastercoin-tools
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.privileged = false
+        s.path = "install-mastercoin-tools-user.sh"
+      end
+
+      tools.vm.provision "shell" do |s|
+        s.privileged = false
+        s.path = "install-mastercoin-tools-snapshot.sh"
+      end
+
+
+    tools.vm.provider :aws do |aws, override|
+      aws.access_key_id = ENV['AWS_ACCESS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET_KEY']
+      aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+
+      aws.region = "us-west-1"
+      aws.instance_type = "m1.small"
+      aws.security_groups =  [ 'vagrant' ]
+
+  # ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-20140607.1 - ami-a26265e7
+  # ebs, paravirtualization, 64-bit
+  # uswest-1
+      aws.ami = "ami-a26265e7"
+
+      override.ssh.username = "ubuntu"
+      override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH']
+    end
+
+  end
+
+#
+# omni
+#
+# Configuration for Ubuntu VM with Omniwallet
+#
+  config.vm.define "omni" do |omni|
+
+      omni.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 2
+      end
+
+      omni.vm.provision "shell" do |s|
+        s.path = "install-omniwallet-root.sh"
+        s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/mastercoin-tools
+      end
+
+      omni.vm.provision "shell" do |s|
+        s.privileged = false
+        s.path = "install-omniwallet-user.sh"
       end
 
   end

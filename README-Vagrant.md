@@ -18,14 +18,14 @@ Prerequisites
 -------------
 
 * Virtual Box 4.3.10 or later
-* Vagrant 1.5.3 or later
+* Vagrant 1.6.2 or later
 
 Vagrant is available for Mac OS X, Windows, and  Linux. In addition to VirtualBox, Vagrant may be used to provision VMWare, AWS and other virtual environments.
 
 Base Box
 --------
 
-The [Vagrantfile](Vagrantfile) is currently using (*trusting*) the [parallels/ubuntu-13.10](https://vagrantcloud.com/parallels/ubuntu-13.10) base box created by Parallels and the Mastercoin base box [msgilligan/mastercoin-ubuntu-base](https://vagrantcloud.com/msgilligan/mastercoin-ubuntu-base).
+The [Vagrantfile](Vagrantfile) is currently using (*trusting*) the [ubuntu/trusty64](https://vagrantcloud.com/ubuntu/trusty64) base box created by Ubuntu and the Mastercoin base box [msgilligan/mastercoin-ubuntu-base](https://vagrantcloud.com/msgilligan/mastercoin-ubuntu-base).
 
 You should consider them untrusted binaries. Only use them with TEST-MSC and small amounts of Bitcoin.
 
@@ -89,6 +89,34 @@ The unit tests will generate about a dozen screens of output and, if successful,
         *** No errors detected
 
 1. Congratulations you have built and tested Mastercore!
+
+
+AWS Installation
+----------------
+
+We now have experimental AWS support for Mastercoin Tools. Currently it is in a new VM called `tools-aws`. Before using the Vagrant AWS provider you'll need to install it:
+
+    vagrant plugin install vagrant-aws
+
+You'll also need to configure your private AWS information by creating a *private* shell script:
+
+    cp setup-aws-template.sh setup-aws-private.sh
+
+Edit `setup-aws-private.sh` and enter your AWS information.
+
+VM Installation is the same as for the Virtual Box version of Mastercoin Tools with the `vagrant up` command changed to:
+
+    source setup-aws-private.sh
+    vagrant up tools-aws --provider=aws
+    source unset-aws-private.sh
+
+and the `vagrant ssh` command changed to:
+
+    source setup-aws-private.sh
+    vagrant ssh tools-aws
+    source unset-aws-private.sh
+
+Don't forget to source the `unset-aws-private.sh` to remove your private information from environment variables.
 
 To Do
 -----
