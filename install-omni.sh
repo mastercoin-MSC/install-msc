@@ -30,7 +30,7 @@ if [ "$1" = "--help" ] || [ $HELP ]; then
      exit
 fi
 
-if [ `id -u` = "0" ]; then
+if [ `id -u` != "0" ]; then  #no need to be root
     SRC=$PWD
 else
     echo
@@ -49,7 +49,7 @@ while [ -z "$PREFIG" ]; do
 	echo "Need an obelisk server? Try https://wiki.unsystem.net/index.php/Libbitcoin/Servers"
 	echo ""
 	echo "Do you have an obelisk server and wish to enter its details now? [y/n]"
-	read PREFIG
+	PREFIG='y'
 done
 
 case $PREFIG in
@@ -83,7 +83,7 @@ while [ $ACTIVE -ne 0 ]; do
 		while [ -z "$SERVER" ]; do
 			echo "Enter Obelisk server connection details ex: tcp://162.243.29.201:9091"
 			echo "If you don't have one yet enter anything, you can update/change this later"
-			read SERVER
+			SERVER='y'
 		done
 		CONFIRM=P
 	;;
@@ -91,7 +91,7 @@ while [ $ACTIVE -ne 0 ]; do
 	P)
 		echo "You entered: "$SERVER
 		echo "Is this correct? [y/n]"
-		read CONFIRM
+		CONFIRM='y'
 	;;
 
 	*)
@@ -105,7 +105,7 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
 	while [ -z "$SSHGEN" ]; do
 		echo "Public ssh key not found in ~/.ssh/id_rsa"
 		echo "Do you wish to generate one now?[y/n]"
-		read SSHGEN
+		SSHGEN='n'
 	done
 	case $SSHGEN in
 
@@ -133,7 +133,7 @@ echo "#############################"
 
 SSH="sudo -s -u $NAME ssh -o StrictHostKeyChecking=no -T -q git@github.com"
 
-VALID=1
+VALID=0 # do not run
 while [ $VALID -ne 0 ]; do
         echo "When You have updated Github please enter exactly:"
 	echo "		SSH Key Updated"
@@ -190,7 +190,7 @@ sudo apt-get -y install nodejs
 
 #Get/clone Omniwallet - might be relevant
 cd
-sudo -u $NAME git clone https://github.com/mastercoin-MSC/omniwallet.git
+sudo -u $NAME $(git clone https://github.com/mastercoin-MSC/omniwallet.git)
 
 # May need to clean up some strange permissions from the npm install.
 sudo chown -R $NAME:$NAME ~/.npm
@@ -200,20 +200,7 @@ sudo chown -R $NAME:$NAME ~/tmp
 sudo apt-get -y install python-simplejson python-git python-pip libffi-dev
 sudo apt-get -y install build-essential autoconf libtool libboost-all-dev pkg-config libcurl4-openssl-dev libleveldb-dev libzmq-dev libconfig++-dev libncurses5-dev
 
-#check for sx and install it if it doesn't exist
-#SX_INSTALLED=`which sx || echo $?`
-which sx
-SX_INSTALLED=$?
-
-if [[ $SX_INSTALLED -eq 1 ]]; then
-        cd $SRC/res
-        sudo bash install-sx.sh
-else
-	echo "#########################################"
-	echo "sx alredy installed Skipping installation"
-	echo "#########################################"
-
-fi
+#sx install is run earlier
 
 #Pip requirements
 #sudo pip install -r $SRC/pip.packages
@@ -240,7 +227,10 @@ sudo npm install -g uglify-js
 # MAKE SURE SSH IS LINKED TO GITHUB
 sudo chown -R $NAME:$NAME ~/omniwallet
 cd ~/omniwallet
-sudo -u $NAME npm install
+sudo -u $NAME $(npm install)
+sudo -u $NAME $(sudo npm install bower -g)
+sudo -u $NAME $(grunt)
+
 
 #Create omniwallet data directory and bootstrap
 sudo mkdir /var/lib/omniwallet
