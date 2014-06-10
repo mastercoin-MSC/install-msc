@@ -154,4 +154,3 @@ Versions, tags, and hashes
 --------------------------
 
 I would like to see a 100% reproducible build/install. In order to do this all critical components should be versioned or tagged. I'm tracking versions of components in an AsciiDoc table named [versions.adoc](versions.adoc).
-
