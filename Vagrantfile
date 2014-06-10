@@ -10,6 +10,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Version 0.2.0 is Ubuntu 14.04 LTS built from "ubuntu/trusty64"
   config.vm.box = "msgilligan/mastercoin-ubuntu-base"
 
+  config.vm.provider "virtualbox" do |v|
+    #v.memory = 1024
+    #v.cpus = 2
+    #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"] #limit the use of cpu to 50%
+  end
+
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = ENV['AWS_ACCESS_KEY'] || ""
     aws.secret_access_key = ENV['AWS_SECRET_KEY'] || ""
@@ -116,7 +122,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       tools.vm.provider "virtualbox" do |v|
         v.memory = 1024
         v.cpus = 2
-        #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"] #limit the use of cpu to 50%
       end
   end
 
@@ -131,7 +136,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       omni.vm.provider "virtualbox" do |v|
         v.memory = 1024
         v.cpus = 2
-        #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"] #limit the use of cpu to 50%
       end
 
       #temp comment out
@@ -171,25 +175,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         s.path = "install-mastercoin-tools-snapshot.sh"
       end
 
-
-    tools.vm.provider :aws do |aws, override|
-      aws.access_key_id = ENV['AWS_ACCESS_KEY'] || ""
-      aws.secret_access_key = ENV['AWS_SECRET_KEY'] || ""
-      aws.keypair_name = ENV['AWS_KEYPAIR_NAME'] || ""
-
-      aws.region = "us-west-1"
-      aws.instance_type = "m1.small"
-      aws.security_groups =  [ 'vagrant' ]
-
-  # ubuntu/images/ebs/ubuntu-trusty-14.04-amd64-server-20140607.1 - ami-a26265e7
-  # ebs, paravirtualization, 64-bit
-  # uswest-1
-      aws.ami = "ami-a26265e7"
-
-      override.ssh.username = "ubuntu"
-      override.ssh.private_key_path = ENV['AWS_SSH_KEY_PATH'] || ""
-    end
-
   end
 #
 # mastercore-dev
@@ -214,7 +199,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mastercore.vm.provider "virtualbox" do |v|
         v.memory = 2048
         v.cpus = 8
-        #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"] #limit the use of cpu to 50%
     end
 
   end
