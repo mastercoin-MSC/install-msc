@@ -1,5 +1,5 @@
 #!/bin/sh
-MSC_USER=$1
+MSC_USER=$(logname) #possibly use this versus passed in args 
 MSC_GROUP=$2
 echo "Running install-sx..."
 cd /vagrant/res

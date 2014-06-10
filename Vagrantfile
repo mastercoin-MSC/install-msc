@@ -133,16 +133,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #
   config.vm.define "omni" do |omni|
 
+    omni.vm.network :forwarded_port, host_ip: "127.0.0.1", guest: 80, host: 1666
+
       omni.vm.provider "virtualbox" do |v|
         v.memory = 1024
         v.cpus = 2
       end
 
-      #temp comment out
-      #omni.vm.provision "shell" do |s|
-      #  s.path = "install-omniwallet-root.sh"
-      #  s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/omniwallet
-      #end 
+      omni.vm.provision "shell" do |s|
+        s.path = "install-omniwallet-root.sh"
+        s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/omniwallet
+      end 
 
       omni.vm.provision "shell" do |s|
         s.privileged = false
