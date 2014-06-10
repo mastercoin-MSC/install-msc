@@ -126,7 +126,7 @@ echo "https://help.github.com/articles/generating-ssh-keys"
 echo ""
 echo "Your SSH key from ~/.ssh/id_rsa.pub is:"
 echo "----------------------------------------------------------------------------------"
-cat ~/.ssh/id_rsa.pub
+#cat ~/.ssh/id_rsa.pub
 echo "----------------------------------------------------------------------------------"
 echo ""
 echo "#############################"
@@ -150,7 +150,14 @@ while [ $VALID -ne 0 ]; do
 	fi
 done
 
+# do this before starting
+sudo apt-get autoremove
 # Make sure we're getting the newest packages.
+sudo apt-get update
+#Make sure we have python and build tools
+sudo apt-get -y install python-software-properties python
+sudo add-apt-repository -y ppa:chris-lea/node.js
+sudo add-apt-repository -y ppa:nginx/stable
 sudo apt-get update
 
 # If this is a local image, you may need sshd set up.
@@ -164,12 +171,16 @@ sudo apt-get -y install vim git curl libssl-dev make
 
 # Stuff so you can compile
 sudo apt-get -y install gcc g++ lib32z1-dev pkg-config ant
-sudo apt-get -y install ruby rubygems
+sudo apt-get -y install ruby 
+echo "installing sass..."
 sudo gem install sass
+echo "done."
 sudo apt-get -y install python-dev python-setuptools
 
-# Get NPM and forever, install globally
-sudo apt-get -y install npm
+#Special node.js installation from chris-lea repository
+sudo apt-get -y install nodejs
+
+# Get forever, install globally
 sudo npm install -g forever
 
 # Make it so that grunt can be used
@@ -179,18 +190,10 @@ sudo npm install -g grunt-cli
 sudo npm install -g less
 sudo npm install -g jshint
 
-#Make sure we have python and build tools
-sudo apt-get update
-sudo apt-get -y install python-software-properties python
-
-#Special node.js installation from chris-lea repository
-sudo add-apt-repository -y ppa:chris-lea/node.js
-sudo apt-get update
-sudo apt-get -y install nodejs
-
 #Get/clone Omniwallet - might be relevant
-cd
-sudo -u $NAME $(git clone https://github.com/mastercoin-MSC/omniwallet.git)
+echo "cloning omniwallet into $HOME"
+cd $HOME
+git clone https://github.com/mastercoin-MSC/omniwallet.git
 
 # May need to clean up some strange permissions from the npm install.
 sudo chown -R $NAME:$NAME ~/.npm
@@ -206,13 +209,16 @@ sudo apt-get -y install build-essential autoconf libtool libboost-all-dev pkg-co
 #sudo pip install -r $SRC/pip.packages
 sudo pip install -r $PIPFILELOC/requirements.txt
 
+#fix for incompleteread bug
+sudo rm -rf /usr/local/lib/python2.7/dist-packages/requests
+sudo pip install requests
+
 #Get and setup nginx
 sudo apt-get -y install uwsgi uwsgi-plugin-python
 #sudo -s
 #nginx=stable # use nginx=development for latest development version
 #add-apt-repository -y ppa:nginx/$nginx
-sudo add-apt-repository -y ppa:nginx/stable
-sudo apt-get update
+
 sudo apt-get -y install nginx
 #exit
 
@@ -224,34 +230,28 @@ sudo cp ~/omniwallet/etc/nginx/sites-available/default /etc/nginx/sites-availabl
 sudo npm install -g uglify-js
 
 #Start the omniwallet dependency setup
-# MAKE SURE SSH IS LINKED TO GITHUB
 sudo chown -R $NAME:$NAME ~/omniwallet
 cd ~/omniwallet
-sudo -u $NAME $(npm install)
-sudo -u $NAME $(sudo npm install bower -g)
-sudo -u $NAME $(grunt)
+sudo -u $NAME npm install
+sudo -u $NAME sudo npm install bower -g
+sudo -u $NAME grunt
 
 
+echo "extracting bootstrap... this may take up to 10 minutes on some systems"
 #Create omniwallet data directory and bootstrap
-sudo mkdir /var/lib/omniwallet
-cd $SRC
-wget https://masterchain.info/downloads/ -O list
-latest=`cat list | grep tar.gz | sed -e "s/^.*\"\(.*\)\".*$/\1/" | sort -n -r | head -1`
-wget https://masterchain.info/downloads/$latest -O latest.tar.gz
-rm list
-tar xzf latest.tar.gz -C /var/lib/omniwallet
-cp -r /var/lib/omniwallet/www/* /var/lib/omniwallet/
-rm /var/lib/omniwallet/revision.json
+cd /vagrant/res
+7z x mtools-snapshot.7z -o/var/lib/omniwallet/ -y > /dev/null
 sudo chown -R $NAME:$NAME /var/lib/omniwallet
 
 #start the web interface
 sudo service nginx start
-
+cd $HOME/omniwallet/
 #create the mastercoin tools data directory
 #mkdir -p /var/lib/mastercoin-tools
 #tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
 
 echo ""
+echo "Omniwallet is now accessible at localhost:1666"
 echo ""
 echo "Installation complete"
 echo "Omniwallet should have been downloaded/installed in "$PWD
