@@ -244,17 +244,17 @@ cd /vagrant/res
 sudo chown -R $NAME:$NAME /var/lib/omniwallet
 
 #start the web interface
-sudo service nginx start
-cd $HOME/omniwallet/
+sudo nginx -s stop
+sudo nginx
 #create the mastercoin tools data directory
 #mkdir -p /var/lib/mastercoin-tools
 #tar xzf $SRC/res/bootstrap.tgz -C /var/lib/mastercoin-tools
 
 echo ""
-echo "Omniwallet is now accessible at localhost:1666"
-echo ""
 echo "Installation complete"
 echo "Omniwallet should have been downloaded/installed in "$PWD
+echo "Omniwallet will be accessible at localhost:1666 after running ./app.sh in ~/omniwallet/"
+echo ""
 echo ""
 echo "The webinterface is handled by nginx"
 echo "'sudo service nginx [stop/start/restart/status]'"
