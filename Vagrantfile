@@ -11,8 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "msgilligan/mastercoin-ubuntu-base"
 
   config.vm.provider "virtualbox" do |v|
-    #v.memory = 1024
-    #v.cpus = 2
+    v.memory = 1024
+    v.cpus = 2
     #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"] #limit the use of cpu to 50%
   end
 
@@ -140,10 +140,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.cpus = 2
       end
 
-      omni.vm.provision "shell" do |s|
+      omni.vm.provision "shell", id: "sh-omni-root" do |s|
         s.path = "install-omniwallet-root.sh"
         s.args = [ "vagrant", "vagrant" ]   # user, group for /var/lib/omniwallet
       end 
+
+      omni.vm.provider :aws do |aws, override|
+        override.vm.provision "shell", id: "sh-omni-root" do |s|
+          s.args = [ "ubuntu", "ubuntu" ]   # user, group for /var/lib/omniwallet
+        end
+      end
 
       omni.vm.provision "shell" do |s|
         s.privileged = false
@@ -152,31 +158,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-#
-# Configuration for AWS with Omniwallet
-  config.vm.define "omni-aws" do |tools|
-      tools.vm.box = "mitchellh-dummy-aws"
-
-      tools.vm.provision "shell" do |s|
-        s.path = "install-omniwallet-root.sh"
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.path = "install-mastercoin-tools-root.sh"
-        s.args = [ "ubuntu", "ubuntu" ]   # user, group for /var/lib/mastercoin-tools
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.privileged = false
-        s.path = "install-mastercoin-tools-user.sh"
-      end
-
-      tools.vm.provision "shell" do |s|
-        s.privileged = false
-        s.path = "install-mastercoin-tools-snapshot.sh"
-      end
-
-  end
 #
 # mastercore-dev
 #
