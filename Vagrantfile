@@ -175,8 +175,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mastercore.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "clone-and-build-bitcoind.sh"
-        s.args = ["https://github.com/m21/mastercore.git", "new_m13", "mastercore"]
+        s.args = ["https://github.com/mastercoin-MSC/mastercore.git", "new_m13", "mastercore"]
     end
+
+#    mastercore.vm.provision "shell" do |s|
+#        s.privileged = false
+#        s.path = "/vagrant/core/start-regtest.sh"
+#    end
 
     mastercore.vm.provider "virtualbox" do |v|
         v.memory = 2048
