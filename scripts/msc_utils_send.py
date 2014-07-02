@@ -79,7 +79,7 @@ def write_utxo(listdata):
 def get_balance(address, csym, div):
     bal1=-3
     bal2=-4
-    url =  'https://test.omniwallet.org/v1/address/addr/'
+    url =  'https://www.omniwallet.org/v1/address/addr/'
     PAYLOAD = {'addr': address }
     try:
         tx_data= requests.post(url, data=PAYLOAD, verify=False).json()
