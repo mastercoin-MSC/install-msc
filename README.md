@@ -111,24 +111,27 @@ We use a "dummy" AWS base box [as recommended](https://github.com/mitchellh/vagr
 
 You'll also need to configure your private AWS information by creating a *private* shell script:
 
-    cp setup-aws-template.sh setup-aws-private.sh
+    cp setup-aws-template.sh ../setup-aws-private.sh
     chmod 700 setup-aws-private.sh
 
-Edit `setup-aws-private.sh` and enter your AWS information.
+Edit `../setup-aws-private.sh` and enter your AWS information.
 
 VM Installation is the same as for the Virtual Box provider, but with the `vagrant up` command changed to:
 
-    source setup-aws-private.sh
+    source ../setup-aws-private.sh
     vagrant up tools --provider=aws
     source unset-aws-private.sh
 
 and the `vagrant ssh` command changed to:
 
-    source setup-aws-private.sh
+    source ../setup-aws-private.sh
     vagrant ssh tools
     source unset-aws-private.sh
 
 Don't forget to source the `unset-aws-private.sh` to remove your private information from environment variables.
+
+These instructions show the `setup-aws-private.sh` script being kept in the *parent* directory of this project. Because Vagrant by default copies the contents of the directory containing the Vagrantfile to the /vagrant directory of your EC2 instance it is not a recommended to place this file in the Vagrantfile diretory or any subdirectory.
+
 
 To Do
 -----
