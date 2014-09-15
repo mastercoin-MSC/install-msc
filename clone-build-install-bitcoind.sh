@@ -15,7 +15,7 @@ git checkout $BRANCH
 make
 
 # Install as an Upstart service
-./contrib/msc-ubuntu/install-mastercore-upstart.sh
+sudo ./contrib/msc-ubuntu/install-mastercore-upstart.sh
 
 
 
