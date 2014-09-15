@@ -159,14 +159,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 #
-# mastercore-dev
+# mastercore
 #
 # Configuration for Mastercore development
 #
-  config.vm.define "mastercore-dev", autostart: false do |mastercore|
+  config.vm.define "mastercore", autostart: false do |mastercore|
 
 #    mastercore.vm.network :forwarded_port, guest: 22, host: 2230
-    mastercore.vm.network :forwarded_port, host_ip: "127.0.0.1", guest: 18332, host: 28332
+    mastercore.vm.network :forwarded_port, host_ip: "127.0.0.1", guest: 8332, host: 28332
  
     mastercore.vm.provision "shell" do |s|
       s.path = "install-mastercoin-base-root.sh"
@@ -175,7 +175,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mastercore.vm.provision "shell" do |s|
         s.privileged = false
         s.path = "clone-and-build-bitcoind.sh"
-        s.args = ["https://github.com/mastercoin-MSC/mastercore.git", "new_m13", "mastercore"]
+        s.args = ["https://github.com/mastercoin-MSC/mastercore.git", "michael-0921", "mastercore"]
     end
 
 #    mastercore.vm.provision "shell" do |s|
